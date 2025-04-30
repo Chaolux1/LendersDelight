@@ -1,0 +1,19 @@
+{
+  "type": "farmersdelight:cooking",
+  "container": {
+    "item": "minecraft:potato"
+  },
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "item": "cataclysm:crystallized_coral_fragments"
+    },
+    {
+      "item": "farmersdelight:rice"
+    }
+  ],
+  "result": {
+    "item": "lendersdelight:crystallized_coral_potato"
+  }
+}

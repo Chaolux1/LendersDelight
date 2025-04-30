@@ -1,0 +1,22 @@
+{
+  "type": "farmersdelight:cooking",
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "item": "lendersdelight:cooked_berserker"
+    },
+    {
+      "item": "lendersdelight:cooked_berserker"
+    },
+    {
+      "item": "minecraft:coal"
+    }
+  ],
+  "result": {
+    "item": "lendersdelight:ham_of_berserker"
+  }
+}

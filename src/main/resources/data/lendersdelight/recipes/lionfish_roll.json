@@ -1,0 +1,19 @@
+{
+  "type": "farmersdelight:cooking",
+  "container": {
+    "item": "minecraft:paper"
+  },
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "item": "lendersdelight:lionfish_slice"
+    },
+    {
+      "item": "farmersdelight:rice"
+    }
+  ],
+  "result": {
+    "item": "lendersdelight:lionfish_roll"
+  }
+}

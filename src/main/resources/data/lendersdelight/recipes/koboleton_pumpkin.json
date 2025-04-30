@@ -1,0 +1,19 @@
+{
+  "type": "farmersdelight:cooking",
+  "container": {
+    "item": "minecraft:pumpkin"
+  },
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "item": "lendersdelight:cooked_coboleton_meat"
+    },
+    {
+      "item": "lendersdelight:cooked_coboleton_meat"
+    }
+  ],
+  "result": {
+    "item": "lendersdelight:koboleton_pumpkin"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    {
+      "item": "cataclysm:lionfish"
+    }
+  ],
+  "result": [
+    {
+      "count": 2,
+      "item": "lendersdelight:lionfish_slice"
+    }
+  ],
+  "tool": {
+    "tag": "forge:tools/knives"
+  }
+}
