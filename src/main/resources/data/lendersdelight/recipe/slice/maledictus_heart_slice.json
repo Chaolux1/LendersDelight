@@ -1,0 +1,19 @@
+{
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    {
+      "item": "lendersdelight:maledictus_heart"
+    }
+  ],
+  "result": [
+    {
+      "item": {
+        "count": 2,
+        "id": "lendersdelight:maledictus_heart_slice"
+      }
+    }
+  ],
+  "tool": {
+    "tag": "c:tools/knife"
+  }
+}

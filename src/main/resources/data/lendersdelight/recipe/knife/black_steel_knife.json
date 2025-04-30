@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "wooden_slab",
+  "key": {
+    "A": {
+      "item": "minecraft:stick"
+    },
+    "B": {
+      "item": "cataclysm:black_steel_ingot"
+    }
+  },
+  "pattern": [
+    "   ",
+    " B ",
+    "A  "
+  ],
+  "result": {
+    "id": "lendersdelight:black_steel_knife"
+  }
+}

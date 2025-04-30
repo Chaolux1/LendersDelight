@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:foods/bread"
+    },
+    {
+      "item": "cataclysm:coral_chunk"
+    },
+    {
+      "tag": "c:foods/leafy_green"
+    },
+    {
+      "tag": "c:crops/tomato"
+    }
+  ],
+  "result": {
+    "id": "lendersdelight:coral_chunk_sandwich"
+  }
+}

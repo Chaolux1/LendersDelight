@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "c:foods/bread"
+    },
+    {
+      "item": "lendersdelight:cooked_amethyst_crab_meat"
+    },
+    {
+      "tag": "c:foods/leafy_green"
+    },
+    {
+      "tag": "c:crops/tomato"
+    }
+  ],
+  "result": {
+    "id": "lendersdelight:amethyst_crab_sandwich"
+  }
+}

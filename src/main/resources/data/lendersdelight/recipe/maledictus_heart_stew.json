@@ -1,0 +1,21 @@
+{
+  "type": "farmersdelight:cooking",
+  "container": {
+    "count": 1,
+    "id": "minecraft:bowl"
+  },
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "item": "lendersdelight:maledictus_heart"
+    },
+    {
+      "item": "farmersdelight:tomato_sauce"
+    }
+  ],
+  "recipe_book_tab": "meals",
+  "result": {
+    "count": 1,
+    "id": "lendersdelight:maledictus_heart_stew"
+  }
+}

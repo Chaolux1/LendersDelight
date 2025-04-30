@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "cookingtime": 600,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "lendersdelight:coboleton_meat"
+  },
+  "result": {
+    "count": 1,
+    "id": "lendersdelight:cooked_coboleton_meat"
+  }
+}

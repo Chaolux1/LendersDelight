@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "wooden_slab",
+  "key": {
+    "A": {
+      "item": "minecraft:stick"
+    },
+    "B": {
+      "item": "cataclysm:abyssal_sacrifice"
+    }
+  },
+  "pattern": [
+    "   ",
+    " B ",
+    "A  "
+  ],
+  "result": {
+    "id": "lendersdelight:abyssal_knife"
+  }
+}

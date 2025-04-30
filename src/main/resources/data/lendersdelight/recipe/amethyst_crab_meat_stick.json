@@ -1,0 +1,21 @@
+{
+  "type": "farmersdelight:cooking",
+  "container": {
+    "count": 1,
+    "id": "minecraft:stick"
+  },
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "item": "lendersdelight:cooked_amethyst_crab_meat_slice"
+    },
+    {
+      "item": "lendersdelight:cooked_amethyst_crab_meat_slice"
+    }
+  ],
+  "recipe_book_tab": "meals",
+  "result": {
+    "count": 1,
+    "id": "lendersdelight:amethyst_crab_meat_stick"
+  }
+}
