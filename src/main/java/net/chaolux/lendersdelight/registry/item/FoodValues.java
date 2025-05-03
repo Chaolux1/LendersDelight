@@ -2,6 +2,7 @@ package net.chaolux.lendersdelight.registry.item;
 
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import vectorwing.farmersdelight.common.registry.ModEffects;
 
@@ -18,7 +19,7 @@ public class FoodValues {
     public static final FoodProperties COOKED_ENDER_GOLEM_MEAT = (new FoodProperties.Builder()).nutrition(8).saturationModifier(0.8F).build();
     public static final FoodProperties COOKED_LEVIATHAN = (new FoodProperties.Builder()).nutrition(24).saturationModifier(1.2F).effect(() -> new MobEffectInstance(ModEffects.NOURISHMENT, 3400, 0, false, false), 1.0F).effect(() -> new MobEffectInstance(ModEffect.EFFECTMONSTROUS, 2200, 0, false, false), 1.0F).build();
     public static final FoodProperties COOKED_LIONFISH = (new FoodProperties.Builder()).nutrition(4).saturationModifier(0.1F).effect(() -> new MobEffectInstance(ModEffect.EFFECTGHOST_FORM, 200, 0, false, false), 1.0F).build();
-    public static final FoodProperties COOKED_NETHERITE_MONSTROSITY_MEAT = (new FoodProperties.Builder()).nutrition(9).saturationModifier(0.8F).build();
+    public static final FoodProperties COOKED_NETHERITE_MONSTROSITY_MEAT = (new FoodProperties.Builder()).nutrition(19).saturationModifier(0.8F).build();
     public static final FoodProperties CORAL_AND_VOID = (new FoodProperties.Builder()).nutrition(9).saturationModifier(0.7F).effect(() -> new MobEffectInstance(ModEffects.NOURISHMENT, 1200, 0, false, false), 1.0F).build();
     public static final FoodProperties CORAL_CHUNK_SANDWICH = (new FoodProperties.Builder()).nutrition(6).saturationModifier(0.8F).effect(() -> new MobEffectInstance(ModEffect.EFFECTGHOST_FORM, 800, 0, false, false), 1.0F).build();
     public static final FoodProperties CORAL_GOLEM_MEAT = (new FoodProperties.Builder()).nutrition(3).saturationModifier(0.2F).effect(() -> new MobEffectInstance(ModEffect.EFFECTGHOST_FORM, 500, 0, false, false), 1.0F).build();
@@ -35,7 +36,7 @@ public class FoodValues {
     public static final FoodProperties GLAZED_REMNANT_SKULL = (new FoodProperties.Builder()).nutrition(19).saturationModifier(0.9F).effect(() -> new MobEffectInstance(ModEffects.COMFORT, 2200, 0, false, false), 1.0F).effect(() -> new MobEffectInstance(ModEffect.EFFECTMONSTROUS, 600, 0, false, false), 1.0F).build();
     public static final FoodProperties GRILLED_LIONFISH = (new FoodProperties.Builder()).nutrition(9).saturationModifier(0.9F).build();
     public static final FoodProperties HAM_OF_BERSERKER = (new FoodProperties.Builder()).nutrition(12).saturationModifier(0.9F).effect(() -> new MobEffectInstance(ModEffects.NOURISHMENT, 1200, 0, false, false), 1.0F).build();
-    public static final FoodProperties IGNIS = (new FoodProperties.Builder()).nutrition(9).saturationModifier(0.7F).build();
+    public static final FoodProperties IGNIS = (new FoodProperties.Builder()).nutrition(9).saturationModifier(0.7F).effect(() -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 4200, 0, false, false), 1.0F).build();
     public static final FoodProperties IMPROVED_DOG_FOOD = (new FoodProperties.Builder()).nutrition(7).saturationModifier(0.7F).effect(() -> new MobEffectInstance(ModEffect.EFFECTMONSTROUS, 1200, 0, false, false), 1.0F).build();
     public static final FoodProperties KOBOLETON_PUMPKIN = (new FoodProperties.Builder()).nutrition(13).saturationModifier(1.1F).effect(() -> new MobEffectInstance(ModEffects.NOURISHMENT, 1600, 0, false, false), 1.0F).build();
     public static final FoodProperties LEVIATHAN = (new FoodProperties.Builder()).nutrition(14).saturationModifier(1.0F).effect(() -> new MobEffectInstance(ModEffects.NOURISHMENT, 1200, 0, false, false), 1.0F).effect(() -> new MobEffectInstance(ModEffect.EFFECTMONSTROUS, 2200, 0, false, false), 1.0F).build();
@@ -52,4 +53,5 @@ public class FoodValues {
     public static final FoodProperties VOID_POPSICLE = (new FoodProperties.Builder()).nutrition(9).saturationModifier(0.7F).build();
     public static final FoodProperties WATCHER_HEART = (new FoodProperties.Builder()).nutrition(10).saturationModifier(0.9F).effect(() -> new MobEffectInstance(ModEffect.EFFECTMONSTROUS, 900, 0, false, false), 1.0F).build();
     public static final FoodProperties ENDER_GOLEM_MEAT = (new FoodProperties.Builder()).nutrition(4).saturationModifier(0.3F).build();
+    public static final FoodProperties HONEY_GLAZED_HORN = (new FoodProperties.Builder()).nutrition(34).saturationModifier(0.9F).effect(() -> new MobEffectInstance(ModEffects.NOURISHMENT, 2900, 0, false, false), 1.0F).build();
 }
