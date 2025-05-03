@@ -68,6 +68,7 @@ public class ModItems {
     public static final RegistryObject<Item> IGNITIUM_KNIFE;
     public static final RegistryObject<Item> WITHERITE_KNIFE;
     public static final RegistryObject<Item> HONEY_GLAZED_HORN;
+    public static final RegistryObject<Item> CURSIUM_KNIFE;
 
     public static RegistryObject<Item> registerWithTab(String name, Supplier<Item> supplier) {
         RegistryObject<Item> block = ITEMS.register(name, supplier);
@@ -154,5 +155,7 @@ public class ModItems {
         BLACK_STEEL_KNIFE = registerWithTab("black_steel_knife", () -> new KnifeItem(Tiers.DIAMOND, 0.5F, -2.0F, basicItem()));
         IGNITIUM_KNIFE = registerWithTab("ignitium_knife", () -> new KnifeItem(Tiers.DIAMOND, 0.5F, -2.0F, basicItem()));
         WITHERITE_KNIFE = registerWithTab("witherite_knife", () -> new KnifeItem(Tiers.DIAMOND, 0.5F, -2.0F, basicItem()));
+        CURSIUM_KNIFE = registerWithTab("cursium_knife", () -> new KnifeItem(Tiers.NETHERITE, 0.5F, -2.0F, basicItem().fireResistant()));
+
     }
 }

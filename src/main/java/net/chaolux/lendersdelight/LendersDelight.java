@@ -112,6 +112,7 @@ public class LendersDelight
             event.accept(ModItems.BLACK_STEEL_KNIFE);
             event.accept(ModItems.IGNITIUM_KNIFE);
             event.accept(ModItems.WITHERITE_KNIFE);
+            event.accept(ModItems.CURSIUM_KNIFE);
         }
     }
 
