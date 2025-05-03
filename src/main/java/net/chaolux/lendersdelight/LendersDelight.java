@@ -103,6 +103,7 @@ public class LendersDelight
             event.accept(ModItems.VOID_POPSICLE);
             event.accept(ModItems.WATCHER_HEART);
             event.accept(ModItems.ENDER_GOLEM_MEAT);
+            event.accept(ModItems.HONEY_GLAZED_HORN);
         }
 
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {

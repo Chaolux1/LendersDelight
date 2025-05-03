@@ -67,6 +67,7 @@ public class ModItems {
     public static final RegistryObject<Item> BLACK_STEEL_KNIFE;
     public static final RegistryObject<Item> IGNITIUM_KNIFE;
     public static final RegistryObject<Item> WITHERITE_KNIFE;
+    public static final RegistryObject<Item> HONEY_GLAZED_HORN;
 
     public static RegistryObject<Item> registerWithTab(String name, Supplier<Item> supplier) {
         RegistryObject<Item> block = ITEMS.register(name, supplier);
@@ -105,6 +106,7 @@ public class ModItems {
         MALEDICTUS_HEART_STEW = registerWithTab("maledictus_heart_stew", () -> new ConsumableItem(bowlFoodItem(FoodValues.MALEDICTUS_HEART_STEW), true));
         PASTA_WITH_WITHERITE = registerWithTab("pasta_with_witherite", () -> new ConsumableItem(bowlFoodItem(FoodValues.PASTA_WITH_WITHERITE), false));
         RED_CORAL_STEW = registerWithTab("red_coral_stew", () -> new ConsumableItem(bowlFoodItem(FoodValues.RED_CORAL_STEW), true));
+        HONEY_GLAZED_HORN = registerWithTab("honey_glazed_horn", () -> new ConsumableItem(bowlFoodItem(FoodValues.HONEY_GLAZED_HORN), true));
 
         ENDER_BLOOD = registerWithTab("ender_blood", () -> new ConsumableItem(drinkItem(FoodValues.ENDER_BLOOD)));
         VOID_CUSTARD = registerWithTab("void_custard", () -> new ConsumableItem(drinkItem(FoodValues.VOID_CUSTARD)));
