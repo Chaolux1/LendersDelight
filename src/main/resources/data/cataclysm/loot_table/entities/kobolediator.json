@@ -26,14 +26,6 @@
                 "min": 3.0
               },
               "function": "minecraft:set_count"
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:looting_enchant"
             }
           ],
           "name": "cataclysm:koboleton_bone"
@@ -55,14 +47,6 @@
                 "min": 1.0
               },
               "function": "minecraft:set_count"
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:looting_enchant"
             }
           ],
           "name": "cataclysm:ancient_metal_ingot"
@@ -84,14 +68,6 @@
                 "min": 1.0
               },
               "function": "minecraft:set_count"
-            },
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 1.0,
-                "min": 0.0
-              },
-              "function": "minecraft:looting_enchant"
             }
           ],
           "name": "lendersdelight:coboleton_meat"

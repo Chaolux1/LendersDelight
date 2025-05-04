@@ -109,6 +109,9 @@ public class LendersDelight
             event.accept(ModItems.WATCHER_HEART.get());
             event.accept(ModItems.ENDER_GOLEM_MEAT.get());
             event.accept(ModItems.HONEY_GLAZED_HORN.get());
+            event.accept(ModItems.ENDER_GUARDIAN_CRYSTAL.get());
+            event.accept(ModItems.CRYSTALLIZED_CORAL_PIE.get());
+            event.accept(ModItems.CRYSTALLIZED_CORAL_PIE_SLICE.get());
         }
 
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
@@ -117,6 +120,7 @@ public class LendersDelight
             event.accept(ModItems.BLACK_STEEL_KNIFE.get());
             event.accept(ModItems.IGNITIUM_KNIFE.get());
             event.accept(ModItems.WITHERITE_KNIFE.get());
+            event.accept(ModItems.CURSIUM_KNIFE.get());
         }
     }
 

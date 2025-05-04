@@ -1,10 +1,13 @@
 package net.chaolux.lendersdelight.registry.item;
 
+import net.chaolux.lendersdelight.registry.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tiers;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import vectorwing.farmersdelight.common.item.ConsumableItem;
 import vectorwing.farmersdelight.common.item.DogFoodItem;
@@ -69,6 +72,10 @@ public class ModItems {
     public static final Supplier<Item> IGNITIUM_KNIFE;
     public static final Supplier<Item> WITHERITE_KNIFE;
     public static final Supplier<Item> HONEY_GLAZED_HORN;
+    public static final Supplier<Item> CURSIUM_KNIFE;
+    public static final Supplier<Item> ENDER_GUARDIAN_CRYSTAL;
+    public static final Supplier<Item> CRYSTALLIZED_CORAL_PIE;
+    public static final Supplier<Item> CRYSTALLIZED_CORAL_PIE_SLICE;
 
     public static Supplier<Item> registerWithTab(String name, Supplier<Item> supplier) {
         Supplier<Item> block = ITEMS.register(name, supplier);
@@ -147,6 +154,9 @@ public class ModItems {
         RAW_DEEPLING_MEAT = registerWithTab("raw_deepling_meat", () -> new Item(foodItem(FoodValues.RAW_DEEPLING_MEAT)));
         WATCHER_HEART = registerWithTab("watcher_heart", () -> new Item(foodItem(FoodValues.WATCHER_HEART)));
         ENDER_GOLEM_MEAT = registerWithTab("ender_golem_meat", () -> new Item(foodItem(FoodValues.ENDER_GOLEM_MEAT)));
+        ENDER_GUARDIAN_CRYSTAL = registerWithTab("ender_guardian_crystal", () -> new Item(foodItem(FoodValues.ENDER_GUARDIAN_CRYSTAL)));
+        CRYSTALLIZED_CORAL_PIE_SLICE = registerWithTab("crystallized_coral_pie_slice", () -> new Item(foodItem(FoodValues.CRYSTALLIZED_CORAL_PIE_SLICE)));
+        CRYSTALLIZED_CORAL_PIE = registerWithTab("crystallized_coral_pie", () -> new BlockItem((Block) ModBlocks.CRYSTALLIZED_CORAL_PIE.get(), basicItem()));
 
         IMPROVED_DOG_FOOD = registerWithTab("improved_dog_food", () -> new DogFoodItem(bowlFoodItem(FoodValues.IMPROVED_DOG_FOOD)));
 
@@ -155,5 +165,6 @@ public class ModItems {
         BLACK_STEEL_KNIFE = registerWithTab("black_steel_knife", () -> new KnifeItem(Tiers.DIAMOND, knifeItem(Tiers.DIAMOND)));
         IGNITIUM_KNIFE = registerWithTab("ignitium_knife", () -> new KnifeItem(Tiers.DIAMOND, knifeItem(Tiers.DIAMOND)));
         WITHERITE_KNIFE = registerWithTab("witherite_knife", () -> new KnifeItem(Tiers.DIAMOND, knifeItem(Tiers.DIAMOND)));
+        CURSIUM_KNIFE = registerWithTab("cursium_knife", () -> new KnifeItem(Tiers.NETHERITE, knifeItem(Tiers.NETHERITE).fireResistant()));
     }
 }
