@@ -104,6 +104,9 @@ public class LendersDelight
             event.accept(ModItems.WATCHER_HEART);
             event.accept(ModItems.ENDER_GOLEM_MEAT);
             event.accept(ModItems.HONEY_GLAZED_HORN);
+            event.accept(ModItems.ENDER_GUARDIAN_CRYSTAL);
+            event.accept(ModItems.CRYSTALLIZED_CORAL_PIE);
+            event.accept(ModItems.CRYSTALLIZED_CORAL_PIE_SLICE);
         }
 
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {

@@ -1,5 +1,6 @@
 package net.chaolux.lendersdelight.registry.item;
 
+import net.chaolux.lendersdelight.registry.block.ModBlocks;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
@@ -69,6 +70,9 @@ public class ModItems {
     public static final RegistryObject<Item> WITHERITE_KNIFE;
     public static final RegistryObject<Item> HONEY_GLAZED_HORN;
     public static final RegistryObject<Item> CURSIUM_KNIFE;
+    public static final RegistryObject<Item> ENDER_GUARDIAN_CRYSTAL;
+    public static final RegistryObject<Item> CRYSTALLIZED_CORAL_PIE;
+    public static final RegistryObject<Item> CRYSTALLIZED_CORAL_PIE_SLICE;
 
     public static RegistryObject<Item> registerWithTab(String name, Supplier<Item> supplier) {
         RegistryObject<Item> block = ITEMS.register(name, supplier);
@@ -147,6 +151,9 @@ public class ModItems {
         RAW_DEEPLING_MEAT = registerWithTab("raw_deepling_meat", () -> new Item(foodItem(FoodValues.RAW_DEEPLING_MEAT)));
         WATCHER_HEART = registerWithTab("watcher_heart", () -> new Item(foodItem(FoodValues.WATCHER_HEART)));
         ENDER_GOLEM_MEAT = registerWithTab("ender_golem_meat", () -> new Item(foodItem(FoodValues.ENDER_GOLEM_MEAT)));
+        ENDER_GUARDIAN_CRYSTAL = registerWithTab("ender_guardian_crystal", () -> new Item(foodItem(FoodValues.ENDER_GUARDIAN_CRYSTAL)));
+        CRYSTALLIZED_CORAL_PIE_SLICE = registerWithTab("crystallized_coral_pie_slice", () -> new Item(foodItem(FoodValues.CRYSTALLIZED_CORAL_PIE_SLICE)));
+        CRYSTALLIZED_CORAL_PIE = registerWithTab("crystallized_coral_pie", () -> new BlockItem((Block) ModBlocks.CRYSTALLIZED_CORAL_PIE.get(), basicItem()));
 
         IMPROVED_DOG_FOOD = registerWithTab("improved_dog_food", () -> new DogFoodItem(bowlFoodItem(FoodValues.IMPROVED_DOG_FOOD)));
 
