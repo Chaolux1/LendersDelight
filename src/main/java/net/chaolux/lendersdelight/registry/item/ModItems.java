@@ -105,20 +105,20 @@ public class ModItems {
         CORAL_AND_VOID = registerWithTab("coral_and_void", () -> new ConsumableItem(bowlFoodItem(FoodValues.CORAL_AND_VOID), true));
         ENDER_BLOOD_GLAZED_MALEDICTUS_HEART = registerWithTab("ender_blood_glazed_maledictus_heart", () -> new ConsumableItem(bowlFoodItem(FoodValues.ENDER_BLOOD_GLAZED_MALEDICTUS_HEART), true));
         GLAZED_REMNANT_SKULL = registerWithTab("glazed_remnant_skull", () -> new ConsumableItem(bowlFoodItem(FoodValues.GLAZED_REMNANT_SKULL), true));
-        GRILLED_LIONFISH = registerWithTab("grilled_lionfish", () -> new ConsumableItem(bowlFoodItem(FoodValues.GRILLED_LIONFISH), true));
+        GRILLED_LIONFISH = registerWithTab("grilled_lionfish", () -> new Item(bowlFoodItem(FoodValues.GRILLED_LIONFISH)));
         HAM_OF_BERSERKER = registerWithTab("ham_of_berserker", () -> new ConsumableItem(bowlFoodItem(FoodValues.HAM_OF_BERSERKER), true));
         LEVIATHAN_AND_ABYSSAL_EGG = registerWithTab("leviathan_and_abyssal_egg", () -> new ConsumableItem(bowlFoodItem(FoodValues.LEVIATHAN_AND_ABYSSAL_EGG), true));
         MALEDICTUS_HEART_STEW = registerWithTab("maledictus_heart_stew", () -> new ConsumableItem(bowlFoodItem(FoodValues.MALEDICTUS_HEART_STEW), true));
-        PASTA_WITH_WITHERITE = registerWithTab("pasta_with_witherite", () -> new ConsumableItem(bowlFoodItem(FoodValues.PASTA_WITH_WITHERITE), false));
+        PASTA_WITH_WITHERITE = registerWithTab("pasta_with_witherite", () -> new ConsumableItem(bowlFoodItem(FoodValues.PASTA_WITH_WITHERITE), true));
         RED_CORAL_STEW = registerWithTab("red_coral_stew", () -> new ConsumableItem(bowlFoodItem(FoodValues.RED_CORAL_STEW), true));
         HONEY_GLAZED_HORN = registerWithTab("honey_glazed_horn", () -> new ConsumableItem(bowlFoodItem(FoodValues.HONEY_GLAZED_HORN), true));
 
-        ENDER_BLOOD = registerWithTab("ender_blood", () -> new ConsumableItem(drinkItem(FoodValues.ENDER_BLOOD)));
-        VOID_CUSTARD = registerWithTab("void_custard", () -> new ConsumableItem(drinkItem(FoodValues.VOID_CUSTARD)));
+        ENDER_BLOOD = registerWithTab("ender_blood", () -> new ConsumableItem(drinkItem(FoodValues.ENDER_BLOOD), true));
+        VOID_CUSTARD = registerWithTab("void_custard", () -> new ConsumableItem(drinkItem(FoodValues.VOID_CUSTARD), true));
 
-        AMETHYST_CRAB_MEAT_STICK = registerWithTab("amethyst_crab_meat_stick", () -> new ConsumableItem(stickItem(FoodValues.AMETHYST_CRAB_MEAT_STICK)));
-        BERSERKER_STICK = registerWithTab("berserker_stick", () -> new ConsumableItem(stickItem(FoodValues.BERSERKER_STICK)));
-        VOID_POPSICLE = registerWithTab("void_popsicle", () -> new ConsumableItem(stickItem(FoodValues.VOID_POPSICLE)));
+        AMETHYST_CRAB_MEAT_STICK = registerWithTab("amethyst_crab_meat_stick", () -> new ConsumableItem(stickItem(FoodValues.AMETHYST_CRAB_MEAT_STICK), true));
+        BERSERKER_STICK = registerWithTab("berserker_stick", () -> new ConsumableItem(stickItem(FoodValues.BERSERKER_STICK), true));
+        VOID_POPSICLE = registerWithTab("void_popsicle", () -> new ConsumableItem(stickItem(FoodValues.VOID_POPSICLE), true));
 
         AMETHYST_CRAB_SANDWICH = registerWithTab("amethyst_crab_sandwich", () -> new Item(foodItem(FoodValues.AMETHYST_CRAB_SANDWICH)));
         BERSERKER = registerWithTab("berserker", () -> new Item(foodItem(FoodValues.BERSERKER)));
@@ -128,12 +128,12 @@ public class ModItems {
         COOKED_COBOLETON_MEAT = registerWithTab("cooked_coboleton_meat", () -> new Item(foodItem(FoodValues.COOKED_COBOLETON_MEAT)));
         COOKED_CORAL_GOLEM_MEAT = registerWithTab("cooked_coral_golem_meat", () -> new Item(foodItem(FoodValues.COOKED_CORAL_GOLEM_MEAT)));
         COOKED_ENDER_GOLEM_MEAT = registerWithTab("cooked_ender_golem_meat", () -> new Item(foodItem(FoodValues.COOKED_ENDER_GOLEM_MEAT)));
-        COOKED_LEVIATHAN = registerWithTab("cooked_leviathan", () -> new Item(foodItem(FoodValues.COOKED_LEVIATHAN)));
+        COOKED_LEVIATHAN = registerWithTab("cooked_leviathan", () -> new ConsumableItem(foodItem(FoodValues.COOKED_LEVIATHAN), true));
         COOKED_LIONFISH = registerWithTab("cooked_lionfish", () -> new Item(foodItem(FoodValues.COOKED_LIONFISH)));
         COOKED_NETHERITE_MONSTROSITY_MEAT = registerWithTab("cooked_netherite_monstrosity_meat", () -> new Item(foodItem(FoodValues.COOKED_NETHERITE_MONSTROSITY_MEAT)));
         CORAL_CHUNK_SANDWICH = registerWithTab("coral_chunk_sandwich", () -> new Item(foodItem(FoodValues.CORAL_CHUNK_SANDWICH)));
         CORAL_GOLEM_MEAT = registerWithTab("coral_golem_meat", () -> new Item(foodItem(FoodValues.CORAL_GOLEM_MEAT)));
-        CRYSTALLIZED_CORAL_POTATO = registerWithTab("crystallized_coral_potato", () -> new Item(foodItem(FoodValues.CRYSTALLIZED_CORAL_POTATO)));
+        CRYSTALLIZED_CORAL_POTATO = registerWithTab("crystallized_coral_potato", () -> new ConsumableItem(foodItem(FoodValues.CRYSTALLIZED_CORAL_POTATO), true));
         CRYSTALLIZED_CORAL_ROLL = registerWithTab("crystallized_coral_roll", () -> new Item(foodItem(FoodValues.CRYSTALLIZED_CORAL_ROLL)));
         AMETHYST_CRAB_MEAT_SLICE = registerWithTab("amethyst_crab_meat_slice", () -> new Item(foodItem(FoodValues.AMETHYST_CRAB_MEAT_SLICE)));
         COOKED_AMETHYST_CRAB_MEAT_SLICE = registerWithTab("cooked_amethyst_crab_meat_slice", () -> new Item(foodItem(FoodValues.COOKED_AMETHYST_CRAB_MEAT_SLICE)));
@@ -141,17 +141,17 @@ public class ModItems {
         MALEDICTUS_HEART_SLICE = registerWithTab("maledictus_heart_slice", () -> new Item(foodItem(FoodValues.MALEDICTUS_HEART_SLICE)));
         DEEPLING_MEAT = registerWithTab("deepling_meat", () -> new Item(foodItem(FoodValues.DEEPLING_MEAT)));
         FRIED_ABYSSAL_EGG = registerWithTab("fried_abyssal_egg", () -> new Item(foodItem(FoodValues.FRIED_ABYSSAL_EGG)));
-        IGNIS = registerWithTab("ignis", () -> new Item(foodItem(FoodValues.IGNIS)));
-        KOBOLETON_PUMPKIN = registerWithTab("koboleton_pumpkin", () -> new Item(foodItem(FoodValues.KOBOLETON_PUMPKIN)));
-        LEVIATHAN = registerWithTab("leviathan", () -> new Item(foodItem(FoodValues.LEVIATHAN)));
+        IGNIS = registerWithTab("ignis", () -> new ConsumableItem(foodItem(FoodValues.IGNIS), true));
+        KOBOLETON_PUMPKIN = registerWithTab("koboleton_pumpkin", () -> new ConsumableItem(foodItem(FoodValues.KOBOLETON_PUMPKIN), true));
+        LEVIATHAN = registerWithTab("leviathan", () -> new ConsumableItem(foodItem(FoodValues.LEVIATHAN), true));
         LIONFISH_ROLL = registerWithTab("lionfish_roll", () -> new Item(foodItem(FoodValues.LIONFISH_ROLL)));
         LIONFISH_SLICE = registerWithTab("lionfish_slice", () -> new Item(foodItem(FoodValues.LIONFISH_SLICE)));
-        MALEDICTUS_HEART = registerWithTab("maledictus_heart", () -> new Item(foodItem(FoodValues.MALEDICTUS_HEART)));
+        MALEDICTUS_HEART = registerWithTab("maledictus_heart", () -> new ConsumableItem(foodItem(FoodValues.MALEDICTUS_HEART), true));
         NETHERITE_MONSTROSITY_MEAT = registerWithTab("netherite_monstrosity_meat", () -> new Item(foodItem(FoodValues.NETHERITE_MONSTROSITY_MEAT)));
         RAW_DEEPLING_MEAT = registerWithTab("raw_deepling_meat", () -> new Item(foodItem(FoodValues.RAW_DEEPLING_MEAT)));
-        WATCHER_HEART = registerWithTab("watcher_heart", () -> new Item(foodItem(FoodValues.WATCHER_HEART)));
+        WATCHER_HEART = registerWithTab("watcher_heart", () -> new ConsumableItem(foodItem(FoodValues.WATCHER_HEART), true));
         ENDER_GOLEM_MEAT = registerWithTab("ender_golem_meat", () -> new Item(foodItem(FoodValues.ENDER_GOLEM_MEAT)));
-        ENDER_GUARDIAN_CRYSTAL = registerWithTab("ender_guardian_crystal", () -> new Item(foodItem(FoodValues.ENDER_GUARDIAN_CRYSTAL)));
+        ENDER_GUARDIAN_CRYSTAL = registerWithTab("ender_guardian_crystal", () -> new ConsumableItem(foodItem(FoodValues.ENDER_GUARDIAN_CRYSTAL), true));
         CRYSTALLIZED_CORAL_PIE_SLICE = registerWithTab("crystallized_coral_pie_slice", () -> new Item(foodItem(FoodValues.CRYSTALLIZED_CORAL_PIE_SLICE)));
         CRYSTALLIZED_CORAL_PIE = registerWithTab("crystallized_coral_pie", () -> new BlockItem((Block) ModBlocks.CRYSTALLIZED_CORAL_PIE.get(), basicItem()));
 
