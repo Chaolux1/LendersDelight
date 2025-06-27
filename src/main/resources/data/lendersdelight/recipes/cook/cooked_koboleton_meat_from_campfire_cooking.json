@@ -4,7 +4,7 @@
   "cookingtime": 600,
   "experience": 0.35,
   "ingredient": {
-    "item": "lendersdelight:coboleton_meat"
+    "item": "lendersdelight:koboleton_meat"
   },
-  "result": "lendersdelight:cooked_coboleton_meat"
+  "result": "lendersdelight:cooked_koboleton_meat"
 }

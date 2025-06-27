@@ -1,5 +1,9 @@
 package net.chaolux.lendersdelight.registry.item;
 
+import net.chaolux.lendersdelight.coomon.item.AbyssalKnife;
+import net.chaolux.lendersdelight.coomon.item.FoodValues;
+import net.chaolux.lendersdelight.coomon.item.ImprovedDogFoodItem;
+import net.chaolux.lendersdelight.coomon.item.VoidPopsicle;
 import net.chaolux.lendersdelight.registry.block.ModBlocks;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
@@ -21,10 +25,10 @@ public class ModItems {
     public static final RegistryObject<Item> AMETHYST_CRAB_SANDWICH;
     public static final RegistryObject<Item> BERSERKER;
     public static final RegistryObject<Item> BERSERKER_STICK;
-    public static final RegistryObject<Item> COBOLETON_MEAT;
+    public static final RegistryObject<Item> KOBOLETON_MEAT;
     public static final RegistryObject<Item> COOKED_AMETHYST_CRAB_MEAT;
     public static final RegistryObject<Item> COOKED_BERSERKER;
-    public static final RegistryObject<Item> COOKED_COBOLETON_MEAT;
+    public static final RegistryObject<Item> COOKED_KOBOLETON_MEAT;
     public static final RegistryObject<Item> COOKED_CORAL_GOLEM_MEAT;
     public static final RegistryObject<Item> COOKED_ENDER_GOLEM_MEAT;
     public static final RegistryObject<Item> COOKED_LEVIATHAN;
@@ -118,14 +122,14 @@ public class ModItems {
 
         AMETHYST_CRAB_MEAT_STICK = registerWithTab("amethyst_crab_meat_stick", () -> new ConsumableItem(stickItem(FoodValues.AMETHYST_CRAB_MEAT_STICK), true));
         BERSERKER_STICK = registerWithTab("berserker_stick", () -> new ConsumableItem(stickItem(FoodValues.BERSERKER_STICK), true));
-        VOID_POPSICLE = registerWithTab("void_popsicle", () -> new ConsumableItem(stickItem(FoodValues.VOID_POPSICLE), true));
+        VOID_POPSICLE = registerWithTab("void_popsicle", () -> new VoidPopsicle(stickItem(FoodValues.VOID_POPSICLE)));
 
         AMETHYST_CRAB_SANDWICH = registerWithTab("amethyst_crab_sandwich", () -> new Item(foodItem(FoodValues.AMETHYST_CRAB_SANDWICH)));
         BERSERKER = registerWithTab("berserker", () -> new Item(foodItem(FoodValues.BERSERKER)));
-        COBOLETON_MEAT = registerWithTab("coboleton_meat", () -> new Item(foodItem(FoodValues.COBOLETON_MEAT)));
+        KOBOLETON_MEAT = registerWithTab("koboleton_meat", () -> new Item(foodItem(FoodValues.KOBOLETON_MEAT)));
         COOKED_AMETHYST_CRAB_MEAT = registerWithTab("cooked_amethyst_crab_meat", () -> new Item(foodItem(FoodValues.COOKED_AMETHYST_CRAB_MEAT)));
         COOKED_BERSERKER = registerWithTab("cooked_berserker", () -> new Item(foodItem(FoodValues.COOKED_BERSERKER)));
-        COOKED_COBOLETON_MEAT = registerWithTab("cooked_coboleton_meat", () -> new Item(foodItem(FoodValues.COOKED_COBOLETON_MEAT)));
+        COOKED_KOBOLETON_MEAT = registerWithTab("cooked_koboleton_meat", () -> new Item(foodItem(FoodValues.COOKED_KOBOLETON_MEAT)));
         COOKED_CORAL_GOLEM_MEAT = registerWithTab("cooked_coral_golem_meat", () -> new Item(foodItem(FoodValues.COOKED_CORAL_GOLEM_MEAT)));
         COOKED_ENDER_GOLEM_MEAT = registerWithTab("cooked_ender_golem_meat", () -> new Item(foodItem(FoodValues.COOKED_ENDER_GOLEM_MEAT)));
         COOKED_LEVIATHAN = registerWithTab("cooked_leviathan", () -> new ConsumableItem(foodItem(FoodValues.COOKED_LEVIATHAN), true));
@@ -140,7 +144,7 @@ public class ModItems {
         CORAL_CHUNK_RED_SLICE = registerWithTab("coral_chunk_red_slice", () -> new Item(foodItem(FoodValues.CORAL_CHUNK_RED_SLICE)));
         MALEDICTUS_HEART_SLICE = registerWithTab("maledictus_heart_slice", () -> new Item(foodItem(FoodValues.MALEDICTUS_HEART_SLICE)));
         DEEPLING_MEAT = registerWithTab("deepling_meat", () -> new Item(foodItem(FoodValues.DEEPLING_MEAT)));
-        FRIED_ABYSSAL_EGG = registerWithTab("fried_abyssal_egg", () -> new Item(foodItem(FoodValues.FRIED_ABYSSAL_EGG)));
+        FRIED_ABYSSAL_EGG = registerWithTab("fried_abyssal_egg", () -> new ConsumableItem(foodItem(FoodValues.FRIED_ABYSSAL_EGG),true));
         IGNIS = registerWithTab("ignis", () -> new ConsumableItem(foodItem(FoodValues.IGNIS), true));
         KOBOLETON_PUMPKIN = registerWithTab("koboleton_pumpkin", () -> new ConsumableItem(foodItem(FoodValues.KOBOLETON_PUMPKIN), true));
         LEVIATHAN = registerWithTab("leviathan", () -> new ConsumableItem(foodItem(FoodValues.LEVIATHAN), true));

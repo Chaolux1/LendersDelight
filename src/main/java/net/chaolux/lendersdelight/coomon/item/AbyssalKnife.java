@@ -1,6 +1,5 @@
-package net.chaolux.lendersdelight.registry.item;
+package net.chaolux.lendersdelight.coomon.item;
 
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import vectorwing.farmersdelight.common.item.KnifeItem;

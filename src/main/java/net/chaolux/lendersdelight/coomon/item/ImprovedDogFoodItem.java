@@ -1,7 +1,7 @@
-package net.chaolux.lendersdelight.registry.item;
+package net.chaolux.lendersdelight.coomon.item;
 
-import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.google.common.collect.Lists;
+import net.chaolux.lendersdelight.registry.item.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.chat.Component;
@@ -82,12 +82,6 @@ public class ImprovedDogFoodItem extends DogFoodItem {
         }
 
         return InteractionResult.PASS;
-    }
-
-    public void applyEffect(LivingEntity entity) {
-        for(MobEffectInstance effect:IMPROVED_EFFECTS) {
-            entity.addEffect(new MobEffectInstance(effect));
-        }
     }
 
     @SubscribeEvent
