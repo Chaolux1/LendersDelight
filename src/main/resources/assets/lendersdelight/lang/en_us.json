@@ -55,5 +55,16 @@
   "item.lendersdelight.black_steel_knife": "Black Steel Knife",
   "item.lendersdelight.ignitium_knife": "Ignitium Knife",
   "item.lendersdelight.witherite_knife": "Witherite Knife",
-  "item.lendersdelight.cursium_knife": "Cursium Knife"
+  "item.lendersdelight.cursium_knife": "Cursium Knife",
+
+  "tooltip.lendersdelight.stat": "Stats:",
+  "stat.lendersdelight.armor_boost": "Armor Boost",
+  "stat.lendersdelight.attack_boost": "Attack Boost",
+  "stat.lendersdelight.speed_boost": "Speed Boost",
+  "stat.lendersdelight.jump_boost": "Jump Boost",
+  "stat.lendersdelight.attack_speed": "Attack Speed",
+  "stat.lendersdelight.crit_chance": "Crit Chance",
+  "stat.lendersdelight.knockback_resistance": "Knockback Resistance",
+  "stat.lendersdelight.passive_regen": "Regen",
+  "stat.lendersdelight.swim_speed": "Swim Speed"
 }

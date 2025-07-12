@@ -1,14 +1,19 @@
 package net.chaolux.lendersdelight.coomon.stat;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.LazyOptional;
 import org.slf4j.Logger;
 import vectorwing.farmersdelight.common.item.ConsumableItem;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Map;
 
 public class StatConsumableItem extends ConsumableItem {
@@ -55,5 +60,18 @@ public class StatConsumableItem extends ConsumableItem {
             }
         }
         return result;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
+        super.appendHoverText(stack,level,tooltip,isAdvanced);
+        if(!statBonus.isEmpty()) {
+            tooltip.add(Component.translatable("tooltip.lendersdelight.stat").withStyle(ChatFormatting.GOLD));
+            for(Map.Entry<StatType, Float> entry:statBonus.entrySet()) {
+                StatType type=entry.getKey();
+                float value=entry.getValue();
+                tooltip.add(Component.translatable(type.getLangKey()).append(" +"+value+"%").withStyle(ChatFormatting.BLUE));
+            }
+        }
     }
 }

@@ -149,7 +149,7 @@ public class ModItems {
         IGNIS = registerWithTab("ignis", () -> new ConsumableItem(foodItem(FoodValues.IGNIS), true));
         KOBOLETON_PUMPKIN = registerWithTab("koboleton_pumpkin", () -> new ConsumableItem(foodItem(FoodValues.KOBOLETON_PUMPKIN), true));
         LEVIATHAN = registerWithTab("leviathan", () -> new ConsumableItem(foodItem(FoodValues.LEVIATHAN), true));
-        LIONFISH_ROLL = registerWithTab("lionfish_roll", () -> new StatConsumableItem(foodItem(FoodValues.LIONFISH_ROLL),true, Map.of(StatType.PASSIVE_REGEN,250.0f,StatType.SWIM_SPEED,250.0f)));
+        LIONFISH_ROLL = registerWithTab("lionfish_roll", () -> new StatConsumableItem(foodItem(FoodValues.LIONFISH_ROLL),true, Map.of(StatType.JUMP_BOOST,50.0f,StatType.CRIT_CHANCE,30.0f)));
         LIONFISH_SLICE = registerWithTab("lionfish_slice", () -> new Item(foodItem(FoodValues.LIONFISH_SLICE)));
         MALEDICTUS_HEART = registerWithTab("maledictus_heart", () -> new ConsumableItem(foodItem(FoodValues.MALEDICTUS_HEART), true));
         NETHERITE_MONSTROSITY_MEAT = registerWithTab("netherite_monstrosity_meat", () -> new Item(foodItem(FoodValues.NETHERITE_MONSTROSITY_MEAT)));

@@ -160,7 +160,7 @@ public class PlayerStatEvents {
         player.getCapability(PlayerStatProvider.PLAYER_STAT).ifPresent(stats -> {
             float jump=stats.getStat(StatType.JUMP_BOOST);
             if(jump > 0f) {
-                player.setDeltaMovement(player.getDeltaMovement().x,player.getDeltaMovement().y+(jump / 100f),player.getDeltaMovement().z);
+                player.setDeltaMovement(player.getDeltaMovement().x,player.getDeltaMovement().y+(jump / 500f),player.getDeltaMovement().z);
             }
         });
     }
