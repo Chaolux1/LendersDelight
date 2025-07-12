@@ -1,4 +1,4 @@
-package net.chaolux.lendersdelight.coomon.stst;
+package net.chaolux.lendersdelight.coomon.stat;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.entity.LivingEntity;

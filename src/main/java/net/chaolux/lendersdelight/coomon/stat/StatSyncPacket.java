@@ -1,4 +1,4 @@
-package net.chaolux.lendersdelight.coomon.stst;
+package net.chaolux.lendersdelight.coomon.stat;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;

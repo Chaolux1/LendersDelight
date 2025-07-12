@@ -1,6 +1,6 @@
 package net.chaolux.lendersdelight.registry.stat;
 
-import net.chaolux.lendersdelight.coomon.stst.IPlayerStat;
+import net.chaolux.lendersdelight.coomon.stat.IPlayerStat;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;

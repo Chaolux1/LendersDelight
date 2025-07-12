@@ -1,6 +1,6 @@
 package net.chaolux.lendersdelight.registry.stat;
 
-import net.chaolux.lendersdelight.coomon.stst.StatSyncPacket;
+import net.chaolux.lendersdelight.coomon.stat.StatSyncPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;

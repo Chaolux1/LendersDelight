@@ -1,9 +1,10 @@
-package net.chaolux.lendersdelight.coomon.stst;
+package net.chaolux.lendersdelight.coomon.stat;
 
 import net.chaolux.lendersdelight.registry.stat.ModNetwork;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -36,9 +37,11 @@ public class PlayerStatProvider implements ICapabilitySerializable<CompoundTag> 
         backend.loadNBT(nbt);
     }
 
-    public static void attach(Player player, AttachCapabilitiesEvent<Player> event) {
-        PlayerStatProvider provider=new PlayerStatProvider();
-        event.addCapability(StatCapabilityID.PLAYER_STAT_ID,provider);
+    public static void attach(AttachCapabilitiesEvent<Entity> event) {
+        if(event.getObject() instanceof Player player) {
+            PlayerStatProvider provider = new PlayerStatProvider();
+            event.addCapability(StatCapabilityID.PLAYER_STAT_ID, provider);
+        }
     }
 
     public static LazyOptional<IPlayerStat> get(Player player) {
