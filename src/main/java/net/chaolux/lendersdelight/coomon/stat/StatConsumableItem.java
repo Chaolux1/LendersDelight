@@ -64,13 +64,17 @@ public class StatConsumableItem extends ConsumableItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
+        int currentSize=tooltip.size();
         super.appendHoverText(stack,level,tooltip,isAdvanced);
         if(!statBonus.isEmpty()) {
-            tooltip.add(Component.translatable("tooltip.lendersdelight.stat").withStyle(ChatFormatting.GOLD));
+            if(tooltip.size() > currentSize) {
+                tooltip.add(Component.empty());
+            }
+            tooltip.add(Component.translatable("tooltip.lendersdelight.stat").withStyle(ChatFormatting.DARK_GREEN));
             for(Map.Entry<StatType, Float> entry:statBonus.entrySet()) {
                 StatType type=entry.getKey();
                 float value=entry.getValue();
-                tooltip.add(Component.translatable(type.getLangKey()).append(" +"+value+"%").withStyle(ChatFormatting.BLUE));
+                tooltip.add(Component.literal("+"+value+"% ").append(Component.translatable(type.getLangKey())).withStyle(ChatFormatting.BLUE));
             }
         }
     }
