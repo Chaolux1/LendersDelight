@@ -3,17 +3,8 @@ package net.chaolux.lendersdelight;
 import com.mojang.logging.LogUtils;
 import net.chaolux.lendersdelight.registry.block.ModBlocks;
 import net.chaolux.lendersdelight.registry.item.ModItems;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
+import net.chaolux.lendersdelight.registry.stat.ModNetwork;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -26,9 +17,6 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
 @Mod(LendersDelight.MOD_ID)
@@ -42,6 +30,7 @@ public class LendersDelight
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
+        ModNetwork.register();
 
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
@@ -92,6 +81,7 @@ public class LendersDelight
             event.accept(ModItems.AMETHYST_CRAB_MEAT_STICK);
             event.accept(ModItems.CRYSTALLIZED_CORAL_POTATO);
             event.accept(ModItems.CRYSTALLIZED_CORAL_ROLL);
+            event.accept(ModItems.LIONFISH_ROLL);
             event.accept(ModItems.AMETHYST_CRAB_SANDWICH);
             event.accept(ModItems.CORAL_CHUNK_SANDWICH);
             event.accept(ModItems.MALEDICTUS_HEART_STEW);
@@ -119,7 +109,6 @@ public class LendersDelight
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-
         }
     }
 }

@@ -4,6 +4,8 @@ import net.chaolux.lendersdelight.coomon.item.AbyssalKnife;
 import net.chaolux.lendersdelight.coomon.item.FoodValues;
 import net.chaolux.lendersdelight.coomon.item.ImprovedDogFoodItem;
 import net.chaolux.lendersdelight.coomon.item.VoidPopsicle;
+import net.chaolux.lendersdelight.coomon.stst.StatConsumableItem;
+import net.chaolux.lendersdelight.coomon.stst.StatType;
 import net.chaolux.lendersdelight.registry.block.ModBlocks;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
@@ -12,10 +14,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vectorwing.farmersdelight.common.item.ConsumableItem;
-import vectorwing.farmersdelight.common.item.DogFoodItem;
 import vectorwing.farmersdelight.common.item.KnifeItem;
-import vectorwing.farmersdelight.common.registry.ModMaterials;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class ModItems {
@@ -148,7 +149,7 @@ public class ModItems {
         IGNIS = registerWithTab("ignis", () -> new ConsumableItem(foodItem(FoodValues.IGNIS), true));
         KOBOLETON_PUMPKIN = registerWithTab("koboleton_pumpkin", () -> new ConsumableItem(foodItem(FoodValues.KOBOLETON_PUMPKIN), true));
         LEVIATHAN = registerWithTab("leviathan", () -> new ConsumableItem(foodItem(FoodValues.LEVIATHAN), true));
-        LIONFISH_ROLL = registerWithTab("lionfish_roll", () -> new Item(foodItem(FoodValues.LIONFISH_ROLL)));
+        LIONFISH_ROLL = registerWithTab("lionfish_roll", () -> new StatConsumableItem(foodItem(FoodValues.LIONFISH_ROLL),true, Map.of(StatType.PASSIVE_REGEN,250.0f,StatType.CRIT_CHANCE,250.0f)));
         LIONFISH_SLICE = registerWithTab("lionfish_slice", () -> new Item(foodItem(FoodValues.LIONFISH_SLICE)));
         MALEDICTUS_HEART = registerWithTab("maledictus_heart", () -> new ConsumableItem(foodItem(FoodValues.MALEDICTUS_HEART), true));
         NETHERITE_MONSTROSITY_MEAT = registerWithTab("netherite_monstrosity_meat", () -> new Item(foodItem(FoodValues.NETHERITE_MONSTROSITY_MEAT)));
