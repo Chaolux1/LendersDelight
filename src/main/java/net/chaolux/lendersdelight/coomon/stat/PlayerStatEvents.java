@@ -30,29 +30,17 @@ public class PlayerStatEvents {
     private static final UUID ATTACK_DAMAGE_MODIFIER_ID=UUID.fromString("00f6b2f5-a105-4abb-b7de-fee601a4e377");
     private static final UUID ARMOR_MODIFIER_ID=UUID.fromString("96a277cd-1712-4a4a-b1ab-b84a6429da51");
     private static final UUID SWIM_SPEED_MODIFIER_ID=UUID.fromString("1a94d5b0-0dbd-43fc-a39d-b5bbf7e1b838");
-    private static final Logger LOGGER= LogUtils.getLogger();
     private static final Map<UUID, CompoundTag> SAVED_STAT=new HashMap<>();
-
-    static {
-        System.out.println("PlayerStatEvents class load");
-    }
 
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
-        LOGGER.debug("onDeath call: {}", event.getEntity());
-        if (!(event.getEntity() instanceof Player player)) {
-            LOGGER.debug("Entity is not Player: {}", event.getEntity());
-            return;
-        }
+        if (!(event.getEntity() instanceof Player player)) return;
         LazyOptional<IPlayerStat> capOptional = player.getCapability(PlayerStatProvider.PLAYER_STAT);
         if (capOptional.isPresent()) {
             IPlayerStat cap = capOptional.orElse(null);
             if (cap != null) {
                 CompoundTag saved = cap.saveToNBT();
                 SAVED_STAT.put(player.getUUID(), saved);
-                LOGGER.debug("Saved stat for player {}: {}", player.getName().getString(), saved);
-            } else {
-                LOGGER.debug("Player {} has NO cap attch", player.getName().getString());
             }
         }
     }
@@ -60,30 +48,21 @@ public class PlayerStatEvents {
     @SubscribeEvent
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
         PlayerStatProvider.sync(event.getEntity());
-        LOGGER.debug("Player {} log in sunc stats",event.getEntity().getName().getString());
     }
 
     @SubscribeEvent
     public static void onRespawn(PlayerEvent.PlayerRespawnEvent event) {
         Player player = event.getEntity();
-        LOGGER.debug("Player {} log in with UUID {}", player.getName().getString(),player.getUUID());
         CompoundTag saved = SAVED_STAT.remove(player.getUUID());
         if (saved != null) {
-            LOGGER.debug("Find save stat: {}", saved);
             LazyOptional<IPlayerStat> capOptional = player.getCapability(PlayerStatProvider.PLAYER_STAT);
             if (capOptional.isPresent()) {
                 IPlayerStat cap = capOptional.orElse(null);
                 if (cap != null) {
                     cap.loadFromNBT(saved);
-                    LOGGER.debug("Stat load into cap for player {}", player.getName().getString());
-                } else {
-                    LOGGER.debug("Player {} has NO cap attach", player.getName().getString());
                 }
-            } else {
-                LOGGER.debug("No saved stat for {}", player.getName().getString());
             }
             PlayerStatProvider.sync(event.getEntity());
-            LOGGER.debug("Player {} log in sunc stats", event.getEntity().getName().getString());
         }
     }
 
