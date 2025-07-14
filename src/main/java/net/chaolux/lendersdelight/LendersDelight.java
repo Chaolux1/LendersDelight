@@ -96,6 +96,14 @@ public class LendersDelight
             event.accept(ModItems.LEVIATHAN_AND_ABYSSAL_EGG);
             event.accept(ModItems.IMPROVED_DOG_FOOD);
         }
+        if (event.getTabKey() == CreativeModeTabs.COMBAT) {
+            event.accept(ModItems.ABYSSAL_KNIFE);
+            event.accept(ModItems.ANCIENT_KNIFE);
+            event.accept(ModItems.BLACK_STEEL_KNIFE);
+            event.accept(ModItems.IGNITIUM_KNIFE);
+            event.accept(ModItems.WITHERITE_KNIFE);
+            event.accept(ModItems.CURSIUM_KNIFE);
+        }
     }
 
     @SubscribeEvent
