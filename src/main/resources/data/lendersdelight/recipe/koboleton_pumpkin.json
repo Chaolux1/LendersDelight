@@ -7,10 +7,10 @@
   "experience": 1.0,
   "ingredients": [
     {
-      "item": "lendersdelight:cooked_coboleton_meat"
+      "item": "lendersdelight:cooked_koboleton_meat"
     },
     {
-      "item": "lendersdelight:cooked_coboleton_meat"
+      "item": "lendersdelight:cooked_koboleton_meat"
     }
   ],
   "recipe_book_tab": "meals",

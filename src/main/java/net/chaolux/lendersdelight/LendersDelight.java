@@ -1,7 +1,10 @@
 package net.chaolux.lendersdelight;
 
+import net.chaolux.lendersdelight.coomon.stat.PlayerStatCapability;
 import net.chaolux.lendersdelight.registry.block.ModBlocks;
 import net.chaolux.lendersdelight.registry.item.ModItems;
+import net.chaolux.lendersdelight.registry.stat.ModCapabilities;
+import net.minecraft.world.entity.player.Player;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -35,7 +38,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
+import net.chaolux.lendersdelight.registry.stat.ModEvents;
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(LendersDelight.MOD_ID)
 public class LendersDelight
@@ -62,56 +65,55 @@ public class LendersDelight
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
         if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
-            event.accept(ModItems.AMETHYST_CRAB_MEAT_STICK.get());
-            event.accept(ModItems.AMETHYST_CRAB_SANDWICH.get());
-            event.accept(ModItems.BERSERKER.get());
-            event.accept(ModItems.BERSERKER_STICK.get());
-            event.accept(ModItems.COBOLETON_MEAT.get());
-            event.accept(ModItems.COOKED_AMETHYST_CRAB_MEAT.get());
-            event.accept(ModItems.COOKED_BERSERKER.get());
-            event.accept(ModItems.COOKED_COBOLETON_MEAT.get());
-            event.accept(ModItems.COOKED_CORAL_GOLEM_MEAT.get());
-            event.accept(ModItems.COOKED_ENDER_GOLEM_MEAT.get());
+            event.accept(ModItems.LEVIATHAN.get());
             event.accept(ModItems.COOKED_LEVIATHAN.get());
-            event.accept(ModItems.COOKED_LIONFISH.get());
+            event.accept(ModItems.ENDER_GOLEM_MEAT.get());
+            event.accept(ModItems.COOKED_ENDER_GOLEM_MEAT.get());
+            event.accept(ModItems.NETHERITE_MONSTROSITY_MEAT.get());
             event.accept(ModItems.COOKED_NETHERITE_MONSTROSITY_MEAT.get());
-            event.accept(ModItems.CORAL_AND_VOID.get());
-            event.accept(ModItems.CORAL_CHUNK_SANDWICH.get());
+            event.accept(ModItems.BERSERKER.get());
+            event.accept(ModItems.COOKED_BERSERKER.get());
+            event.accept(ModItems.RAW_DEEPLING_MEAT.get());
+            event.accept(ModItems.DEEPLING_MEAT.get());
             event.accept(ModItems.CORAL_GOLEM_MEAT.get());
-            event.accept(ModItems.CRYSTALLIZED_CORAL_POTATO.get());
-            event.accept(ModItems.CRYSTALLIZED_CORAL_ROLL.get());
+            event.accept(ModItems.COOKED_CORAL_GOLEM_MEAT.get());
+            event.accept(ModItems.KOBOLETON_MEAT.get());
+            event.accept(ModItems.COOKED_KOBOLETON_MEAT.get());
+            event.accept(ModItems.MALEDICTUS_HEART.get());
+            event.accept(ModItems.MALEDICTUS_HEART_SLICE.get());
+            event.accept(ModItems.COOKED_AMETHYST_CRAB_MEAT.get());
             event.accept(ModItems.AMETHYST_CRAB_MEAT_SLICE.get());
             event.accept(ModItems.COOKED_AMETHYST_CRAB_MEAT_SLICE.get());
-            event.accept(ModItems.CORAL_CHUNK_RED_SLICE.get());
-            event.accept(ModItems.MALEDICTUS_HEART_SLICE.get());
-            event.accept(ModItems.DEEPLING_MEAT.get());
-            event.accept(ModItems.ENDER_BLOOD.get());
-            event.accept(ModItems.ENDER_BLOOD_GLAZED_MALEDICTUS_HEART.get());
-            event.accept(ModItems.FRIED_ABYSSAL_EGG.get());
-            event.accept(ModItems.GLAZED_REMNANT_SKULL.get());
-            event.accept(ModItems.GRILLED_LIONFISH.get());
-            event.accept(ModItems.HAM_OF_BERSERKER.get());
-            event.accept(ModItems.IGNIS.get());
-            event.accept(ModItems.IMPROVED_DOG_FOOD.get());
-            event.accept(ModItems.KOBOLETON_PUMPKIN.get());
-            event.accept(ModItems.LEVIATHAN.get());
-            event.accept(ModItems.LEVIATHAN_AND_ABYSSAL_EGG.get());
-            event.accept(ModItems.LIONFISH_ROLL.get());
+            event.accept(ModItems.COOKED_LIONFISH.get());
             event.accept(ModItems.LIONFISH_SLICE.get());
-            event.accept(ModItems.MALEDICTUS_HEART.get());
-            event.accept(ModItems.MALEDICTUS_HEART_STEW.get());
-            event.accept(ModItems.NETHERITE_MONSTROSITY_MEAT.get());
-            event.accept(ModItems.PASTA_WITH_WITHERITE.get());
-            event.accept(ModItems.RAW_DEEPLING_MEAT.get());
-            event.accept(ModItems.RED_CORAL_STEW.get());
-            event.accept(ModItems.VOID_CUSTARD.get());
-            event.accept(ModItems.VOID_POPSICLE.get());
-            event.accept(ModItems.WATCHER_HEART.get());
-            event.accept(ModItems.ENDER_GOLEM_MEAT.get());
-            event.accept(ModItems.HONEY_GLAZED_HORN.get());
+            event.accept(ModItems.CORAL_CHUNK_RED_SLICE.get());
             event.accept(ModItems.ENDER_GUARDIAN_CRYSTAL.get());
+            event.accept(ModItems.IGNIS.get());
+            event.accept(ModItems.WATCHER_HEART.get());
             event.accept(ModItems.CRYSTALLIZED_CORAL_PIE.get());
             event.accept(ModItems.CRYSTALLIZED_CORAL_PIE_SLICE.get());
+            event.accept(ModItems.VOID_CUSTARD.get());
+            event.accept(ModItems.ENDER_BLOOD.get());
+            event.accept(ModItems.FRIED_ABYSSAL_EGG.get());
+            event.accept(ModItems.BERSERKER_STICK.get());
+            event.accept(ModItems.VOID_POPSICLE.get());
+            event.accept(ModItems.AMETHYST_CRAB_MEAT_STICK.get());
+            event.accept(ModItems.CRYSTALLIZED_CORAL_POTATO.get());
+            event.accept(ModItems.CRYSTALLIZED_CORAL_ROLL.get());
+            event.accept(ModItems.LIONFISH_ROLL.get());
+            event.accept(ModItems.AMETHYST_CRAB_SANDWICH.get());
+            event.accept(ModItems.CORAL_CHUNK_SANDWICH.get());
+            event.accept(ModItems.MALEDICTUS_HEART_STEW.get());
+            event.accept(ModItems.GRILLED_LIONFISH.get());
+            event.accept(ModItems.CORAL_AND_VOID.get());
+            event.accept(ModItems.HAM_OF_BERSERKER.get());
+            event.accept(ModItems.RED_CORAL_STEW.get());
+            event.accept(ModItems.GLAZED_REMNANT_SKULL.get());
+            event.accept(ModItems.PASTA_WITH_WITHERITE.get());
+            event.accept(ModItems.ENDER_BLOOD_GLAZED_MALEDICTUS_HEART.get());
+            event.accept(ModItems.HONEY_GLAZED_HORN.get());
+            event.accept(ModItems.LEVIATHAN_AND_ABYSSAL_EGG.get());
+            event.accept(ModItems.IMPROVED_DOG_FOOD.get());
         }
 
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {

@@ -1,5 +1,11 @@
 package net.chaolux.lendersdelight.registry.item;
 
+import net.chaolux.lendersdelight.coomon.item.AbyssalKnife;
+import net.chaolux.lendersdelight.coomon.item.FoodValues;
+import net.chaolux.lendersdelight.coomon.item.ImprovedDogFoodItem;
+import net.chaolux.lendersdelight.coomon.item.VoidPopsicle;
+import net.chaolux.lendersdelight.coomon.stat.StatConsumableItem;
+import net.chaolux.lendersdelight.coomon.stat.StatType;
 import net.chaolux.lendersdelight.registry.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.food.FoodProperties;
@@ -13,6 +19,7 @@ import vectorwing.farmersdelight.common.item.ConsumableItem;
 import vectorwing.farmersdelight.common.item.DogFoodItem;
 import vectorwing.farmersdelight.common.item.KnifeItem;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 import static vectorwing.farmersdelight.common.registry.ModItems.knifeItem;
@@ -24,10 +31,10 @@ public class ModItems {
     public static final Supplier<Item> AMETHYST_CRAB_SANDWICH;
     public static final Supplier<Item> BERSERKER;
     public static final Supplier<Item> BERSERKER_STICK;
-    public static final Supplier<Item> COBOLETON_MEAT;
+    public static final Supplier<Item> KOBOLETON_MEAT;
     public static final Supplier<Item> COOKED_AMETHYST_CRAB_MEAT;
     public static final Supplier<Item> COOKED_BERSERKER;
-    public static final Supplier<Item> COOKED_COBOLETON_MEAT;
+    public static final Supplier<Item> COOKED_KOBOLETON_MEAT;
     public static final Supplier<Item> COOKED_CORAL_GOLEM_MEAT;
     public static final Supplier<Item> COOKED_ENDER_GOLEM_MEAT;
     public static final Supplier<Item> COOKED_LEVIATHAN;
@@ -121,14 +128,14 @@ public class ModItems {
 
         AMETHYST_CRAB_MEAT_STICK = registerWithTab("amethyst_crab_meat_stick", () -> new ConsumableItem(stickItem(FoodValues.AMETHYST_CRAB_MEAT_STICK)));
         BERSERKER_STICK = registerWithTab("berserker_stick", () -> new ConsumableItem(stickItem(FoodValues.BERSERKER_STICK)));
-        VOID_POPSICLE = registerWithTab("void_popsicle", () -> new ConsumableItem(stickItem(FoodValues.VOID_POPSICLE)));
+        VOID_POPSICLE = registerWithTab("void_popsicle", () -> new VoidPopsicle(stickItem(FoodValues.VOID_POPSICLE)));
 
         AMETHYST_CRAB_SANDWICH = registerWithTab("amethyst_crab_sandwich", () -> new Item(foodItem(FoodValues.AMETHYST_CRAB_SANDWICH)));
         BERSERKER = registerWithTab("berserker", () -> new Item(foodItem(FoodValues.BERSERKER)));
-        COBOLETON_MEAT = registerWithTab("coboleton_meat", () -> new Item(foodItem(FoodValues.COBOLETON_MEAT)));
+        KOBOLETON_MEAT = registerWithTab("koboleton_meat", () -> new Item(foodItem(FoodValues.KOBOLETON_MEAT)));
         COOKED_AMETHYST_CRAB_MEAT = registerWithTab("cooked_amethyst_crab_meat", () -> new Item(foodItem(FoodValues.COOKED_AMETHYST_CRAB_MEAT)));
         COOKED_BERSERKER = registerWithTab("cooked_berserker", () -> new Item(foodItem(FoodValues.COOKED_BERSERKER)));
-        COOKED_COBOLETON_MEAT = registerWithTab("cooked_coboleton_meat", () -> new Item(foodItem(FoodValues.COOKED_COBOLETON_MEAT)));
+        COOKED_KOBOLETON_MEAT = registerWithTab("cooked_koboleton_meat", () -> new Item(foodItem(FoodValues.COOKED_KOBOLETON_MEAT)));
         COOKED_CORAL_GOLEM_MEAT = registerWithTab("cooked_coral_golem_meat", () -> new Item(foodItem(FoodValues.COOKED_CORAL_GOLEM_MEAT)));
         COOKED_ENDER_GOLEM_MEAT = registerWithTab("cooked_ender_golem_meat", () -> new Item(foodItem(FoodValues.COOKED_ENDER_GOLEM_MEAT)));
         COOKED_LEVIATHAN = registerWithTab("cooked_leviathan", () -> new Item(foodItem(FoodValues.COOKED_LEVIATHAN)));
@@ -147,7 +154,7 @@ public class ModItems {
         IGNIS = registerWithTab("ignis", () -> new Item(foodItem(FoodValues.IGNIS)));
         KOBOLETON_PUMPKIN = registerWithTab("koboleton_pumpkin", () -> new Item(foodItem(FoodValues.KOBOLETON_PUMPKIN)));
         LEVIATHAN = registerWithTab("leviathan", () -> new Item(foodItem(FoodValues.LEVIATHAN)));
-        LIONFISH_ROLL = registerWithTab("lionfish_roll", () -> new Item(foodItem(FoodValues.LIONFISH_ROLL)));
+        LIONFISH_ROLL = registerWithTab("lionfish_roll", () -> new StatConsumableItem(foodItem(FoodValues.LIONFISH_ROLL),true, Map.of(StatType.SPEED_BOOST,250.0f)));
         LIONFISH_SLICE = registerWithTab("lionfish_slice", () -> new Item(foodItem(FoodValues.LIONFISH_SLICE)));
         MALEDICTUS_HEART = registerWithTab("maledictus_heart", () -> new Item(foodItem(FoodValues.MALEDICTUS_HEART)));
         NETHERITE_MONSTROSITY_MEAT = registerWithTab("netherite_monstrosity_meat", () -> new Item(foodItem(FoodValues.NETHERITE_MONSTROSITY_MEAT)));
@@ -158,7 +165,7 @@ public class ModItems {
         CRYSTALLIZED_CORAL_PIE_SLICE = registerWithTab("crystallized_coral_pie_slice", () -> new Item(foodItem(FoodValues.CRYSTALLIZED_CORAL_PIE_SLICE)));
         CRYSTALLIZED_CORAL_PIE = registerWithTab("crystallized_coral_pie", () -> new BlockItem((Block) ModBlocks.CRYSTALLIZED_CORAL_PIE.get(), basicItem()));
 
-        IMPROVED_DOG_FOOD = registerWithTab("improved_dog_food", () -> new DogFoodItem(bowlFoodItem(FoodValues.IMPROVED_DOG_FOOD)));
+        IMPROVED_DOG_FOOD = registerWithTab("improved_dog_food", () -> new ImprovedDogFoodItem(bowlFoodItem(FoodValues.IMPROVED_DOG_FOOD)));
 
         ABYSSAL_KNIFE = registerWithTab("abyssal_knife", () -> new AbyssalKnife(Tiers.NETHERITE, knifeItem(Tiers.NETHERITE).fireResistant()));
         ANCIENT_KNIFE = registerWithTab("ancient_knife", () -> new KnifeItem(Tiers.DIAMOND, knifeItem(Tiers.DIAMOND)));
