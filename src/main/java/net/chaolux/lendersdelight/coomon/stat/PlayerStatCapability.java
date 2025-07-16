@@ -1,25 +1,33 @@
 package net.chaolux.lendersdelight.coomon.stat;
 
 import net.chaolux.lendersdelight.registry.stat.ModNetwork;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.common.util.INBTSerializable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class PlayerStatCapability implements IPlayerStat {
+public class PlayerStatCapability implements IPlayerStat, INBTSerializable<CompoundTag> {
     private final EnumMap<StatType, Float> stats=new EnumMap<>(StatType.class);
-    private static final Map<UUID,PlayerStatCapability> CACHE=new HashMap<>();
+    private static final Map<UUID,PlayerStatCapability> CACHE=new ConcurrentHashMap<>();
     public static PlayerStatCapability getOrCreate(Player player) {
         return CACHE.computeIfAbsent(player.getUUID(),uuid -> new PlayerStatCapability());
     }
 
     public static void clear(Player player) {
         CACHE.remove(player.getUUID());
+    }
+
+    public static void clearAll() {
+        CACHE.clear();
     }
 
     public PlayerStatCapability() {
@@ -75,5 +83,15 @@ public class PlayerStatCapability implements IPlayerStat {
         if(player instanceof ServerPlayer serverPlayer) {
             ModNetwork.sendToClient(serverPlayer,new StatSyncPacket(getAll()));
         }
+    }
+
+    @Override
+    public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        return saveToNBT();
+    }
+
+    @Override
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
+        loadFromNBT(nbt);
     }
 }

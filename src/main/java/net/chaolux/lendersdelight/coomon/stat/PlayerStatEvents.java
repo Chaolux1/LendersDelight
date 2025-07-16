@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.chaolux.lendersdelight.LendersDelight;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -16,6 +17,7 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.slf4j.Logger;
 
@@ -49,6 +51,11 @@ public class PlayerStatEvents {
         LOGGER.debug("PlayerLoggedInEvent for: {}",player.getName().getString());
         PlayerStatProvider.sync(player);
         PlayerStatProvider.get(player);
+        CompoundTag saved=PlayerStatStorage.get((ServerLevel) player.level()).getStatData(player.getUUID());
+        PlayerStatProvider.get(player).ifPresent(stat -> {
+            stat.loadFromNBT(saved);
+            stat.sync(player);
+        });
     }
 
     @SubscribeEvent
@@ -60,6 +67,25 @@ public class PlayerStatEvents {
                 cap.loadFromNBT(saved);
                 PlayerStatProvider.sync(player);
             });
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLeave(PlayerEvent.PlayerLoggedOutEvent event) {
+        Player player=event.getEntity();
+        var cap=PlayerStatProvider.get(player);
+        cap.ifPresent(stat -> {
+            PlayerStatStorage.get((ServerLevel) player.level()).savePlayer(player,stat);
+        });
+        if(!event.getEntity().level().isClientSide) {
+            PlayerStatCapability.clear(event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
+    public static void onWorldLeave(LevelEvent.Unload event) {
+        if(!event.getLevel().isClientSide() && event.getLevel() instanceof ServerLevel) {
+            PlayerStatCapability.clearAll();
         }
     }
 
