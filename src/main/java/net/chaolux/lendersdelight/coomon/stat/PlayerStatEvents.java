@@ -13,6 +13,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.EventBusSubscriber.Bus;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
@@ -99,7 +100,7 @@ public class PlayerStatEvents {
             var knockAttr=player.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
             var attackAttr=player.getAttribute(Attributes.ATTACK_DAMAGE);
             var armorAttr=player.getAttribute(Attributes.ARMOR);
-            var swimAttr=player.getAttribute(Attributes.WATER_MOVEMENT_EFFICIENCY);
+            var swimAttr=player.getAttribute(NeoForgeMod.SWIM_SPEED);
             float regen=stats.getStat(StatType.PASSIVE_REGEN);
 
             if(speedAttr !=null) {
@@ -125,7 +126,7 @@ public class PlayerStatEvents {
                         break;
                     }
                 }
-                if(modifier !=null) attackAttr.removeModifier(modifier);
+                if(modifier !=null) atkSpeedAttr.removeModifier(modifier);
                 float atkSpeed=stats.getStat(StatType.ATTACK_SPEED);
                 if(atkSpeed > 0f) {
                     atkSpeedAttr.addTransientModifier(new AttributeModifier(ATTACK_SPEED_MODIFIER_ID, atkSpeed / 100f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
