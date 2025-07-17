@@ -44,12 +44,10 @@ public class PlayerStatEvents {
                 SAVED_STAT.put(player.getUUID(), saved);
         });
     }
-    private static final Logger LOGGER= LogUtils.getLogger();
 
     @SubscribeEvent
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
         Player player=event.getEntity();
-        LOGGER.debug("PlayerLoggedInEvent for: {}",player.getName().getString());
         PlayerStatProvider.sync(player);
         PlayerStatProvider.get(player);
         CompoundTag saved=PlayerStatStorage.get((ServerLevel) player.level()).getStatData(player.getUUID());

@@ -24,47 +24,29 @@ public class StatConsumableItem extends ConsumableItem {
         this.statBonus = statBonus;
     }
 
-
     public Map<StatType, Float> getStatBonus() {
         return statBonus;
     }
-    private static final Logger LOGGER=LogUtils.getLogger();
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
-        LOGGER.debug("finishUsingItem call for: {}",stack.getItem());
         ItemStack result = super.finishUsingItem(stack, level, entity);
-        LOGGER.debug("super.finishUsingItem return {}",result.getItem());
         if (!level.isClientSide && entity instanceof Player player) {
-            LOGGER.debug("Detect server-side use player: {}", player.getName().getString());
-            LOGGER.debug("Attempt to apply stat: {}", statBonus);
             if (statBonus.isEmpty()) {
-                LOGGER.debug("No stat bonus to apply for {}", stack.getItem());
                 return result;
             }
-            LOGGER.debug("Attempt to apply stat: {}", statBonus);
             level.getServer().execute(() -> {
                 var optional = PlayerStatProvider.get(player);
                 if (optional.isPresent()) {
                     PlayerStatCapability cap= (PlayerStatCapability) optional.get();
-                    LOGGER.debug("Capability good");
-                    LOGGER.debug("Stat before apply bonus: {}", cap.getAll());
-
                     for (Map.Entry<StatType, Float> entry : statBonus.entrySet()) {
                         StatType type = entry.getKey();
                         float value = entry.getValue();
-                        LOGGER.debug("Apply stat {} += {}", type, value);
                         cap.addStat(type, value);
                     }
-                    LOGGER.debug("Stat after apply bonus: {}", cap.getAll());
                     cap.sync(player);
-                    LOGGER.debug("Stats sync sent for player {}", player.getName().getString());
-                } else {
-                    LOGGER.debug("Capability NOT present for player {}", player.getName().getString());
                 }
             });
-        } else {
-            LOGGER.debug("finishUsingItem skip");
         }
         return result;
     }

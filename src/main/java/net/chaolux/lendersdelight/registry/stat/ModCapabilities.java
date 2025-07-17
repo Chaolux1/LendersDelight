@@ -15,15 +15,13 @@ import org.slf4j.Logger;
 
 @EventBusSubscriber(modid = "lendersdelight", bus = Bus.MOD)
 public class ModCapabilities {
-    private static final Logger LOGGER= LogUtils.getLogger();
     public static final EntityCapability<IPlayerStat, Void> PLAYER_STAT=
             EntityCapability.createVoid(ResourceLocation.fromNamespaceAndPath("lendersdelight","player_stat"), IPlayerStat.class);
+
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-        LOGGER.debug("Register capability PLAYER_STAT");
         event.registerEntity(PLAYER_STAT, EntityType.PLAYER,(entity, context) -> {
             if(entity instanceof Player player) {
-                LOGGER.debug("Crate new PlayerStatCapability for player: {}", player.getName().getString());
                 return PlayerStatCapability.getOrCreate(player);
             }
             return null;

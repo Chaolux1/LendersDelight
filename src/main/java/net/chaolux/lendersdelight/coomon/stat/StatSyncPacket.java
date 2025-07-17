@@ -42,17 +42,13 @@ public record StatSyncPacket(Map<StatType, Float> data) implements CustomPacketP
     public Type<StatSyncPacket> type() {
         return TYPE;
     }
-    private static final Logger LOGGER= LogUtils.getLogger();
 
     public static void handle(StatSyncPacket packet, IPayloadContext context) {
         context.enqueueWork(() -> {
             Player player=Minecraft.getInstance().player;
             if(player !=null) {
-                LOGGER.debug("Client call StatSyncPacket for player {}:{}",player.getName().getString(),packet.data());
                 ClientStat.sync(player,packet.data());
-            } else {
-                LOGGER.debug("Client call StatSyncPacket null");
             }
-    });
+        });
     }
 }
