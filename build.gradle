@@ -95,7 +95,7 @@ configurations {
 
 dependencies {
     implementation "curse.maven:farmersdelight-398521:6154807"
-    implementation "curse.maven:cataclysm-551586:6429407"
+    implementation "curse.maven:cataclysm-551586:6769151"
     implementation "net.neoforged:neoforge:${neo_version}"
 
     // Example optional mod dependency with JEI
