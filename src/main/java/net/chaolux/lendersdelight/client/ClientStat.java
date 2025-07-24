@@ -1,4 +1,4 @@
-package net.chaolux.lendersdelight.coomon.stat.client;
+package net.chaolux.lendersdelight.client;
 
 import net.chaolux.lendersdelight.coomon.stat.IPlayerStat;
 import net.chaolux.lendersdelight.coomon.stat.PlayerStatCapability;
