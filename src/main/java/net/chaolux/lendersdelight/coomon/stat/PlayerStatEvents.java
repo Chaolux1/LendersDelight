@@ -1,6 +1,7 @@
 package net.chaolux.lendersdelight.coomon.stat;
 
 import com.mojang.logging.LogUtils;
+import net.chaolux.lendersdelight.Config;
 import net.chaolux.lendersdelight.LendersDelight;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -34,6 +35,7 @@ public class PlayerStatEvents {
 
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
+        if(!Config.RESET_ON_DEATH.get()) return;
         if (!(event.getEntity() instanceof Player player)) return;
         LazyOptional<IPlayerStat> capOptional = player.getCapability(PlayerStatProvider.PLAYER_STAT);
         if (capOptional.isPresent()) {

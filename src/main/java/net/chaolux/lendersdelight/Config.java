@@ -16,12 +16,25 @@ import java.util.stream.Collectors;
 public class Config
 {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-    static final ForgeConfigSpec SPEC = BUILDER.build();
+    public static final ForgeConfigSpec.BooleanValue ENABLE_STAT;
+    public static final ForgeConfigSpec.BooleanValue SHOW_TOOLTIP_STAT;
+    public static final ForgeConfigSpec.BooleanValue RESET_ON_DEATH;
+    public static boolean showTooltipStat=true;
 
+    static {
+        BUILDER.push("Stat");
+        ENABLE_STAT=BUILDER.comment("Enable or disable stat effects.").define("enableStat",true);
+        SHOW_TOOLTIP_STAT=BUILDER.comment("Show stat in food tooltips.").define("showStatTip",true);
+        RESET_ON_DEATH=BUILDER.comment("Reset player stats on death.").define("resetOnDeath",true);
+        BUILDER.pop();
+        SPEC=BUILDER.build();
+    }
+
+    public static final ForgeConfigSpec SPEC;
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event)
     {
-
+        showTooltipStat=SHOW_TOOLTIP_STAT.get();
     }
 }

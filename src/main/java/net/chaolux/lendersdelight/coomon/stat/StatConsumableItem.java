@@ -1,6 +1,7 @@
 package net.chaolux.lendersdelight.coomon.stat;
 
 import com.mojang.logging.LogUtils;
+import net.chaolux.lendersdelight.Config;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,6 +33,7 @@ public class StatConsumableItem extends ConsumableItem {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         ItemStack result = super.finishUsingItem(stack, level, entity);
+        if(!Config.ENABLE_STAT.get()) return result;
         if (!level.isClientSide && entity instanceof Player player) {
             if (!statBonus.isEmpty()) {
                 level.getServer().execute(() -> {
@@ -52,6 +54,7 @@ public class StatConsumableItem extends ConsumableItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
+        if(!Config.showTooltipStat) return;
         int currentSize=tooltip.size();
         super.appendHoverText(stack,level,tooltip,isAdvanced);
         if(!statBonus.isEmpty()) {
