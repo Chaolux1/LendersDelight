@@ -7,11 +7,13 @@
   ],
   "result": [
     {
-      "count": 4,
-      "item": "lendersdelight:crystallized_coral_pie_slice"
+      "item": {
+        "count": 4,
+        "id": "lendersdelight:crystallized_coral_pie_slice"
+      }
     }
   ],
   "tool": {
-    "tag": "forge:tools/knives"
+    "tag": "c:tools/knife"
   }
 }
