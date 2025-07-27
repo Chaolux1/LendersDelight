@@ -70,5 +70,35 @@ public class AddLootTableModifier {
             LootPool TheWatchermMeatPool = LootPool.lootPool().name("lendersdelight_the_watcher_meat").setRolls(UniformGenerator.between(1.0f, 1.0f)).add(LootItem.lootTableItem(ModItems.WATCHER_HEART.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 2.0f)))).build();
             event.getTable().addPool(TheWatchermMeatPool);
         }
+
+        if(event.getName().equals(new ResourceLocation("cataclysm","entities/cindaria"))) {
+            LootPool CindariaPool = LootPool.lootPool().name("lendersdelight_cindaria").setRolls(UniformGenerator.between(1.0f, 1.0f)).add(LootItem.lootTableItem(ModItems.CINDARIA_HAT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 1.0f)))).build();
+            event.getTable().addPool(CindariaPool);
+        }
+
+        if(event.getName().equals(new ResourceLocation("cataclysm","entities/clawdian"))) {
+            LootPool ClawdianPool = LootPool.lootPool().name("lendersdelight_clawdian").setRolls(UniformGenerator.between(1.0f, 1.0f)).add(LootItem.lootTableItem(ModItems.CRAB_LEGS.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 2.0f)))).build();
+            event.getTable().addPool(ClawdianPool);
+        }
+
+        if(event.getName().equals(new ResourceLocation("cataclysm","entities/hippocamtus"))) {
+            LootPool HippocamtusPool = LootPool.lootPool().name("lendersdelight_hippocamtus").setRolls(UniformGenerator.between(1.0f, 1.0f)).add(LootItem.lootTableItem(ModItems.HIPPOCAMTUS.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 2.0f)))).build();
+            event.getTable().addPool(HippocamtusPool);
+        }
+
+        if(event.getName().equals(new ResourceLocation("cataclysm","entities/scylla"))) {
+            LootPool ScyllaPool = LootPool.lootPool().name("lendersdelight_scylla").setRolls(UniformGenerator.between(1.0f, 1.0f)).add(LootItem.lootTableItem(ModItems.SCYLLA_SNAKE.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 3.0f)))).build();
+            event.getTable().addPool(ScyllaPool);
+        }
+
+        if(event.getName().equals(new ResourceLocation("cataclysm","entities/symbiocto"))) {
+            LootPool SymbioctoPool = LootPool.lootPool().name("lendersdelight_symbiocto").setRolls(UniformGenerator.between(1.0f, 1.0f)).add(LootItem.lootTableItem(ModItems.SYMBIOCTO_TENTACLE.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 8.0f)))).build();
+            event.getTable().addPool(SymbioctoPool);
+        }
+
+        if(event.getName().equals(new ResourceLocation("cataclysm","entities/urchinkin"))) {
+            LootPool UrchinkinPool = LootPool.lootPool().name("lendersdelight_urchinkin").setRolls(UniformGenerator.between(1.0f, 1.0f)).add(LootItem.lootTableItem(ModItems.URCHINKIN.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 1.0f)))).build();
+            event.getTable().addPool(UrchinkinPool);
+        }
     }
 }

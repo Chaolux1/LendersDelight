@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "wooden_slab",
+  "key": {
+    "A": {
+      "item": "minecraft:stick"
+    },
+    "B": {
+      "item": "cataclysm:lacrime"
+    }
+  },
+  "pattern": [
+    "  B",
+    " B ",
+    "A  "
+  ],
+  "result": {
+    "item": "lendersdelight:lacrime_anchor_knife"
+  }
+}

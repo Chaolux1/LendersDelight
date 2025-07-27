@@ -1,0 +1,22 @@
+{
+  "type": "farmersdelight:cooking",
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "item": "lendersdelight:cooked_crab_legs"
+    },
+    {
+      "item": "lendersdelight:hippocamtus"
+    },
+    {
+      "item": "lendersdelight:symbiocto_tentacle"
+    }
+  ],
+  "result": {
+    "item": "lendersdelight:sea_meat_salad"
+  }
+}

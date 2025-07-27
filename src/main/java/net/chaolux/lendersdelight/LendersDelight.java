@@ -60,6 +60,8 @@ public class LendersDelight
             event.accept(ModItems.COOKED_CORAL_GOLEM_MEAT);
             event.accept(ModItems.KOBOLETON_MEAT);
             event.accept(ModItems.COOKED_KOBOLETON_MEAT);
+            event.accept(ModItems.CRAB_LEGS);
+            event.accept(ModItems.COOKED_CRAB_LEGS);
             event.accept(ModItems.MALEDICTUS_HEART);
             event.accept(ModItems.MALEDICTUS_HEART_SLICE);
             event.accept(ModItems.COOKED_AMETHYST_CRAB_MEAT);
@@ -71,6 +73,11 @@ public class LendersDelight
             event.accept(ModItems.ENDER_GUARDIAN_CRYSTAL);
             event.accept(ModItems.IGNIS);
             event.accept(ModItems.WATCHER_HEART);
+            event.accept(ModItems.CINDARIA_HAT);
+            event.accept(ModItems.HIPPOCAMTUS);
+            event.accept(ModItems.SYMBIOCTO_TENTACLE);
+            event.accept(ModItems.URCHINKIN);
+            event.accept(ModItems.SCYLLA_SNAKE);
             event.accept(ModItems.CRYSTALLIZED_CORAL_PIE);
             event.accept(ModItems.CRYSTALLIZED_CORAL_PIE_SLICE);
             event.accept(ModItems.VOID_CUSTARD);
@@ -89,11 +96,15 @@ public class LendersDelight
             event.accept(ModItems.CORAL_AND_VOID);
             event.accept(ModItems.HAM_OF_BERSERKER);
             event.accept(ModItems.RED_CORAL_STEW);
+            event.accept(ModItems.SEA_MEAT_SALAD);
+            event.accept(ModItems.URCHINKIN_PUMPKIN);
+            event.accept(ModItems.KOBOLETON_PUMPKIN);
             event.accept(ModItems.GLAZED_REMNANT_SKULL);
             event.accept(ModItems.PASTA_WITH_WITHERITE);
             event.accept(ModItems.ENDER_BLOOD_GLAZED_MALEDICTUS_HEART);
             event.accept(ModItems.HONEY_GLAZED_HORN);
             event.accept(ModItems.LEVIATHAN_AND_ABYSSAL_EGG);
+            event.accept(ModItems.SCYLLA_SNAKE_GLAZED_CINDARIA_HAT);
             event.accept(ModItems.IMPROVED_DOG_FOOD);
         }
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
@@ -103,6 +114,7 @@ public class LendersDelight
             event.accept(ModItems.IGNITIUM_KNIFE);
             event.accept(ModItems.WITHERITE_KNIFE);
             event.accept(ModItems.CURSIUM_KNIFE);
+            event.accept(ModItems.LACRIME_ANCHOR_KNIFE);
         }
     }
 
