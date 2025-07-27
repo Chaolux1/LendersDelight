@@ -9,10 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.UnknownNullability;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerStatCapability implements IPlayerStat, INBTSerializable<CompoundTag> {
@@ -81,6 +78,7 @@ public class PlayerStatCapability implements IPlayerStat, INBTSerializable<Compo
 
     public void sync(Player player) {
         if(player instanceof ServerPlayer serverPlayer) {
+            if(!serverPlayer.connection.isAcceptingMessages()) return;
             ModNetwork.sendToClient(serverPlayer,new StatSyncPacket(getAll()));
         }
     }

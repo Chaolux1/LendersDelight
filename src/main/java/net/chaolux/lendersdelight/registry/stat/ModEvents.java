@@ -1,6 +1,5 @@
 package net.chaolux.lendersdelight.registry.stat;
 
-import net.chaolux.lendersdelight.client.ClientModNetwork;
 import net.chaolux.lendersdelight.coomon.stat.PlayerStatCapability;
 import net.chaolux.lendersdelight.coomon.stat.PlayerStatProvider;
 import net.minecraft.world.entity.Entity;

@@ -48,12 +48,10 @@ public class PlayerStatEvents {
     @SubscribeEvent
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
         Player player=event.getEntity();
-        PlayerStatProvider.sync(player);
-        PlayerStatProvider.get(player);
+        player.getPersistentData().putBoolean("lendersdelight_need_sync",true);
         CompoundTag saved=PlayerStatStorage.get((ServerLevel) player.level()).getStatData(player.getUUID());
         PlayerStatProvider.get(player).ifPresent(stat -> {
             stat.loadFromNBT(saved);
-            stat.sync(player);
         });
     }
 
@@ -92,6 +90,12 @@ public class PlayerStatEvents {
     public static void onTick(PlayerTickEvent.Post event) {
         Player player=event.getEntity();
         if(player.level().isClientSide) return;
+        if(player.getPersistentData().getBoolean("lendersdelight_need_sync")) {
+            player.getPersistentData().remove("lendersdelight_need_sync");
+            PlayerStatProvider.get(player).ifPresent(stat -> {
+                stat.sync(player);
+            });
+        }
         PlayerStatProvider.get(player).ifPresent(stats -> {
             var speedAttr=player.getAttribute(Attributes.MOVEMENT_SPEED);
             var atkSpeedAttr=player.getAttribute(Attributes.ATTACK_SPEED);

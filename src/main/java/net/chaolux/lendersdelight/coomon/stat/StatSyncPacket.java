@@ -38,13 +38,4 @@ public record StatSyncPacket(Map<StatType, Float> data) implements CustomPacketP
     public Type<StatSyncPacket> type() {
         return TYPE;
     }
-
-    public static void handle(StatSyncPacket packet, IPayloadContext context) {
-        context.enqueueWork(() -> {
-            Player player=Minecraft.getInstance().player;
-            if(player !=null) {
-                ClientStat.sync(player,packet.data());
-            }
-        });
-    }
 }
