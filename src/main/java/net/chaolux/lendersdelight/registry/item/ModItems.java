@@ -78,7 +78,6 @@ public class ModItems {
     public static final RegistryObject<Item> ENDER_GUARDIAN_CRYSTAL;
     public static final RegistryObject<Item> CRYSTALLIZED_CORAL_PIE;
     public static final RegistryObject<Item> CRYSTALLIZED_CORAL_PIE_SLICE;
-
     public static final RegistryObject<Item> CINDARIA_HAT;
     public static final RegistryObject<Item> COOKED_CRAB_LEGS;
     public static final RegistryObject<Item> CRAB_LEGS;
@@ -175,8 +174,8 @@ public class ModItems {
         CRAB_LEGS = registerWithTab("crab_legs", () -> new StatConsumableItem(foodItem(FoodValues.CRAB_LEGS),false,Map.of(StatType.SWIM_SPEED,0.3f)));
         HIPPOCAMTUS = registerWithTab("hippocamtus", () -> new StatConsumableItem(foodItem(FoodValues.HIPPOCAMTUS),false,Map.of(StatType.SWIM_SPEED,0.5f)));
         SCYLLA_SNAKE = registerWithTab("scylla_snake", () -> new StatConsumableItem(foodItem(FoodValues.SCYLLA_SNAKE),true,Map.of(StatType.ARMOR_BOOST,2.5f,StatType.SWIM_SPEED,2.5f)));
-        SCYLLA_SNAKE_GLAZED_CINDARIA_HAT = registerWithTab("scylla_snake_glazed_cindaria_hat", () -> new StatConsumableItem(foodItem(FoodValues.SCYLLA_SNAKE_GLAZED_CINDARIA_HAT),true,Map.of(StatType.ATTACK_SPEED,2.5f,StatType.CRIT_CHANCE,2.5f,StatType.PASSIVE_REGEN,1.0f)));
-        SEA_MEAT_SALAD = registerWithTab("sea_meat_salad", () -> new StatConsumableItem(foodItem(FoodValues.SEA_MEAT_SALAD),false,Map.of(StatType.ATTACK_SPEED,0.7f)));
+        SCYLLA_SNAKE_GLAZED_CINDARIA_HAT = registerWithTab("scylla_snake_glazed_cindaria_hat", () -> new StatConsumableItem(bowlFoodItem(FoodValues.SCYLLA_SNAKE_GLAZED_CINDARIA_HAT),true,Map.of(StatType.ATTACK_SPEED,2.5f,StatType.CRIT_CHANCE,2.5f,StatType.PASSIVE_REGEN,1.0f)));
+        SEA_MEAT_SALAD = registerWithTab("sea_meat_salad", () -> new StatConsumableItem(bowlFoodItem(FoodValues.SEA_MEAT_SALAD),false,Map.of(StatType.ATTACK_SPEED,0.7f)));
         SYMBIOCTO_TENTACLE = registerWithTab("symbiocto_tentacle", () -> new Item(foodItem(FoodValues.SYMBIOCTO_TENTACLE)));
         URCHINKIN = registerWithTab("urchinkin", () -> new ConsumableItem(foodItem(FoodValues.URCHINKIN),true));
         URCHINKIN_PUMPKIN = registerWithTab("urchinkin_pumpkin", () -> new ConsumableItem(foodItem(FoodValues.URCHINKIN_PUMPKIN),true));
