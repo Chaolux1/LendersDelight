@@ -16,11 +16,23 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public class Config
 {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
-    static final ModConfigSpec SPEC = BUILDER.build();
+    public static final ModConfigSpec.BooleanValue ENABLE_STAT;
+    public static final ModConfigSpec.BooleanValue SHOW_TOOLTIP_STAT;
+    public static boolean showTooltipStat=true;
+
+    static {
+        BUILDER.push("Stat");
+        ENABLE_STAT=BUILDER.comment("Enable or disable stat effects.").define("enableStat",true);
+        SHOW_TOOLTIP_STAT=BUILDER.comment("Show stat in food tooltips.").define("showStatTip",true);
+        BUILDER.pop();
+        SPEC=BUILDER.build();
+    }
+
+    public static final ModConfigSpec SPEC;
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event)
     {
-
+        showTooltipStat=SHOW_TOOLTIP_STAT.get();
     }
 }

@@ -1,6 +1,7 @@
 package net.chaolux.lendersdelight.coomon.stat;
 
 import com.mojang.logging.LogUtils;
+import net.chaolux.lendersdelight.Config;
 import net.chaolux.lendersdelight.LendersDelight;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

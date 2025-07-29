@@ -83,7 +83,18 @@ public class ModItems {
     public static final Supplier<Item> ENDER_GUARDIAN_CRYSTAL;
     public static final Supplier<Item> CRYSTALLIZED_CORAL_PIE;
     public static final Supplier<Item> CRYSTALLIZED_CORAL_PIE_SLICE;
-
+    public static final Supplier<Item> CINDARIA_HAT;
+    public static final Supplier<Item> COOKED_CRAB_LEGS;
+    public static final Supplier<Item> CRAB_LEGS;
+    public static final Supplier<Item> HIPPOCAMTUS;
+    public static final Supplier<Item> SCYLLA_SNAKE;
+    public static final Supplier<Item> SCYLLA_SNAKE_GLAZED_CINDARIA_HAT;
+    public static final Supplier<Item> SEA_MEAT_SALAD;
+    public static final Supplier<Item> SYMBIOCTO_TENTACLE;
+    public static final Supplier<Item> URCHINKIN;
+    public static final Supplier<Item> URCHINKIN_PUMPKIN;
+    public static final Supplier<Item> LACRIMA_ANCHOR_KNIFE;
+    
     public static Supplier<Item> registerWithTab(String name, Supplier<Item> supplier) {
         Supplier<Item> block = ITEMS.register(name, supplier);
         return block;
@@ -163,6 +174,16 @@ public class ModItems {
         ENDER_GOLEM_MEAT = registerWithTab("ender_golem_meat", () -> new StatConsumableItem(foodItem(FoodValues.ENDER_GOLEM_MEAT),false,Map.of(StatType.KNOCKBACK_RESISTANCE,0.3f)));
         ENDER_GUARDIAN_CRYSTAL = registerWithTab("ender_guardian_crystal", () -> new ConsumableItem(foodItem(FoodValues.ENDER_GUARDIAN_CRYSTAL), true));
         CRYSTALLIZED_CORAL_PIE_SLICE = registerWithTab("crystallized_coral_pie_slice", () -> new StatConsumableItem(foodItem(FoodValues.CRYSTALLIZED_CORAL_PIE_SLICE),false,Map.of(StatType.ATTACK_SPEED,0.3f)));
+        CINDARIA_HAT = registerWithTab("cindaria_hat", () -> new Item(foodItem(FoodValues.CINDARIA_HAT)));
+        COOKED_CRAB_LEGS = registerWithTab("cooked_crab_legs", () -> new StatConsumableItem(foodItem(FoodValues.COOKED_CRAB_LEGS),false,Map.of(StatType.SWIM_SPEED,0.5f)));
+        CRAB_LEGS = registerWithTab("crab_legs", () -> new StatConsumableItem(foodItem(FoodValues.CRAB_LEGS),false,Map.of(StatType.SWIM_SPEED,0.3f)));
+        HIPPOCAMTUS = registerWithTab("hippocamtus", () -> new StatConsumableItem(foodItem(FoodValues.HIPPOCAMTUS),false,Map.of(StatType.SWIM_SPEED,0.5f)));
+        SCYLLA_SNAKE = registerWithTab("scylla_snake", () -> new StatConsumableItem(foodItem(FoodValues.SCYLLA_SNAKE),true,Map.of(StatType.ARMOR_BOOST,2.5f,StatType.SWIM_SPEED,2.5f)));
+        SCYLLA_SNAKE_GLAZED_CINDARIA_HAT = registerWithTab("scylla_snake_glazed_cindaria_hat", () -> new StatConsumableItem(bowlFoodItem(FoodValues.SCYLLA_SNAKE_GLAZED_CINDARIA_HAT),true,Map.of(StatType.ATTACK_SPEED,2.5f,StatType.CRIT_CHANCE,2.5f,StatType.PASSIVE_REGEN,1.0f)));
+        SEA_MEAT_SALAD = registerWithTab("sea_meat_salad", () -> new StatConsumableItem(bowlFoodItem(FoodValues.SEA_MEAT_SALAD),false,Map.of(StatType.ATTACK_SPEED,0.7f)));
+        SYMBIOCTO_TENTACLE = registerWithTab("symbiocto_tentacle", () -> new Item(foodItem(FoodValues.SYMBIOCTO_TENTACLE)));
+        URCHINKIN = registerWithTab("urchinkin", () -> new ConsumableItem(foodItem(FoodValues.URCHINKIN),true));
+        URCHINKIN_PUMPKIN = registerWithTab("urchinkin_pumpkin", () -> new ConsumableItem(foodItem(FoodValues.URCHINKIN_PUMPKIN),true));
         CRYSTALLIZED_CORAL_PIE = registerWithTab("crystallized_coral_pie", () -> new BlockItem((Block) ModBlocks.CRYSTALLIZED_CORAL_PIE.get(), basicItem()));
 
         IMPROVED_DOG_FOOD = registerWithTab("improved_dog_food", () -> new ImprovedDogFoodItem(bowlFoodItem(FoodValues.IMPROVED_DOG_FOOD)));
@@ -173,5 +194,6 @@ public class ModItems {
         IGNITIUM_KNIFE = registerWithTab("ignitium_knife", () -> new KnifeItem(Tiers.DIAMOND, knifeItem(Tiers.DIAMOND)));
         WITHERITE_KNIFE = registerWithTab("witherite_knife", () -> new KnifeItem(Tiers.DIAMOND, knifeItem(Tiers.DIAMOND)));
         CURSIUM_KNIFE = registerWithTab("cursium_knife", () -> new KnifeItem(Tiers.NETHERITE, knifeItem(Tiers.NETHERITE).fireResistant()));
+        LACRIMA_ANCHOR_KNIFE = registerWithTab("lacrima_anchor_knife", () -> new KnifeItem(Tiers.NETHERITE, knifeItem(Tiers.NETHERITE).fireResistant()));
     }
 }

@@ -79,6 +79,8 @@ public class LendersDelight
             event.accept(ModItems.COOKED_CORAL_GOLEM_MEAT.get());
             event.accept(ModItems.KOBOLETON_MEAT.get());
             event.accept(ModItems.COOKED_KOBOLETON_MEAT.get());
+            event.accept(ModItems.CRAB_LEGS.get());
+            event.accept(ModItems.COOKED_CRAB_LEGS.get());
             event.accept(ModItems.MALEDICTUS_HEART.get());
             event.accept(ModItems.MALEDICTUS_HEART_SLICE.get());
             event.accept(ModItems.COOKED_AMETHYST_CRAB_MEAT.get());
@@ -90,6 +92,11 @@ public class LendersDelight
             event.accept(ModItems.ENDER_GUARDIAN_CRYSTAL.get());
             event.accept(ModItems.IGNIS.get());
             event.accept(ModItems.WATCHER_HEART.get());
+            event.accept(ModItems.CINDARIA_HAT.get());
+            event.accept(ModItems.HIPPOCAMTUS.get());
+            event.accept(ModItems.SYMBIOCTO_TENTACLE.get());
+            event.accept(ModItems.URCHINKIN.get());
+            event.accept(ModItems.SCYLLA_SNAKE.get());
             event.accept(ModItems.CRYSTALLIZED_CORAL_PIE.get());
             event.accept(ModItems.CRYSTALLIZED_CORAL_PIE_SLICE.get());
             event.accept(ModItems.VOID_CUSTARD.get());
@@ -108,11 +115,15 @@ public class LendersDelight
             event.accept(ModItems.CORAL_AND_VOID.get());
             event.accept(ModItems.HAM_OF_BERSERKER.get());
             event.accept(ModItems.RED_CORAL_STEW.get());
+            event.accept(ModItems.SEA_MEAT_SALAD.get());
+            event.accept(ModItems.URCHINKIN_PUMPKIN.get());
+            event.accept(ModItems.KOBOLETON_PUMPKIN.get());
             event.accept(ModItems.GLAZED_REMNANT_SKULL.get());
             event.accept(ModItems.PASTA_WITH_WITHERITE.get());
             event.accept(ModItems.ENDER_BLOOD_GLAZED_MALEDICTUS_HEART.get());
             event.accept(ModItems.HONEY_GLAZED_HORN.get());
             event.accept(ModItems.LEVIATHAN_AND_ABYSSAL_EGG.get());
+            event.accept(ModItems.SCYLLA_SNAKE_GLAZED_CINDARIA_HAT.get());
             event.accept(ModItems.IMPROVED_DOG_FOOD.get());
         }
 
@@ -123,6 +134,7 @@ public class LendersDelight
             event.accept(ModItems.IGNITIUM_KNIFE.get());
             event.accept(ModItems.WITHERITE_KNIFE.get());
             event.accept(ModItems.CURSIUM_KNIFE.get());
+            event.accept(ModItems.LACRIMA_ANCHOR_KNIFE.get());
         }
     }
 
