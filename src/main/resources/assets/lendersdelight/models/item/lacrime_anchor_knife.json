@@ -1,6 +1,0 @@
-{
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "lendersdelight:item/lacrime_anchor_knife"
-  }
-}

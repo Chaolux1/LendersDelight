@@ -89,7 +89,7 @@ public class ModItems {
     public static final RegistryObject<Item> SYMBIOCTO_TENTACLE;
     public static final RegistryObject<Item> URCHINKIN;
     public static final RegistryObject<Item> URCHINKIN_PUMPKIN;
-    public static final RegistryObject<Item> LACRIME_ANCHOR_KNIFE;
+    public static final RegistryObject<Item> LACRIMA_ANCHOR_KNIFE;
 
     public static RegistryObject<Item> registerWithTab(String name, Supplier<Item> supplier) {
         RegistryObject<Item> block = ITEMS.register(name, supplier);
@@ -190,7 +190,7 @@ public class ModItems {
         IGNITIUM_KNIFE = registerWithTab("ignitium_knife", () -> new KnifeItem(Tiers.DIAMOND, 0.5F, -2.0F, basicItem()));
         WITHERITE_KNIFE = registerWithTab("witherite_knife", () -> new KnifeItem(Tiers.DIAMOND, 0.5F, -2.0F, basicItem()));
         CURSIUM_KNIFE = registerWithTab("cursium_knife", () -> new KnifeItem(Tiers.NETHERITE, 0.5F, -2.0F, basicItem().fireResistant()));
-        LACRIME_ANCHOR_KNIFE = registerWithTab("lacrime_anchor_knife", () -> new KnifeItem(Tiers.NETHERITE, 0.5F, -2.0F, basicItem().fireResistant()));
+        LACRIMA_ANCHOR_KNIFE = registerWithTab("lacrima_anchor_knife", () -> new KnifeItem(Tiers.NETHERITE, 0.5F, -2.0F, basicItem().fireResistant()));
 
     }
 }
