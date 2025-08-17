@@ -21,9 +21,19 @@ public class AddLootTableModifier {
             event.getTable().addPool(CoralGolemMeatPool);
         }
 
-        if(event.getName().equals(new ResourceLocation("cataclysm","entities/deepling")) || event.getName().equals(new ResourceLocation("cataclysm","entities/deepling_angler")) || event.getName().equals(new ResourceLocation("cataclysm","entities/deepling_brute")) || event.getName().equals(new ResourceLocation("cataclysm","entities/deepling_priest")) || event.getName().equals(new ResourceLocation("cataclysm","entities/deepling_warlock"))) {
+        if(event.getName().equals(new ResourceLocation("cataclysm","entities/deepling")) || event.getName().equals(new ResourceLocation("cataclysm","entities/deepling_angler")) || event.getName().equals(new ResourceLocation("cataclysm","entities/deepling_priest"))) {
             LootPool DeeplingMeatPool = LootPool.lootPool().name("lendersdelight_coral_deepling_meat").setRolls(UniformGenerator.between(1.0f, 1.0f)).add(LootItem.lootTableItem(ModItems.RAW_DEEPLING_MEAT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 2.0f)))).build();
             event.getTable().addPool(DeeplingMeatPool);
+        }
+
+        if(event.getName().equals(new ResourceLocation("cataclysm","entities/deepling_brute"))) {
+            LootPool DeeplingBruteMeatPool = LootPool.lootPool().name("lendersdelight_raw_brute_deepling_meat").setRolls(UniformGenerator.between(1.0f, 1.0f)).add(LootItem.lootTableItem(ModItems.RAW_BRUTE_DEEPLING_MEAT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 2.0f)))).build();
+            event.getTable().addPool(DeeplingBruteMeatPool);
+        }
+
+        if(event.getName().equals(new ResourceLocation("cataclysm","entities/deepling_warlock"))) {
+            LootPool DeeplingWarlockMeatPool = LootPool.lootPool().name("lendersdelight_raw_warlock_deepling_meat").setRolls(UniformGenerator.between(1.0f, 1.0f)).add(LootItem.lootTableItem(ModItems.RAW_WARLOCK_DEEPLING_MEAT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 2.0f)))).build();
+            event.getTable().addPool(DeeplingWarlockMeatPool);
         }
 
         if(event.getName().equals(new ResourceLocation("cataclysm","entities/ender_golem"))) {

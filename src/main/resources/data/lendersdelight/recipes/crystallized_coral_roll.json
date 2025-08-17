@@ -1,13 +1,12 @@
 {
-  "type": "farmersdelight:cooking",
-  "container": {
-    "item": "minecraft:dried_kelp"
-  },
-  "cookingtime": 200,
-  "experience": 1.0,
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
   "ingredients": [
     {
       "item": "cataclysm:crystallized_coral_fragments"
+    },
+    {
+      "item": "minecraft:dried_kelp"
     }
   ],
   "result": {

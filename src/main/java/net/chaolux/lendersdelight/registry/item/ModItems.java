@@ -89,6 +89,8 @@ public class ModItems {
     public static final RegistryObject<Item> URCHINKIN;
     public static final RegistryObject<Item> URCHINKIN_PUMPKIN;
     public static final RegistryObject<Item> LACRIMA_ANCHOR_KNIFE;
+    public static final RegistryObject<Item> RAW_BRUTE_DEEPLING_MEAT;
+    public static final RegistryObject<Item> RAW_WARLOCK_DEEPLING_MEAT;
 
     public static RegistryObject<Item> registerWithTab(String name, Supplier<Item> supplier) {
         RegistryObject<Item> block = ITEMS.register(name, supplier);
@@ -165,6 +167,8 @@ public class ModItems {
         MALEDICTUS_HEART = registerWithTab("maledictus_heart", () -> new StatConsumableItem(foodItem(FoodValues.MALEDICTUS_HEART), true,Map.of(StatType.ATTACK_BOOTS,7.0f)));
         NETHERITE_MONSTROSITY_MEAT = registerWithTab("netherite_monstrosity_meat", () -> new StatConsumableItem(foodItem(FoodValues.NETHERITE_MONSTROSITY_MEAT),true,Map.of(StatType.ARMOR_BOOST,5.0f)));
         RAW_DEEPLING_MEAT = registerWithTab("raw_deepling_meat", () -> new StatConsumableItem(foodItem(FoodValues.RAW_DEEPLING_MEAT),false,Map.of(StatType.SWIM_SPEED,0.3f)));
+        RAW_BRUTE_DEEPLING_MEAT = registerWithTab("raw_brute_deepling_meat", () -> new StatConsumableItem(foodItem(FoodValues.RAW_DEEPLING_MEAT),false,Map.of(StatType.SWIM_SPEED,0.3f)));
+        RAW_WARLOCK_DEEPLING_MEAT = registerWithTab("raw_warlock_deepling_meat", () -> new StatConsumableItem(foodItem(FoodValues.RAW_DEEPLING_MEAT),false,Map.of(StatType.SWIM_SPEED,0.3f)));
         WATCHER_HEART = registerWithTab("watcher_heart", () -> new StatConsumableItem(foodItem(FoodValues.WATCHER_HEART), true,Map.of(StatType.ATTACK_SPEED,0.2f)));
         ENDER_GOLEM_MEAT = registerWithTab("ender_golem_meat", () -> new StatConsumableItem(foodItem(FoodValues.ENDER_GOLEM_MEAT),false,Map.of(StatType.KNOCKBACK_RESISTANCE,0.3f)));
         ENDER_GUARDIAN_CRYSTAL = registerWithTab("ender_guardian_crystal", () -> new StatConsumableItem(foodItem(FoodValues.ENDER_GUARDIAN_CRYSTAL), true,Map.of(StatType.SPEED_BOOST,3.0f,StatType.JUMP_BOOST,3.0f)));
