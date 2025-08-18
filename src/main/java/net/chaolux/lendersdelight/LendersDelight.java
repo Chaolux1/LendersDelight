@@ -74,6 +74,8 @@ public class LendersDelight
             event.accept(ModItems.BERSERKER.get());
             event.accept(ModItems.COOKED_BERSERKER.get());
             event.accept(ModItems.RAW_DEEPLING_MEAT.get());
+            event.accept(ModItems.RAW_BRUTE_DEEPLING_MEAT.get());
+            event.accept(ModItems.RAW_WARLOCK_DEEPLING_MEAT.get());
             event.accept(ModItems.DEEPLING_MEAT.get());
             event.accept(ModItems.CORAL_GOLEM_MEAT.get());
             event.accept(ModItems.COOKED_CORAL_GOLEM_MEAT.get());

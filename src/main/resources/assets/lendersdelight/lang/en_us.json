@@ -40,6 +40,8 @@
   "item.lendersdelight.netherite_monstrosity_meat": "Netherite Monstrosity Meat",
   "item.lendersdelight.pasta_with_witherite": "Pasta with Witherite",
   "item.lendersdelight.raw_deepling_meat": "Raw Deepling Meat",
+  "item.lendersdelight.raw_brute_deepling_meat": "Raw Deepling Meat",
+  "item.lendersdelight.raw_warlock_deepling_meat": "Raw Deepling Meat",
   "item.lendersdelight.red_coral_stew": "Red Coral Stew",
   "item.lendersdelight.void_custard": "Void Custard",
   "item.lendersdelight.void_popsicle": "Void Popsicle",
@@ -67,6 +69,12 @@
   "item.lendersdelight.witherite_knife": "Witherite Knife",
   "item.lendersdelight.cursium_knife": "Cursium Knife",
   "item.lendersdelight.lacrima_anchor_knife": "Lacrime Anchor Knife",
+
+  "lendersdelight.tooltip.koboleton_pumpkin": "Disarms Nearby Mobs",
+  "lendersdelight.tooltip.urchinkin_pumpkin": "Poison Cloud",
+  "lendersdelight.tooltip.symbiocto_tentacle": "Nearby Mobs Forge You",
+  "lendersdelight.tooltip.cindaria_hat": "Upward Dash in Water",
+  "lendersdelight.tooltip.cooked_amethyst_crab_meat": "Emits Crystal Chime",
 
   "tooltip.lendersdelight.stat": "Stats:",
   "stat.lendersdelight.armor_boost": "Armor Boost",

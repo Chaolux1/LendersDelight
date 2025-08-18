@@ -1,10 +1,41 @@
 {
-  "parent": "farmersdelight:block/pie_slice3",
-  "textures": {
-    "particle": "lendersdelight:block/crystallized_coral_pie_top",
-    "bottom": "farmersdelight:block/pie_bottom",
-    "inner": "lendersdelight:block/crystallized_coral_pie_inner",
-    "side": "farmersdelight:block/pie_side",
-    "top": "lendersdelight:block/crystallized_coral_pie_top"
-  }
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+        "render_type": "cutout",
+	"textures": {
+		"0": "lendersdelight:block/pie_side",
+		"1": "lendersdelight:block/crystallized_coral",
+		"3": "lendersdelight:block/crystallized_coral_pie_inner",
+		"4": "lendersdelight:block/crystallized_coral_pie_top",
+		"5": "lendersdelight:block/pie_bottom",
+		"particle": "lendersdelight:block/pie_side"
+	},
+	"elements": [
+		{
+			"from": [8, 0, 2],
+			"to": [14, 4, 8],
+			"rotation": {"angle": 0, "axis": "y", "origin": [2, 0, 2]},
+			"faces": {
+				"north": {"uv": [2, 12, 8, 16], "texture": "#0"},
+				"east": {"uv": [8, 12, 14, 16], "texture": "#0"},
+				"south": {"uv": [8, 12, 14, 16], "texture": "#3"},
+				"west": {"uv": [2, 12, 8, 16], "texture": "#3"},
+				"up": {"uv": [8, 2, 14, 8], "texture": "#4"},
+				"down": {"uv": [8, 8, 14, 14], "texture": "#5", "cullface": "down"}
+			}
+		},
+		{
+			"from": [8, 4, 8],
+			"to": [15, 11, 8],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 5, 8]},
+			"faces": {
+				"north": {"uv": [1, 9, 8, 16], "texture": "#1"},
+				"east": {"uv": [1, 9, 1, 16], "texture": "#0"},
+				"south": {"uv": [8, 9, 1, 16], "texture": "#1"},
+				"west": {"uv": [1, 9, 1, 16], "texture": "#0"},
+				"up": {"uv": [7, 0, 14, 0], "texture": "#0"},
+				"down": {"uv": [7, 0, 14, 0], "texture": "#0"}
+			}
+		}
+	]
 }

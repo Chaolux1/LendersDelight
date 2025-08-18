@@ -1,9 +1,6 @@
 package net.chaolux.lendersdelight.registry.item;
 
-import net.chaolux.lendersdelight.coomon.item.AbyssalKnife;
-import net.chaolux.lendersdelight.coomon.item.FoodValues;
-import net.chaolux.lendersdelight.coomon.item.ImprovedDogFoodItem;
-import net.chaolux.lendersdelight.coomon.item.VoidPopsicle;
+import net.chaolux.lendersdelight.coomon.item.*;
 import net.chaolux.lendersdelight.coomon.stat.StatConsumableItem;
 import net.chaolux.lendersdelight.coomon.stat.StatType;
 import net.chaolux.lendersdelight.registry.block.ModBlocks;
@@ -94,6 +91,8 @@ public class ModItems {
     public static final Supplier<Item> URCHINKIN;
     public static final Supplier<Item> URCHINKIN_PUMPKIN;
     public static final Supplier<Item> LACRIMA_ANCHOR_KNIFE;
+    public static final Supplier<Item> RAW_BRUTE_DEEPLING_MEAT;
+    public static final Supplier<Item> RAW_WARLOCK_DEEPLING_MEAT;
     
     public static Supplier<Item> registerWithTab(String name, Supplier<Item> supplier) {
         Supplier<Item> block = ITEMS.register(name, supplier);
@@ -144,7 +143,7 @@ public class ModItems {
         AMETHYST_CRAB_SANDWICH = registerWithTab("amethyst_crab_sandwich", () -> new StatConsumableItem(foodItem(FoodValues.AMETHYST_CRAB_SANDWICH),false,Map.of(StatType.CRIT_CHANCE,0.5f)));
         BERSERKER = registerWithTab("berserker", () -> new StatConsumableItem(foodItem(FoodValues.BERSERKER),false,Map.of(StatType.JUMP_BOOST,0.3f)));
         KOBOLETON_MEAT = registerWithTab("koboleton_meat", () -> new StatConsumableItem(foodItem(FoodValues.KOBOLETON_MEAT),false,Map.of(StatType.SPEED_BOOST,0.3f)));
-        COOKED_AMETHYST_CRAB_MEAT = registerWithTab("cooked_amethyst_crab_meat", () -> new Item(foodItem(FoodValues.COOKED_AMETHYST_CRAB_MEAT)));
+        COOKED_AMETHYST_CRAB_MEAT = registerWithTab("cooked_amethyst_crab_meat", () -> new CookedAmethystCrabMeatItem(foodItem(FoodValues.COOKED_AMETHYST_CRAB_MEAT)));
         COOKED_BERSERKER = registerWithTab("cooked_berserker", () -> new StatConsumableItem(foodItem(FoodValues.COOKED_BERSERKER),false,Map.of(StatType.JUMP_BOOST,0.5f)));
         COOKED_KOBOLETON_MEAT = registerWithTab("cooked_koboleton_meat", () -> new StatConsumableItem(foodItem(FoodValues.COOKED_KOBOLETON_MEAT),false,Map.of(StatType.SPEED_BOOST,0.5f)));
         COOKED_CORAL_GOLEM_MEAT = registerWithTab("cooked_coral_golem_meat", () -> new StatConsumableItem(foodItem(FoodValues.COOKED_CORAL_GOLEM_MEAT),false,Map.of(StatType.CRIT_CHANCE,0.5f)));
@@ -163,27 +162,29 @@ public class ModItems {
         DEEPLING_MEAT = registerWithTab("deepling_meat", () -> new StatConsumableItem(foodItem(FoodValues.DEEPLING_MEAT),false,Map.of(StatType.SWIM_SPEED,0.5f)));
         FRIED_ABYSSAL_EGG = registerWithTab("fried_abyssal_egg", () -> new StatConsumableItem(foodItem(FoodValues.FRIED_ABYSSAL_EGG),true,Map.of(StatType.SWIM_SPEED,10.0f)));
         IGNIS = registerWithTab("ignis", () -> new StatConsumableItem(foodItem(FoodValues.IGNIS), true,Map.of(StatType.KNOCKBACK_RESISTANCE,7.0f)));
-        KOBOLETON_PUMPKIN = registerWithTab("koboleton_pumpkin", () -> new ConsumableItem(foodItem(FoodValues.KOBOLETON_PUMPKIN), true));
+        KOBOLETON_PUMPKIN = registerWithTab("koboleton_pumpkin", () -> new KoboletonPumpkinItem(foodItem(FoodValues.KOBOLETON_PUMPKIN)));
         LEVIATHAN = registerWithTab("leviathan", () -> new StatConsumableItem(foodItem(FoodValues.LEVIATHAN), true,Map.of(StatType.SWIM_SPEED,5.0f)));
         LIONFISH_ROLL = registerWithTab("lionfish_roll", () -> new Item(foodItem(FoodValues.LIONFISH_ROLL)));
         LIONFISH_SLICE = registerWithTab("lionfish_slice", () -> new Item(foodItem(FoodValues.LIONFISH_SLICE)));
         MALEDICTUS_HEART = registerWithTab("maledictus_heart", () -> new StatConsumableItem(foodItem(FoodValues.MALEDICTUS_HEART), true,Map.of(StatType.ATTACK_BOOTS,7.0f)));
         NETHERITE_MONSTROSITY_MEAT = registerWithTab("netherite_monstrosity_meat", () -> new StatConsumableItem(foodItem(FoodValues.NETHERITE_MONSTROSITY_MEAT),true,Map.of(StatType.ARMOR_BOOST,5.0f)));
         RAW_DEEPLING_MEAT = registerWithTab("raw_deepling_meat", () -> new StatConsumableItem(foodItem(FoodValues.RAW_DEEPLING_MEAT),false,Map.of(StatType.SWIM_SPEED,0.3f)));
+        RAW_BRUTE_DEEPLING_MEAT = registerWithTab("raw_brute_deepling_meat", () -> new StatConsumableItem(foodItem(FoodValues.RAW_DEEPLING_MEAT),false,Map.of(StatType.SWIM_SPEED,0.3f)));
+        RAW_WARLOCK_DEEPLING_MEAT = registerWithTab("raw_warlock_deepling_meat", () -> new StatConsumableItem(foodItem(FoodValues.RAW_DEEPLING_MEAT),false,Map.of(StatType.SWIM_SPEED,0.3f)));
         WATCHER_HEART = registerWithTab("watcher_heart", () -> new StatConsumableItem(foodItem(FoodValues.WATCHER_HEART), true,Map.of(StatType.ATTACK_SPEED,0.2f)));
         ENDER_GOLEM_MEAT = registerWithTab("ender_golem_meat", () -> new StatConsumableItem(foodItem(FoodValues.ENDER_GOLEM_MEAT),false,Map.of(StatType.KNOCKBACK_RESISTANCE,0.3f)));
         ENDER_GUARDIAN_CRYSTAL = registerWithTab("ender_guardian_crystal", () -> new StatConsumableItem(foodItem(FoodValues.ENDER_GUARDIAN_CRYSTAL), true,Map.of(StatType.SPEED_BOOST,3.0f,StatType.JUMP_BOOST,3.0f)));
         CRYSTALLIZED_CORAL_PIE_SLICE = registerWithTab("crystallized_coral_pie_slice", () -> new StatConsumableItem(foodItem(FoodValues.CRYSTALLIZED_CORAL_PIE_SLICE),false,Map.of(StatType.ATTACK_SPEED,0.3f)));
-        CINDARIA_HAT = registerWithTab("cindaria_hat", () -> new Item(foodItem(FoodValues.CINDARIA_HAT)));
+        CINDARIA_HAT = registerWithTab("cindaria_hat", () -> new CindariaHatItem(foodItem(FoodValues.CINDARIA_HAT)));
         COOKED_CRAB_LEGS = registerWithTab("cooked_crab_legs", () -> new StatConsumableItem(foodItem(FoodValues.COOKED_CRAB_LEGS),false,Map.of(StatType.SWIM_SPEED,0.5f)));
         CRAB_LEGS = registerWithTab("crab_legs", () -> new StatConsumableItem(foodItem(FoodValues.CRAB_LEGS),false,Map.of(StatType.SWIM_SPEED,0.3f)));
         HIPPOCAMTUS = registerWithTab("hippocamtus", () -> new StatConsumableItem(foodItem(FoodValues.HIPPOCAMTUS),false,Map.of(StatType.SWIM_SPEED,0.5f)));
         SCYLLA_SNAKE = registerWithTab("scylla_snake", () -> new StatConsumableItem(foodItem(FoodValues.SCYLLA_SNAKE),true,Map.of(StatType.ARMOR_BOOST,2.5f,StatType.SWIM_SPEED,2.5f)));
         SCYLLA_SNAKE_GLAZED_CINDARIA_HAT = registerWithTab("scylla_snake_glazed_cindaria_hat", () -> new StatConsumableItem(bowlFoodItem(FoodValues.SCYLLA_SNAKE_GLAZED_CINDARIA_HAT),true,Map.of(StatType.ATTACK_SPEED,2.5f,StatType.CRIT_CHANCE,2.5f,StatType.PASSIVE_REGEN,1.0f)));
         SEA_MEAT_SALAD = registerWithTab("sea_meat_salad", () -> new StatConsumableItem(bowlFoodItem(FoodValues.SEA_MEAT_SALAD),false,Map.of(StatType.ATTACK_SPEED,0.7f)));
-        SYMBIOCTO_TENTACLE = registerWithTab("symbiocto_tentacle", () -> new Item(foodItem(FoodValues.SYMBIOCTO_TENTACLE)));
+        SYMBIOCTO_TENTACLE = registerWithTab("symbiocto_tentacle", () -> new SymbioctoTentacleItem(foodItem(FoodValues.SYMBIOCTO_TENTACLE)));
         URCHINKIN = registerWithTab("urchinkin", () -> new ConsumableItem(foodItem(FoodValues.URCHINKIN),true));
-        URCHINKIN_PUMPKIN = registerWithTab("urchinkin_pumpkin", () -> new ConsumableItem(foodItem(FoodValues.URCHINKIN_PUMPKIN),true));
+        URCHINKIN_PUMPKIN = registerWithTab("urchinkin_pumpkin", () -> new UrchinkinPumpkinItem(foodItem(FoodValues.URCHINKIN_PUMPKIN)));
         CRYSTALLIZED_CORAL_PIE = registerWithTab("crystallized_coral_pie", () -> new BlockItem((Block) ModBlocks.CRYSTALLIZED_CORAL_PIE.get(), basicItem()));
 
         IMPROVED_DOG_FOOD = registerWithTab("improved_dog_food", () -> new ImprovedDogFoodItem(bowlFoodItem(FoodValues.IMPROVED_DOG_FOOD)));

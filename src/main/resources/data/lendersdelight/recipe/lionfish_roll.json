@@ -1,21 +1,19 @@
 {
-  "type": "farmersdelight:cooking",
-  "container": {
-    "count": 1,
-    "id": "minecraft:paper"
-  },
-  "experience": 1.0,
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
   "ingredients": [
     {
       "item": "lendersdelight:lionfish_slice"
     },
     {
-      "item": "farmersdelight:rice"
+      "item": "lendersdelight:lionfish_slice"
+    },
+    {
+      "item": "farmersdelight:cooked_rice"
     }
   ],
-  "recipe_book_tab": "meals",
   "result": {
-    "count": 1,
+    "count": 2,
     "id": "lendersdelight:lionfish_roll"
   }
 }
