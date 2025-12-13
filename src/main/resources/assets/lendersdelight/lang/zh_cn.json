@@ -67,8 +67,14 @@
   "item.lendersdelight.black_steel_knife": "黑钢刀",
   "item.lendersdelight.ignitium_knife": "腾炎刀",
   "item.lendersdelight.witherite_knife": "凋灵合金刀",
-  "item.lendersdelight.cursium_knife": "Cursium Knife",
+  "item.lendersdelight.cursium_knife": "咒魂刀",
   "item.lendersdelight.lacrima_anchor_knife": "泪锚刀",
+
+  "lendersdelight.tooltip.koboleton_pumpkin": "使周围生物缴械",
+  "lendersdelight.tooltip.urchinkin_pumpkin": "产生毒雾",
+  "lendersdelight.tooltip.symbiocto_tentacle": "使周围生物锻造你",
+  "lendersdelight.tooltip.cindaria_hat": "于水中向上冲刺",
+  "lendersdelight.tooltip.cooked_amethyst_crab_meat": "发出水晶鸣响",
 
   "tooltip.lendersdelight.stat": "统计:",
   "stat.lendersdelight.armor_boost": "护甲值提升",
