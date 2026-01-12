@@ -22,9 +22,13 @@ public class FovHandler {
     public static void onFovUpdate(ComputeFovModifierEvent event) {
         if(!(event.getPlayer() instanceof LocalPlayer player)) return;
         boolean isSprint=player.isSprinting();
+        boolean isCreativeFly=player.getAbilities().flying;
         float fov=1.0f;
         if(isSprint) {
             event.setNewFovModifier(fov * 1.15f);
+        }
+        else if(isCreativeFly) {
+            event.setNewFovModifier(fov * 1.10f);
         } else {
             event.setNewFovModifier(fov);
         }
