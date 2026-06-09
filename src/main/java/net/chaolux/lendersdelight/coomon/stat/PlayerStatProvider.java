@@ -25,7 +25,7 @@ public class PlayerStatProvider {
         if(!(player instanceof ServerPlayer serverPlayer)) return;
         if(!serverPlayer.connection.isAcceptingMessages()) return;
         get(player).ifPresent(cap -> {
-            StatSyncPacket packet=new StatSyncPacket(cap.getAll());
+            StatSyncPacket packet=new StatSyncPacket(cap.getAll(),cap.getConsumed());
             ModNetwork.sendToClient(serverPlayer,packet);
         });
     }

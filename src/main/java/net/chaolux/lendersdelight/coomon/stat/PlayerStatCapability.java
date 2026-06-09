@@ -4,6 +4,7 @@ import net.chaolux.lendersdelight.registry.stat.ModNetwork;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.util.INBTSerializable;
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerStatCapability implements IPlayerStat, INBTSerializable<CompoundTag> {
     private final EnumMap<StatType, Float> stats=new EnumMap<>(StatType.class);
+    private final Set<ResourceLocation> foods=new HashSet<>();
     private static final Map<UUID,PlayerStatCapability> CACHE=new ConcurrentHashMap<>();
     public static PlayerStatCapability getOrCreate(Player player) {
         return CACHE.computeIfAbsent(player.getUUID(),uuid -> new PlayerStatCapability());
@@ -53,6 +55,7 @@ public class PlayerStatCapability implements IPlayerStat, INBTSerializable<Compo
         for(StatType type:StatType.values()) {
             setStat(type,other.getStat(type));
         }
+        setConsumed(other.getConsumed());
     }
 
     @Override
@@ -60,26 +63,39 @@ public class PlayerStatCapability implements IPlayerStat, INBTSerializable<Compo
         return stats;
     }
 
+    @Override
+    public boolean hasConsumed(ResourceLocation resourceLocation) {
+        return foods.contains(resourceLocation);
+    }
+
+    @Override
+    public void markConsumed(ResourceLocation resourceLocation) {
+        foods.add(resourceLocation);
+    }
+
+    @Override
+    public Set<ResourceLocation> getConsumed() {
+        return new HashSet<>(foods);
+    }
+
+    @Override
+    public void setConsumed(Set<ResourceLocation> resourceLocations) {
+        foods.clear();
+        foods.addAll(resourceLocations);
+    }
+
     public CompoundTag saveNBT() {
-        CompoundTag tag=new CompoundTag();
-        for(StatType type:StatType.values()) {
-            tag.putFloat(type.name(),getStat(type));
-        }
-        return tag;
+        return saveToNBT();
     }
 
     public void loadNBT(CompoundTag tag) {
-        for(StatType type:StatType.values()) {
-            if(tag.contains(type.name(), Tag.TAG_FLOAT)) {
-                setStat(type,tag.getFloat(type.name()));
-            }
-        }
+        loadFromNBT(tag);
     }
 
     public void sync(Player player) {
         if(player instanceof ServerPlayer serverPlayer) {
             if(!serverPlayer.connection.isAcceptingMessages()) return;
-            ModNetwork.sendToClient(serverPlayer,new StatSyncPacket(getAll()));
+            ModNetwork.sendToClient(serverPlayer,new StatSyncPacket(getAll(),getConsumed()));
         }
     }
 

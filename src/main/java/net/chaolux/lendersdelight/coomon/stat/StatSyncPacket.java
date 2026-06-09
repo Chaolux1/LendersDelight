@@ -11,9 +11,11 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
-public record StatSyncPacket(Map<StatType, Float> data) implements CustomPacketPayload {
+public record StatSyncPacket(Map<StatType, Float> data, Set<ResourceLocation> foods) implements CustomPacketPayload {
     public static final ResourceLocation ID=ResourceLocation.fromNamespaceAndPath("lendersdelight","stat_sync");
     public static final Type<StatSyncPacket> TYPE=new Type<>(ID);
     public static final StreamCodec<RegistryFriendlyByteBuf,StatSyncPacket> STREAM_CODEC = StreamCodec.of((buf, packet) -> {
@@ -21,6 +23,10 @@ public record StatSyncPacket(Map<StatType, Float> data) implements CustomPacketP
         for(Map.Entry<StatType,Float> entry:packet.data.entrySet()) {
             buf.writeEnum(entry.getKey());
             buf.writeFloat(entry.getValue());
+        }
+        buf.writeVarInt(packet.foods.size());
+        for(ResourceLocation resourceLocation : packet.foods) {
+            buf.writeResourceLocation(resourceLocation);
         }
     },
             buf -> {
@@ -31,7 +37,12 @@ public record StatSyncPacket(Map<StatType, Float> data) implements CustomPacketP
             float value=buf.readFloat();
             map.put(type,value);
         }
-        return new StatSyncPacket(map);
+        int consumedSize=buf.readVarInt();
+        Set<ResourceLocation> foods=new HashSet<>();
+        for(int i=0;i<consumedSize;i++) {
+            foods.add(buf.readResourceLocation());
+        }
+        return new StatSyncPacket(map,foods);
     });
 
     @Override

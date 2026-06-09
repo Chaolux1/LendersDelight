@@ -13,7 +13,7 @@ public class ClientStatSyncHandler {
         context.enqueueWork(() -> {
             Player player= Minecraft.getInstance().player;
             if(player !=null) {
-                ClientStat.sync(player,packet.data());
+                ClientStat.sync(player,packet.data(),packet.foods());
             }
         });
     }
