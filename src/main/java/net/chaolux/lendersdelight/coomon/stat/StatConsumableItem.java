@@ -7,12 +7,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
 import vectorwing.farmersdelight.common.item.ConsumableItem;
 
@@ -44,14 +49,18 @@ public class StatConsumableItem extends ConsumableItem {
         if(resourceLocation == null) return result;
         LazyOptional<IPlayerStat> lazyOptional=player.getCapability(PlayerStatProvider.PLAYER_STAT);
         lazyOptional.ifPresent(stats -> {
-            if(Config.STAT_MODE.get() == StatMode.ONCE && stats.hasConsumed(resourceLocation)) {
+            StatMode mode=Config.STAT_MODE.get();
+            if(mode == StatMode.ONCE && stats.hasConsumed(resourceLocation)) {
                 PlayerStatProvider.sync(player);
                 return;
             }
+            boolean addAnyStat=false;
             for(Map.Entry<StatType,Float> entry : statBonus.entrySet()) {
+                if(mode == StatMode.LIMITED && isLimitReach(player,stats,entry.getKey())) continue;
                 stats.addStat(entry.getKey(),entry.getValue());
+                addAnyStat=true;
             }
-            if(Config.STAT_MODE.get() == StatMode.ONCE) stats.markConsumed(resourceLocation);
+            if(mode == StatMode.ONCE && addAnyStat) stats.markConsumed(resourceLocation);
             PlayerStatProvider.sync(player);
         });
         return result;
@@ -70,6 +79,13 @@ public class StatConsumableItem extends ConsumableItem {
             tooltip.add(Component.translatable("tooltip.lendersdelight.stat_already_obtained").withStyle(ChatFormatting.DARK_GREEN));
             return;
         }
+        if(Config.STAT_MODE.get() == StatMode.LIMITED && isFullyLimit()) {
+            if(tooltip.size() > currentSize) {
+                tooltip.add(Component.empty());
+            }
+            tooltip.add(Component.translatable("tooltip.lendersdelight.stat_limit_reached").withStyle(ChatFormatting.DARK_GREEN));
+            return;
+        }
         if (tooltip.size() > currentSize) {
             tooltip.add(Component.empty());
         }
@@ -77,6 +93,7 @@ public class StatConsumableItem extends ConsumableItem {
         for (Map.Entry<StatType, Float> entry : statBonus.entrySet()) {
             StatType type = entry.getKey();
             float value = entry.getValue();
+            if(Config.STAT_MODE.get() == StatMode.LIMITED && isLimitReachClient(type)) continue;
             tooltip.add(Component.literal("+" + value + "% ").append(Component.translatable(type.getLangKey())).withStyle(ChatFormatting.BLUE));
         }
     }
@@ -86,5 +103,44 @@ public class StatConsumableItem extends ConsumableItem {
         ResourceLocation resourceLocation=ForgeRegistries.ITEMS.getKey(itemStack.getItem());
         if(resourceLocation == null) return false;
         return player.getCapability(PlayerStatProvider.PLAYER_STAT).map(stats -> stats.hasConsumed(resourceLocation)).orElse(false);
+    }
+
+    private boolean isFullyLimit() {
+        Player player=Minecraft.getInstance().player;
+        if(player == null) return false;
+        return player.getCapability(PlayerStatProvider.PLAYER_STAT).map(stats -> {
+            for(StatType type : statBonus.keySet()) {
+                if(!isLimitReach(player,stats,type)) {
+                    return false;
+                }
+            }
+            return true;
+        })
+                .orElse(false);
+    }
+
+    private boolean isLimitReachClient(StatType type) {
+        Player player=Minecraft.getInstance().player;
+        if(player == null) return false;
+        return player.getCapability(PlayerStatProvider.PLAYER_STAT).map(stats -> isLimitReach(player,stats,type)).orElse(false);
+    }
+
+    private boolean isLimitReach(Player player, IPlayerStat stats, StatType type) {
+        double limit=Config.getStatLimit(type);
+        if(type == StatType.ARMOR_BOOST) return getAttributeValue(player, Attributes.ARMOR) >= limit;
+        if(type == StatType.ATTACK_BOOTS) return getAttributeValue(player, Attributes.ATTACK_DAMAGE) >= limit;
+        if(type == StatType.SPEED_BOOST) return getAttributeValue(player, Attributes.MOVEMENT_SPEED) >= limit;
+        if(type == StatType.ATTACK_SPEED) return getAttributeValue(player, Attributes.ATTACK_SPEED) >= limit;
+        if(type == StatType.KNOCKBACK_RESISTANCE) return getAttributeValue(player, Attributes.KNOCKBACK_RESISTANCE) >= limit;
+        if(type == StatType.SWIM_SPEED) return getAttributeValue(player, ForgeMod.SWIM_SPEED.get()) >= limit;
+        if(type == StatType.JUMP_BOOST) return stats.getStat(type) >= limit;
+        if(type == StatType.CRIT_CHANCE) return stats.getStat(type) >= limit;
+        if(type == StatType.PASSIVE_REGEN) return stats.getStat(type) >= limit;
+        return false;
+    }
+
+    private double getAttributeValue(Player player, Attribute attribute) {
+        AttributeInstance attributeInstance=player.getAttribute(attribute);
+        return attributeInstance == null ? 0.0 : attributeInstance.getValue();
     }
 }

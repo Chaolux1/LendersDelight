@@ -51,7 +51,7 @@ public class ImprovedDogFoodItem extends DogFoodItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
         if ((Boolean) Configuration.ENABLE_FOOD_EFFECT_TOOLTIP.get()) {
-            MutableComponent textWhenFeeding = TextUtils.getTranslation("dog_food.when_feeding", new Object[0]);
+            MutableComponent textWhenFeeding = TextUtils.tooltip("dog_food.when_feeding", new Object[0]);
             tooltip.add(textWhenFeeding.withStyle(ChatFormatting.GRAY));
 
             for(MobEffectInstance effectInstance : IMPROVED_EFFECTS) {

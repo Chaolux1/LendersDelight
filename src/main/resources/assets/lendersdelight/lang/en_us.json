@@ -78,6 +78,7 @@
 
   "tooltip.lendersdelight.stat": "Stats:",
   "tooltip.lendersdelight.stat_already_obtained": "Stats already obtained",
+  "tooltip.lendersdelight.stat_limit_reached": "Stat limit reached",
   "stat.lendersdelight.armor_boost": "Armor Boost",
   "stat.lendersdelight.attack_boots": "Attack Boost",
   "stat.lendersdelight.speed_boost": "Speed Boost",
