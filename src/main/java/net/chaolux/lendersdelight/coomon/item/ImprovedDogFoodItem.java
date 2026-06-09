@@ -51,8 +51,8 @@ public class ImprovedDogFoodItem extends DogFoodItem {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag isAdvanced) {
-        if ((Boolean) Configuration.FOOD_EFFECT_TOOLTIP.get()) {
-            MutableComponent textWhenFeeding = TextUtils.getTranslation("tooltip.dog_food.when_feeding", new Object[0]);
+        if ((Boolean) Configuration.ENABLE_FOOD_EFFECT_TOOLTIP.get()) {
+            MutableComponent textWhenFeeding = TextUtils.tooltip("dog_food.when_feeding", new Object[0]);
             tooltip.add(textWhenFeeding.withStyle(ChatFormatting.GRAY));
 
             for(MobEffectInstance effectInstance : IMPROVED_EFFECTS) {
@@ -91,7 +91,7 @@ public class ImprovedDogFoodItem extends DogFoodItem {
         Entity target = event.getTarget();
         ItemStack itemStack = event.getItemStack();
         if (target instanceof LivingEntity entity) {
-            if (target.getType().is(ModTags.DOG_FOOD_USERS)) {
+            if (target.getType().is(ModTags.EntityTypes.DOG_FOOD_USERS)) {
                 boolean isTameable = entity instanceof TamableAnimal;
                 if (entity.isAlive() && (!isTameable || ((TamableAnimal)entity).isTame()) && itemStack.getItem().equals(ModItems.IMPROVED_DOG_FOOD.get())) {
                     entity.setHealth(entity.getMaxHealth());
