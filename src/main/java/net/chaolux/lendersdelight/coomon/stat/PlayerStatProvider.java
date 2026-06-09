@@ -55,7 +55,7 @@ public class PlayerStatProvider implements ICapabilitySerializable<CompoundTag> 
             for(StatType type:StatType.values()) {
                 data.put(type,cap.getStat(type));
             }
-            ModNetwork.sendToClient(serverPlayer, new StatSyncPacket(data));
+            ModNetwork.sendToClient(serverPlayer, new StatSyncPacket(data,cap.getConsumed()));
         });
     }
 }

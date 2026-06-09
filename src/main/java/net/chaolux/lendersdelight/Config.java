@@ -1,5 +1,6 @@
 package net.chaolux.lendersdelight;
 
+import net.chaolux.lendersdelight.coomon.stat.StatMode;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -19,6 +20,7 @@ public class Config
     public static final ForgeConfigSpec.BooleanValue ENABLE_STAT;
     public static final ForgeConfigSpec.BooleanValue SHOW_TOOLTIP_STAT;
     public static final ForgeConfigSpec.BooleanValue RESET_ON_DEATH;
+    public static final ForgeConfigSpec.EnumValue<StatMode> STAT_MODE;
     public static boolean showTooltipStat=true;
 
     static {
@@ -26,6 +28,7 @@ public class Config
         ENABLE_STAT=BUILDER.comment("Enable or disable stat effects.").define("enableStat",true);
         SHOW_TOOLTIP_STAT=BUILDER.comment("Show stat in food tooltips.").define("showStatTip",true);
         RESET_ON_DEATH=BUILDER.comment("Reset player stats on death.").define("resetOnDeath",true);
+        STAT_MODE=BUILDER.comment("ACCUBULATE=food can stats every time").comment("ONCE=each food can give only once per player").defineEnum("statMode",StatMode.ACCUMULATE);
         BUILDER.pop();
         SPEC=BUILDER.build();
     }
