@@ -2,6 +2,7 @@ package net.chaolux.lendersdelight.coomon.stat;
 
 import com.mojang.logging.LogUtils;
 import net.chaolux.lendersdelight.Config;
+import net.chaolux.lendersdelight.client.ClientStatTooltipHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -14,8 +15,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
@@ -72,14 +75,14 @@ public class StatConsumableItem extends ConsumableItem {
         int currentSize = tooltip.size();
         super.appendHoverText(stack, level, tooltip, isAdvanced);
         if (statBonus.isEmpty()) return;
-        if (Config.STAT_MODE.get() == StatMode.ONCE && wasAlreadyConsumed(stack)) {
+        if (Config.STAT_MODE.get() == StatMode.ONCE && isClientAlreadyConsumed(stack)) {
             if (tooltip.size() > currentSize) {
                 tooltip.add(Component.empty());
             }
             tooltip.add(Component.translatable("tooltip.lendersdelight.stat_already_obtained").withStyle(ChatFormatting.DARK_GREEN));
             return;
         }
-        if(Config.STAT_MODE.get() == StatMode.LIMITED && isFullyLimit()) {
+        if(Config.STAT_MODE.get() == StatMode.LIMITED && isClientFullyLimit()) {
             if(tooltip.size() > currentSize) {
                 tooltip.add(Component.empty());
             }
@@ -93,36 +96,22 @@ public class StatConsumableItem extends ConsumableItem {
         for (Map.Entry<StatType, Float> entry : statBonus.entrySet()) {
             StatType type = entry.getKey();
             float value = entry.getValue();
-            if(Config.STAT_MODE.get() == StatMode.LIMITED && isLimitReachClient(type)) continue;
+            if(Config.STAT_MODE.get() == StatMode.LIMITED && isClientLimitReach(type)) continue;
             tooltip.add(Component.literal("+" + value + "% ").append(Component.translatable(type.getLangKey())).withStyle(ChatFormatting.BLUE));
         }
     }
-    private boolean wasAlreadyConsumed(ItemStack itemStack) {
-        Player player= Minecraft.getInstance().player;
-        if(player == null) return false;
+    private boolean isClientAlreadyConsumed(ItemStack itemStack) {
         ResourceLocation resourceLocation=ForgeRegistries.ITEMS.getKey(itemStack.getItem());
         if(resourceLocation == null) return false;
-        return player.getCapability(PlayerStatProvider.PLAYER_STAT).map(stats -> stats.hasConsumed(resourceLocation)).orElse(false);
+        return DistExecutor.unsafeCallWhenOn(Dist.CLIENT,() -> () -> ClientStatTooltipHelper.wasAlreadyConsumed(resourceLocation));
     }
 
-    private boolean isFullyLimit() {
-        Player player=Minecraft.getInstance().player;
-        if(player == null) return false;
-        return player.getCapability(PlayerStatProvider.PLAYER_STAT).map(stats -> {
-            for(StatType type : statBonus.keySet()) {
-                if(!isLimitReach(player,stats,type)) {
-                    return false;
-                }
-            }
-            return true;
-        })
-                .orElse(false);
+    private boolean isClientFullyLimit() {
+        return DistExecutor.unsafeCallWhenOn(Dist.CLIENT,() -> () -> ClientStatTooltipHelper.isFullyLimit(statBonus.keySet()));
     }
 
-    private boolean isLimitReachClient(StatType type) {
-        Player player=Minecraft.getInstance().player;
-        if(player == null) return false;
-        return player.getCapability(PlayerStatProvider.PLAYER_STAT).map(stats -> isLimitReach(player,stats,type)).orElse(false);
+    private boolean isClientLimitReach(StatType type) {
+        return DistExecutor.unsafeCallWhenOn(Dist.CLIENT,() -> () -> ClientStatTooltipHelper.isLimitReachClient(type));
     }
 
     private boolean isLimitReach(Player player, IPlayerStat stats, StatType type) {
