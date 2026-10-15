@@ -1,0 +1,8 @@
+{
+  "item": "lendersdelight:glazed_remnant_skull",
+  "stats": {
+    "SPEED_BOOST": 2.5,
+    "PASSIVE_REGEN": 1.0,
+    "KNOCKBACK_RESISTANCE": 2.5
+  }
+}

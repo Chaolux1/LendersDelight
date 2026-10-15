@@ -1,0 +1,8 @@
+{
+  "item": "lendersdelight:honey_glazed_horn",
+  "stats": {
+    "ARMOR_BOOST": 2.5,
+    "JUMP_BOOST": 2.5,
+    "PASSIVE_REGEN": 1.0
+  }
+}

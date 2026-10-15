@@ -3,6 +3,7 @@ package net.chaolux.lendersdelight.client;
 import net.chaolux.lendersdelight.Config;
 import net.chaolux.lendersdelight.coomon.stat.IPlayerStat;
 import net.chaolux.lendersdelight.coomon.stat.PlayerStatProvider;
+import net.chaolux.lendersdelight.coomon.stat.StatReloadListener;
 import net.chaolux.lendersdelight.coomon.stat.StatType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -39,7 +40,7 @@ public class ClientStatTooltipHelper {
     }
 
     private static boolean isLimitReach(Player player, IPlayerStat stats, StatType type) {
-        double limit= Config.getStatLimit(type);
+        double limit= StatReloadListener.getLimit(type);
         if(type == StatType.ARMOR_BOOST) return getAttributeValue(player, Attributes.ARMOR) >= limit;
         if(type == StatType.ATTACK_BOOTS) return getAttributeValue(player, Attributes.ATTACK_DAMAGE) >= limit;
         if(type == StatType.SPEED_BOOST) return getAttributeValue(player, Attributes.MOVEMENT_SPEED) >= limit;
