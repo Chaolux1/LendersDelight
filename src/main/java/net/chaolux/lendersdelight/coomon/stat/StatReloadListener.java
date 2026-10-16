@@ -3,6 +3,7 @@ package net.chaolux.lendersdelight.coomon.stat;
 import com.google.gson.*;
 import com.mojang.logging.LogUtils;
 import net.chaolux.lendersdelight.Config;
+import net.chaolux.lendersdelight.LendersDelight;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -25,7 +26,7 @@ public class StatReloadListener extends SimpleJsonResourceReloadListener {
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         Map<ResourceLocation,Map<StatType,Float>> resourceLocationMapMap=new LinkedHashMap<>();
-        map.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry -> {
+        map.entrySet().stream().filter(entry -> entry.getKey().getNamespace().equals(LendersDelight.MOD_ID)).sorted(Map.Entry.comparingByKey()).forEach(entry -> {
             try {
                 JsonObject jsonObject=entry.getValue().getAsJsonObject();
                 ResourceLocation resourceLocation=new ResourceLocation(jsonObject.get("item").getAsString());

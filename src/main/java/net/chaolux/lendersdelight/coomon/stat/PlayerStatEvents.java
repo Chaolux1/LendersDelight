@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.chaolux.lendersdelight.Config;
 import net.chaolux.lendersdelight.LendersDelight;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +36,7 @@ public class PlayerStatEvents {
 
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
-        if(!Config.RESET_ON_DEATH.get()) return;
+        if(Config.RESET_ON_DEATH.get()) return;
         if (!(event.getEntity() instanceof Player player)) return;
         LazyOptional<IPlayerStat> capOptional = player.getCapability(PlayerStatProvider.PLAYER_STAT);
         if (capOptional.isPresent()) {
@@ -81,55 +82,14 @@ public class PlayerStatEvents {
             var swimAttr=player.getAttribute(ForgeMod.SWIM_SPEED.get());
             float regen=stats.getStat(StatType.PASSIVE_REGEN);
 
-            if(speedAttr !=null) {
-                speedAttr.removeModifier(SPEED_MODIFIER_ID);
-                float speed=stats.getStat(StatType.SPEED_BOOST);
-                if(speed > 0f) {
-                    speedAttr.addTransientModifier(new AttributeModifier(SPEED_MODIFIER_ID, "Speed Boost", speed / 100f, AttributeModifier.Operation.MULTIPLY_BASE));
-                }
-            }
+            update(speedAttr,SPEED_MODIFIER_ID,"Speed Boost",stats.getStat(StatType.SPEED_BOOST) / 100f);
+            update(atkSpeedAttr,ATTACK_SPEED_MODIFIER_ID,"Attack Speed Boost",stats.getStat(StatType.ATTACK_SPEED) / 100f);
+            update(knockAttr,KNOCKBACK_RESISTANCE_MODIFIER_ID,"Knockback Resistance",stats.getStat(StatType.KNOCKBACK_RESISTANCE) / 100f);
+            update(attackAttr,ATTACK_DAMAGE_MODIFIER_ID,"Attack Boost",stats.getStat(StatType.ATTACK_BOOTS) / 100f);
+            update(armorAttr,ARMOR_MODIFIER_ID,"Armor",stats.getStat(StatType.ARMOR_BOOST) / 100f);
+            update(swimAttr,SWIM_SPEED_MODIFIER_ID,"Swim Speed Boost",stats.getStat(StatType.SWIM_SPEED) / 100f);
 
-            if(atkSpeedAttr !=null) {
-                atkSpeedAttr.removeModifier(ATTACK_SPEED_MODIFIER_ID);
-                float atkSpeed=stats.getStat(StatType.ATTACK_SPEED);
-                if(atkSpeed > 0f) {
-                    atkSpeedAttr.addTransientModifier(new AttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Attack Speed Boost", atkSpeed / 100f, AttributeModifier.Operation.MULTIPLY_BASE));
-                }
-            }
-
-            if(knockAttr !=null) {
-                knockAttr.removeModifier(KNOCKBACK_RESISTANCE_MODIFIER_ID);
-                float knock=stats.getStat(StatType.KNOCKBACK_RESISTANCE);
-                if(knock > 0f) {
-                    knockAttr.addTransientModifier(new AttributeModifier(KNOCKBACK_RESISTANCE_MODIFIER_ID, "Knockback Resistance", knock / 100f, AttributeModifier.Operation.MULTIPLY_BASE));
-                }
-            }
-
-            if(attackAttr !=null) {
-                attackAttr.removeModifier(ATTACK_DAMAGE_MODIFIER_ID);
-                float attack=stats.getStat(StatType.ATTACK_BOOTS);
-                if(attack > 0f) {
-                    attackAttr.addTransientModifier(new AttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Attack Boost", attack / 100f, AttributeModifier.Operation.MULTIPLY_BASE));
-                }
-            }
-
-            if(armorAttr !=null) {
-                armorAttr.removeModifier(ARMOR_MODIFIER_ID);
-                float armor=stats.getStat(StatType.ARMOR_BOOST);
-                if(armor > 0f) {
-                    armorAttr.addTransientModifier(new AttributeModifier(ARMOR_MODIFIER_ID, "Armor", armor / 100f, AttributeModifier.Operation.MULTIPLY_BASE));
-                }
-            }
-
-            if(swimAttr !=null) {
-                swimAttr.removeModifier(SWIM_SPEED_MODIFIER_ID);
-                float swim=stats.getStat(StatType.SWIM_SPEED);
-                if(swim > 0f) {
-                    swimAttr.addTransientModifier(new AttributeModifier(SWIM_SPEED_MODIFIER_ID, "Swim Speed Boost", swim / 100f, AttributeModifier.Operation.MULTIPLY_BASE));
-                }
-            }
-
-            if(regen > 0f && player.tickCount % 100 == 0) {
+            if(!player.level().isClientSide && regen > 0f && player.tickCount % 100 == 0) {
                 player.heal(regen / 100f);
             }
         });
@@ -156,5 +116,22 @@ public class PlayerStatEvents {
                 event.setDamageModifier(1.5f);
             }
         });
+    }
+
+    @SubscribeEvent
+    public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent playerChangedDimensionEvent) {
+        PlayerStatProvider.sync(playerChangedDimensionEvent.getEntity());
+    }
+
+    private static void update(AttributeInstance attributeInstance,UUID uuid,String string,double value) {
+        if(attributeInstance == null) return;
+        AttributeModifier attributeModifier=attributeInstance.getModifier(uuid);
+        if(!Double.isFinite(value) || value <= 0.0) {
+            if(attributeModifier != null) attributeInstance.removeModifier(uuid);
+            return;
+        }
+        if(attributeModifier != null && Double.compare(attributeModifier.getAmount(),value) == 0 && attributeModifier.getOperation() == AttributeModifier.Operation.MULTIPLY_BASE) return;
+        if(attributeModifier != null) attributeInstance.removeModifier(uuid);
+        attributeInstance.addTransientModifier(new AttributeModifier(uuid,string,value,AttributeModifier.Operation.MULTIPLY_BASE));
     }
 }

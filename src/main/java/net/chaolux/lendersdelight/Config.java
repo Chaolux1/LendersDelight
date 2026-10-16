@@ -31,7 +31,7 @@ public class Config
         BUILDER.push("Stat");
         ENABLE_STAT=BUILDER.comment("Enable or disable stat effects.").define("enableStat",true);
         SHOW_TOOLTIP_STAT=BUILDER.comment("Show stat in food tooltips.").define("showStatTip",true);
-        RESET_ON_DEATH=BUILDER.comment("Reset player stats on death.").define("resetOnDeath",true);
+        RESET_ON_DEATH=BUILDER.comment("Reset player stats on death.").define("resetOnDeath",false);
         STAT_MODE=BUILDER.comment("ACCUBULATE=food can stats every time.").comment("ONCE=each food can give only once per player.").comment("LIMITED=food gives stats only Minecraft attribute is below configured limit.").defineEnum("statMode",StatMode.ACCUMULATE);
         BUILDER.pop();
         BUILDER.push("Stat Limits");
