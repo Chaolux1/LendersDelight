@@ -26,6 +26,8 @@ public class Config
     public static final ForgeConfigSpec.EnumValue<StatMode> STAT_MODE;
     public static final Map<StatType,ForgeConfigSpec.DoubleValue> STAT_LIMITS=new EnumMap<>(StatType.class);
     public static boolean showTooltipStat=true;
+    public static final ForgeConfigSpec.BooleanValue SHOW_STAT_SCREEN;
+
 
     static {
         BUILDER.push("Stat");
@@ -33,6 +35,7 @@ public class Config
         SHOW_TOOLTIP_STAT=BUILDER.comment("Show stat in food tooltips.").define("showStatTip",true);
         RESET_ON_DEATH=BUILDER.comment("Reset player stats on death.").define("resetOnDeath",false);
         STAT_MODE=BUILDER.comment("ACCUBULATE=food can stats every time.").comment("ONCE=each food can give only once per player.").comment("LIMITED=food gives stats only Minecraft attribute is below configured limit.").defineEnum("statMode",StatMode.ACCUMULATE);
+        SHOW_STAT_SCREEN=BUILDER.comment("Allow opening a player stats screen.").define("showStatScreen",false);
         BUILDER.pop();
         BUILDER.push("Stat Limits");
         STAT_LIMITS.put(StatType.ARMOR_BOOST,BUILDER.comment("Maximum Armor attribute value").defineInRange("maxArmor",20.0,0.0,10000.0));

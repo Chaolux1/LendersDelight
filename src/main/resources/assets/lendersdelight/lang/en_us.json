@@ -87,5 +87,14 @@
   "stat.lendersdelight.crit_chance": "Crit Chance",
   "stat.lendersdelight.knockback_resistance": "Knockback Resistance",
   "stat.lendersdelight.passive_regen": "Regen",
-  "stat.lendersdelight.swim_speed": "Swim Speed"
+  "stat.lendersdelight.swim_speed": "Swim Speed",
+
+  "screen.lendersdelight.stat.title": "Stat System",
+  "screen.lendersdelight.stat.mode.accumulate": "ACCUMULATE",
+  "screen.lendersdelight.stat.mode.once": "ONCE",
+  "screen.lendersdelight.stat.mode.limited": "LIMITED",
+  "screen.lendersdelight.stat.text": "Loading player stats",
+  "screen.lendersdelight.stat.down": "Scroll to browse",
+  "screen.lendersdelight.stat.tooltip": "Limit is based on your total attribute value include equipment.",
+  "screen.lendersdelight.stat.limit": "Stat Limit: %s"
 }

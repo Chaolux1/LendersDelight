@@ -55,4 +55,23 @@ public class ClientStatTooltipHelper {
         return attributeInstance == null ? 0.0 : attributeInstance.getValue();
     }
 
+    public static boolean hasAttributeLimit(StatType statType) {
+        return switch (statType) {
+            case ARMOR_BOOST,ATTACK_BOOTS,SPEED_BOOST,ATTACK_SPEED,KNOCKBACK_RESISTANCE,SWIM_SPEED -> true;
+            default -> false;
+        };
+    }
+
+    public static double getLimitValue(Player player,IPlayerStat iPlayerStat,StatType statType) {
+        return switch (statType) {
+            case ARMOR_BOOST -> getAttributeValue(player,Attributes.ARMOR);
+            case ATTACK_BOOTS -> getAttributeValue(player,Attributes.ATTACK_DAMAGE);
+            case SPEED_BOOST -> getAttributeValue(player,Attributes.MOVEMENT_SPEED);
+            case ATTACK_SPEED -> getAttributeValue(player,Attributes.ATTACK_SPEED);
+            case KNOCKBACK_RESISTANCE -> getAttributeValue(player,Attributes.KNOCKBACK_RESISTANCE);
+            case SWIM_SPEED -> getAttributeValue(player,ForgeMod.SWIM_SPEED.get());
+            default -> iPlayerStat.getStat(statType);
+        };
+    }
+
 }
