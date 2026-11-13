@@ -77,7 +77,7 @@ public class StatCommands {
             case ADD -> Component.translatable("command.lendersdelight.stat.add",value,Component.translatable(statType.getLangKey()),index);
             case REMOVE -> Component.translatable("command.lendersdelight.stat.remove",value,Component.translatable(statType.getLangKey()),index);
         };
-        commandSourceStackCommandContext.getSource().sendSuccess(() -> Component.literal("Update " + statType.name() + " for " + index + " player"),true);
+        commandSourceStackCommandContext.getSource().sendSuccess(() -> component,true);
         return data;
     }
 

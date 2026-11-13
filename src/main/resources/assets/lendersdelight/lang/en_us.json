@@ -107,5 +107,8 @@
   "command.lendersdelight.stat.reset_once": "Reset %s for %s player",
   "command.lendersdelight.stat.reset": "Reset stat and food use for %s player",
   "command.lendersdelight.stat.reset_food": "Reset food use for %s player",
-  "command.lendersdelight.stat.get": "%s %s: %s%%"
+  "command.lendersdelight.stat.get": "%s %s: %s%%",
+
+  "key.categories.lendersdelight": "L_Ender 's Delight",
+  "key.lendersdelight.open_stat": "Open Stat GUI"
 }
