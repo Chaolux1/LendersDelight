@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "lendersdelight:item/raw_brute_deepling_meat"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "farmersdelight:cutting",
+  "ingredients": [
+    {
+      "item": "lendersdelight:crystallized_coral_pie"
+    }
+  ],
+  "result": [
+    {
+      "count": 4,
+      "item": "lendersdelight:crystallized_coral_pie_slice"
+    }
+  ],
+  "tool": {
+    "tag": "forge:tools/knives"
+  }
+}

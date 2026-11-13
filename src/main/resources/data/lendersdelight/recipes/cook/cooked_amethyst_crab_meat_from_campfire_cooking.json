@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "cookingtime": 600,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "cataclysm:amethyst_crab_meat"
+  },
+  "result": "lendersdelight:cooked_amethyst_crab_meat"
+}

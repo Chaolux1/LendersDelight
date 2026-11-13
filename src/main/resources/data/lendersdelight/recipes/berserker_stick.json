@@ -1,0 +1,19 @@
+{
+  "type": "farmersdelight:cooking",
+  "container": {
+    "item": "minecraft:stick"
+  },
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "item": "lendersdelight:cooked_berserker"
+    },
+    {
+      "item": "lendersdelight:cooked_berserker"
+    }
+  ],
+  "result": {
+    "item": "lendersdelight:berserker_stick"
+  }
+}

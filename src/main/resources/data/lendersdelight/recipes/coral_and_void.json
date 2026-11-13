@@ -1,0 +1,22 @@
+{
+  "type": "farmersdelight:cooking",
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "item": "cataclysm:coral_chunk"
+    },
+    {
+      "item": "farmersdelight:rice"
+    },
+    {
+      "item": "lendersdelight:void_custard"
+    }
+  ],
+  "result": {
+    "item": "lendersdelight:coral_and_void"
+  }
+}

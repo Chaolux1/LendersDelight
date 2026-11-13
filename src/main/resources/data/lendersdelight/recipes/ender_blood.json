@@ -1,0 +1,17 @@
+{
+  "type": "farmersdelight:cooking",
+  "container": {
+    "item": "minecraft:glass_bottle"
+  },
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "item": "lendersdelight:ender_golem_meat"
+
+    }
+  ],
+  "result": {
+    "item": "lendersdelight:ender_blood"
+  }
+}

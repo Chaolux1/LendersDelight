@@ -1,0 +1,22 @@
+{
+  "type": "farmersdelight:cooking",
+  "container": {
+    "item": "minecraft:bowl"
+  },
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredients": [
+    {
+      "item": "lendersdelight:cooked_leviathan"
+    },
+    {
+      "item": "lendersdelight:fried_abyssal_egg"
+    },
+    {
+      "item": "lendersdelight:fried_abyssal_egg"
+    }
+  ],
+  "result": {
+    "item": "lendersdelight:leviathan_and_abyssal_egg"
+  }
+}
