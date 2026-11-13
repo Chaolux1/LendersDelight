@@ -4,13 +4,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class PlayerStatCapability implements IPlayerStat {
     private final EnumMap<StatType, Float> stats=new EnumMap<>(StatType.class);
-    private final Set<ResourceLocation> foods=new HashSet<>();
+    private final Map<ResourceLocation,Integer> foods=new HashMap<>();
 
     public PlayerStatCapability() {
         for(StatType type:StatType.values()) {
@@ -25,12 +23,12 @@ public class PlayerStatCapability implements IPlayerStat {
 
     @Override
     public void setStat(StatType type, float value) {
-        stats.put(type,value);
+        stats.put(type,Math.max(0.0f,value));
     }
 
     @Override
     public void addStat(StatType type, float amount) {
-        stats.put(type,getStat(type)+amount);
+        setStat(type,getStat(type) + amount);
     }
 
     @Override
@@ -38,28 +36,34 @@ public class PlayerStatCapability implements IPlayerStat {
         for(StatType type:StatType.values()) {
             setStat(type,other.getStat(type));
         }
-        setConsumed(other.getConsumed());
+        setFoodUses(other.MAP());
     }
 
     @Override
-    public boolean hasConsumed(ResourceLocation resourceLocation) {
-        return foods.contains(resourceLocation);
+    public int getFoodUse(ResourceLocation resourceLocation) {
+        return foods.getOrDefault(resourceLocation,0);
     }
 
     @Override
-    public void markConsumed(ResourceLocation resourceLocation) {
-        foods.add(resourceLocation);
+    public void setFoodUse(ResourceLocation resourceLocation,int value) {
+        if(value <= 0) {
+            foods.remove(resourceLocation);
+        } else {
+            foods.put(resourceLocation,value);
+        }
     }
 
     @Override
-    public Set<ResourceLocation> getConsumed() {
-        return new HashSet<>(foods);
+    public Map<ResourceLocation,Integer> MAP() {
+        return new HashMap<>(foods);
     }
 
     @Override
-    public void setConsumed(Set<ResourceLocation> resourceLocations) {
+    public void setFoodUses(Map<ResourceLocation,Integer> resourceLocationIntegerMap) {
         foods.clear();
-        foods.addAll(resourceLocations);
+        resourceLocationIntegerMap.forEach((resourceLocation,value) -> {
+            if(resourceLocation != null && value != null && value > 0) foods.put(resourceLocation,value);
+        });
     }
 
     public CompoundTag saveNBT() {

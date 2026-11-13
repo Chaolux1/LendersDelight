@@ -165,7 +165,7 @@ public class ModItems {
         NETHERITE_MONSTROSITY_MEAT = registerWithTab("netherite_monstrosity_meat", () -> new StatConsumableItem(foodItem(FoodValues.NETHERITE_MONSTROSITY_MEAT),true));
         RAW_DEEPLING_MEAT = registerWithTab("raw_deepling_meat", () -> new StatConsumableItem(foodItem(FoodValues.RAW_DEEPLING_MEAT),true));
         RAW_BRUTE_DEEPLING_MEAT = registerWithTab("raw_brute_deepling_meat", () -> new StatConsumableItem(foodItem(FoodValues.RAW_DEEPLING_MEAT),true));
-        RAW_WARLOCK_DEEPLING_MEAT = registerWithTab("raw_warlock_deepling_meat", () -> new StatConsumableItem(foodItem(FoodValues.RAW_DEEPLING_MEAT),false));
+        RAW_WARLOCK_DEEPLING_MEAT = registerWithTab("raw_warlock_deepling_meat", () -> new StatConsumableItem(foodItem(FoodValues.RAW_DEEPLING_MEAT),true));
         WATCHER_HEART = registerWithTab("watcher_heart", () -> new StatConsumableItem(foodItem(FoodValues.WATCHER_HEART), true));
         ENDER_GOLEM_MEAT = registerWithTab("ender_golem_meat", () -> new StatConsumableItem(foodItem(FoodValues.ENDER_GOLEM_MEAT),false));
         ENDER_GUARDIAN_CRYSTAL = registerWithTab("ender_guardian_crystal", () -> new StatConsumableItem(foodItem(FoodValues.ENDER_GUARDIAN_CRYSTAL), true));

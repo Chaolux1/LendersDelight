@@ -2,7 +2,7 @@ package net.chaolux.lendersdelight.coomon.stat;
 
 import com.google.gson.*;
 import com.mojang.logging.LogUtils;
-import net.chaolux.lendersdelight.Config;
+import net.chaolux.lendersdelight.ServerConfig;
 import net.chaolux.lendersdelight.LendersDelight;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -18,6 +18,9 @@ public class StatReloadListener extends SimpleJsonResourceReloadListener {
     private static final Gson GSON=new Gson();
     private static volatile Map<ResourceLocation,Map<StatType,Float>> server=Map.of();
     private static volatile Map<ResourceLocation,Map<StatType,Float>> client=Map.of();
+    private static volatile Map<ResourceLocation,Integer> serverCapped=Map.of();
+    private static volatile Map<ResourceLocation,Integer> clientCapped=Map.of();
+    private static volatile int value=3;
     private static volatile StatMode statMode=StatMode.ACCUMULATE;
     private static volatile Map<StatType,Double> statTypeDoubleMap=Map.of();
     public StatReloadListener() {
@@ -26,6 +29,7 @@ public class StatReloadListener extends SimpleJsonResourceReloadListener {
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         Map<ResourceLocation,Map<StatType,Float>> resourceLocationMapMap=new LinkedHashMap<>();
+        Map<ResourceLocation,Integer> resourceLocationIntegerMap=new LinkedHashMap<>();
         map.entrySet().stream().filter(entry -> entry.getKey().getNamespace().equals(LendersDelight.MOD_ID)).sorted(Map.Entry.comparingByKey()).forEach(entry -> {
             try {
                 JsonObject jsonObject=entry.getValue().getAsJsonObject();
@@ -43,12 +47,24 @@ public class StatReloadListener extends SimpleJsonResourceReloadListener {
                     if(!Float.isFinite(value) || value <= 0.0f) throw new JsonParseException("Stat value must be finite and 0 " + stringJsonElementEntry.getKey());
                     enumMap.put(statType,value);
                 }
+                Integer integer=null;
+                if(jsonObject.has("capped")) {
+                    JsonElement jsonElement=jsonObject.get("capped");
+                    if(!jsonElement.isJsonPrimitive() || !jsonElement.getAsJsonPrimitive().isNumber() || !jsonElement.getAsString().matches("[0-9]+")) throw new JsonParseException("capped must be integer");
+                    integer=Integer.parseInt(jsonElement.getAsString());
+                }
+                if(integer == null) {
+                    resourceLocationIntegerMap.remove(resourceLocation);
+                } else {
+                    resourceLocationIntegerMap.put(resourceLocation,integer);
+                }
                 if(resourceLocationMapMap.put(resourceLocation, Collections.unmodifiableMap(enumMap)) != null) LOGGER.warn("Multiple stat entry for {} apply definition form {}",resourceLocation,entry.getKey());
             } catch (RuntimeException exception) {
                 LOGGER.error("Invalid stat definition {}: {}",entry.getKey(),exception.toString());
             }
         });
         server=Collections.unmodifiableMap(resourceLocationMapMap);
+        serverCapped=Collections.unmodifiableMap(resourceLocationIntegerMap);
         LOGGER.info("Load {} stat definition",server.size());
     }
 
@@ -69,10 +85,10 @@ public class StatReloadListener extends SimpleJsonResourceReloadListener {
     }
 
     public static double getLimit(StatType statType) {
-        return statTypeDoubleMap.getOrDefault(statType, Config.getStatLimit(statType));
+        return statTypeDoubleMap.getOrDefault(statType, ServerConfig.getStatLimit(statType));
     }
 
-    public static void setLimit(Map<ResourceLocation,Map<StatType,Float>> map,StatMode mode,Map<StatType,Double> doubleMap) {
+    public static void setLimit(Map<ResourceLocation,Map<StatType,Float>> map,StatMode mode,Map<StatType,Double> doubleMap,Map<ResourceLocation,Integer> resourceLocationIntegerMap,int data) {
         Map<ResourceLocation,Map<StatType,Float>> resourceLocationMapMap=new LinkedHashMap<>();
         for (Map.Entry<ResourceLocation,Map<StatType,Float>> entry : map.entrySet()) {
             EnumMap<StatType,Float> enumMap=new EnumMap<>(StatType.class);
@@ -84,5 +100,19 @@ public class StatReloadListener extends SimpleJsonResourceReloadListener {
         enumMap.putAll(doubleMap);
         statTypeDoubleMap=Collections.unmodifiableMap(enumMap);
         statMode=mode;
+        clientCapped=Collections.unmodifiableMap(new LinkedHashMap<>(resourceLocationIntegerMap));
+        value=data;
+    }
+
+    public static int getServerCapped(ResourceLocation resourceLocation) {
+        return serverCapped.getOrDefault(resourceLocation,ServerConfig.CAPPED_DEFAULT.get());
+    }
+
+    public static int getClientCapped(ResourceLocation resourceLocation) {
+        return clientCapped.getOrDefault(resourceLocation,value);
+    }
+
+    public static Map<ResourceLocation,Integer> getServerCappedOverride() {
+        return serverCapped;
     }
 }

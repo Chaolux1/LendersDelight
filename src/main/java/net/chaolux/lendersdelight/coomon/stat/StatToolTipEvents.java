@@ -1,6 +1,6 @@
 package net.chaolux.lendersdelight.coomon.stat;
 
-import net.chaolux.lendersdelight.Config;
+import net.chaolux.lendersdelight.ServerConfig;
 import net.chaolux.lendersdelight.client.ClientStatTooltipHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -10,6 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.Map;
 
@@ -17,7 +18,7 @@ import java.util.Map;
 public class StatToolTipEvents {
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent itemTooltipEvent) {
-        if(!Config.SHOW_TOOLTIP_STAT.get() || itemTooltipEvent.getItemStack().isEmpty()) return;
+        if(!ServerConfig.SHOW_TOOLTIP_STAT.get() || itemTooltipEvent.getItemStack().isEmpty()) return;
         ResourceLocation resourceLocation= ForgeRegistries.ITEMS.getKey(itemTooltipEvent.getItemStack().getItem());
         if(resourceLocation == null) return;
         Map<StatType,Float> map=StatReloadListener.getClient(resourceLocation);
@@ -33,6 +34,16 @@ public class StatToolTipEvents {
             itemTooltipEvent.getToolTip().add(Component.translatable("tooltip.lendersdelight.stat_limit_reached").withStyle(ChatFormatting.DARK_GREEN));
             return;
         }
+        if(statMode == StatMode.CAPPED) {
+            int value=StatReloadListener.getClientCapped(resourceLocation);
+            int data=ClientStatTooltipHelper.getFoodUse(resourceLocation);
+            if(data >= value) {
+                itemTooltipEvent.getToolTip().add(Component.empty());
+                itemTooltipEvent.getToolTip().add(Component.translatable("tooltip.lendersdelight.stat_capped_reached").withStyle(ChatFormatting.DARK_GREEN));
+                return;
+            }
+        }
+
         itemTooltipEvent.getToolTip().add(Component.empty());
         itemTooltipEvent.getToolTip().add(Component.translatable("tooltip.lendersdelight.stat").withStyle(ChatFormatting.DARK_GREEN));
         for (Map.Entry<StatType,Float> entry : map.entrySet()) {

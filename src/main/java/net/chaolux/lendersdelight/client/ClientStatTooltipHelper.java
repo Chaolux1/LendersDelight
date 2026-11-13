@@ -1,6 +1,5 @@
 package net.chaolux.lendersdelight.client;
 
-import net.chaolux.lendersdelight.Config;
 import net.chaolux.lendersdelight.coomon.stat.IPlayerStat;
 import net.chaolux.lendersdelight.coomon.stat.PlayerStatProvider;
 import net.chaolux.lendersdelight.coomon.stat.StatReloadListener;
@@ -11,9 +10,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ClientStatTooltipHelper {
     public static boolean wasAlreadyConsumed(ResourceLocation resourceLocation) {
@@ -74,4 +71,9 @@ public class ClientStatTooltipHelper {
         };
     }
 
+    public static int getFoodUse(ResourceLocation resourceLocation) {
+        Player player=Minecraft.getInstance().player;
+        if(player == null) return 0;
+        return player.getCapability(PlayerStatProvider.PLAYER_STAT).map(stat -> stat.getFoodUse(resourceLocation)).orElse(0);
+    }
 }

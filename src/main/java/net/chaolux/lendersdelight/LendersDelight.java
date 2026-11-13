@@ -1,6 +1,8 @@
 package net.chaolux.lendersdelight;
 
 import com.mojang.logging.LogUtils;
+import net.chaolux.lendersdelight.compatibility.CompatCreativeTabs;
+import net.chaolux.lendersdelight.compatibility.CompatDatapacks;
 import net.chaolux.lendersdelight.registry.block.ModBlocks;
 import net.chaolux.lendersdelight.registry.item.ModItems;
 import net.chaolux.lendersdelight.registry.stat.ModNetwork;
@@ -35,7 +37,9 @@ public class LendersDelight
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SPEC);
+        modEventBus.addListener(CompatDatapacks::onAddPackFinders);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -46,6 +50,7 @@ public class LendersDelight
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
         if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
+            CompatCreativeTabs compatCreativeTabs=new CompatCreativeTabs(event,"");
             event.accept(ModItems.LEVIATHAN);
             event.accept(ModItems.COOKED_LEVIATHAN);
             event.accept(ModItems.ENDER_GOLEM_MEAT);

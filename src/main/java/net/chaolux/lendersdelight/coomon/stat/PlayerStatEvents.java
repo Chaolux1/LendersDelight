@@ -1,9 +1,9 @@
 package net.chaolux.lendersdelight.coomon.stat;
 
-import com.mojang.logging.LogUtils;
-import net.chaolux.lendersdelight.Config;
+import net.chaolux.lendersdelight.ServerConfig;
 import net.chaolux.lendersdelight.LendersDelight;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -18,7 +18,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +35,7 @@ public class PlayerStatEvents {
 
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
-        if(Config.RESET_ON_DEATH.get()) return;
+        if(ServerConfig.RESET_ON_DEATH.get()) return;
         if (!(event.getEntity() instanceof Player player)) return;
         LazyOptional<IPlayerStat> capOptional = player.getCapability(PlayerStatProvider.PLAYER_STAT);
         if (capOptional.isPresent()) {
@@ -98,6 +97,7 @@ public class PlayerStatEvents {
     @SubscribeEvent
     public static void onJump(LivingEvent.LivingJumpEvent event) {
         if(!(event.getEntity() instanceof Player player)) return;
+        if(ServerConfig.JUMP_BOOST_EFFECT.get() && !player.hasEffect(MobEffects.JUMP)) return;
         player.getCapability(PlayerStatProvider.PLAYER_STAT).ifPresent(stats -> {
             float jump=stats.getStat(StatType.JUMP_BOOST);
             if(jump > 0f) {

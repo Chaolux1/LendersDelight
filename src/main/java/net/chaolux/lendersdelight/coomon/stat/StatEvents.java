@@ -1,6 +1,6 @@
 package net.chaolux.lendersdelight.coomon.stat;
 
-import net.chaolux.lendersdelight.Config;
+import net.chaolux.lendersdelight.ServerConfig;
 import net.chaolux.lendersdelight.registry.stat.ModNetwork;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,7 +9,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
@@ -43,7 +42,7 @@ public class StatEvents {
     @SubscribeEvent
     public static void onFinish(LivingEntityUseItemEvent.Finish finish) {
         if(!(finish.getEntity() instanceof ServerPlayer serverPlayer)) return;
-        if(!Config.ENABLE_STAT.get()) return;
+        if(!ServerConfig.ENABLE_STAT.get()) return;
         ItemStack itemStack=finish.getItem();
         if(itemStack.isEmpty() || !itemStack.isEdible()) return;
         ResourceLocation resourceLocation= ForgeRegistries.ITEMS.getKey(itemStack.getItem());
@@ -51,8 +50,9 @@ public class StatEvents {
         Map<StatType,Float> statTypeFloatMap=StatReloadListener.getServer(resourceLocation);
         if(statTypeFloatMap.isEmpty()) return;
         serverPlayer.getCapability(PlayerStatProvider.PLAYER_STAT).ifPresent(stat -> {
-            StatMode statMode=Config.STAT_MODE.get();
+            StatMode statMode= ServerConfig.STAT_MODE.get();
             if(statMode == StatMode.ONCE && stat.hasConsumed(resourceLocation)) return;
+            if(statMode == StatMode.CAPPED && stat.getFoodUse(resourceLocation) >= StatReloadListener.getServerCapped(resourceLocation)) return;
             boolean once=false;
             for(Map.Entry<StatType,Float> statTypeFloatEntry : statTypeFloatMap.entrySet()) {
                 if(statMode == StatMode.LIMITED && isLimit(serverPlayer,stat,statTypeFloatEntry.getKey())) continue;
@@ -61,13 +61,14 @@ public class StatEvents {
             }
             if(once) {
                 if(statMode == StatMode.ONCE) stat.markConsumed(resourceLocation);
+                if(statMode == StatMode.CAPPED) stat.setFoodUse(resourceLocation,stat.getFoodUse(resourceLocation) + 1);
                 PlayerStatProvider.sync(serverPlayer);
             }
         });
     }
 
     private static boolean isLimit(Player player,IPlayerStat iPlayerStat,StatType statType) {
-        double limit=Config.getStatLimit(statType);
+        double limit= ServerConfig.getStatLimit(statType);
         return switch (statType) {
             case ARMOR_BOOST -> getAttributeValue(player, Attributes.ARMOR) >= limit;
             case ATTACK_BOOTS -> getAttributeValue(player, Attributes.ATTACK_DAMAGE) >= limit;

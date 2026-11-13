@@ -79,6 +79,7 @@
   "tooltip.lendersdelight.stat": "Stats:",
   "tooltip.lendersdelight.stat_already_obtained": "Stats already obtained",
   "tooltip.lendersdelight.stat_limit_reached": "Stat limit reached",
+  "tooltip.lendersdelight.stat_capped_reached": "Food stat cap reached",
   "stat.lendersdelight.armor_boost": "Armor Boost",
   "stat.lendersdelight.attack_boots": "Attack Boost",
   "stat.lendersdelight.speed_boost": "Speed Boost",
@@ -93,8 +94,18 @@
   "screen.lendersdelight.stat.mode.accumulate": "ACCUMULATE",
   "screen.lendersdelight.stat.mode.once": "ONCE",
   "screen.lendersdelight.stat.mode.limited": "LIMITED",
+  "screen.lendersdelight.stat.mode.capped": "CAPPED",
   "screen.lendersdelight.stat.text": "Loading player stats",
   "screen.lendersdelight.stat.down": "Scroll to browse",
   "screen.lendersdelight.stat.tooltip": "Limit is based on your total attribute value include equipment.",
-  "screen.lendersdelight.stat.limit": "Stat Limit: %s"
+  "screen.lendersdelight.stat.limit": "Stat Limit: %s",
+
+  "command.lendersdelight.stat.invalid": "Unknown stat: %s",
+  "command.lendersdelight.stat.set": "Set %s to %s%% for %s player",
+  "command.lendersdelight.stat.add": "Add %s%% to %s for %s player",
+  "command.lendersdelight.stat.remove": "Remove %s%% to %s for %s player",
+  "command.lendersdelight.stat.reset_once": "Reset %s for %s player",
+  "command.lendersdelight.stat.reset": "Reset stat and food use for %s player",
+  "command.lendersdelight.stat.reset_food": "Reset food use for %s player",
+  "command.lendersdelight.stat.get": "%s %s: %s%%"
 }
