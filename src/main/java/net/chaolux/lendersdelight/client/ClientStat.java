@@ -17,9 +17,13 @@ public class ClientStat {
         return CLIENT_STAT.computeIfAbsent(player.getUUID(),id -> new PlayerStatCapability());
     }
 
-    public static void sync(Player player, Map<StatType,Float> data, Set<ResourceLocation> foods) {
+    public static void sync(Player player, Map<StatType,Float> data, Map<ResourceLocation,Integer> foods) {
         IPlayerStat stat=get(player);
         data.forEach(stat::setStat);
-        stat.setConsumed(foods);
+        stat.setFoodUses(foods);
+    }
+
+    public static void clear() {
+        CLIENT_STAT.clear();
     }
 }

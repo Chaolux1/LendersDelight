@@ -1,6 +1,7 @@
 package net.chaolux.lendersdelight.server;
 
 import net.chaolux.lendersdelight.client.ClientStatSyncHandler;
+import net.chaolux.lendersdelight.coomon.stat.StatDefinitionPacket;
 import net.chaolux.lendersdelight.coomon.stat.StatSyncPacket;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -12,6 +13,6 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 public class ServerModNetwork {
     @SubscribeEvent
     public static void onPayloadRegister(RegisterPayloadHandlersEvent event) {
-        event.registrar("1.0").playToClient(StatSyncPacket.TYPE,StatSyncPacket.STREAM_CODEC, (packet,context) -> {});
+        event.registrar("2.0").playToClient(StatSyncPacket.TYPE,StatSyncPacket.STREAM_CODEC, (packet,context) -> {}).playToClient(StatDefinitionPacket.TYPE,StatDefinitionPacket.STREAM_CODEC,((packet, context) -> {}));
     }
 }

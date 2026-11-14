@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerStatCapability implements IPlayerStat, INBTSerializable<CompoundTag> {
     private final EnumMap<StatType, Float> stats=new EnumMap<>(StatType.class);
-    private final Set<ResourceLocation> foods=new HashSet<>();
+    private final Map<ResourceLocation,Integer> foods=new HashMap<>();
     private static final Map<UUID,PlayerStatCapability> CACHE=new ConcurrentHashMap<>();
     public static PlayerStatCapability getOrCreate(Player player) {
         return CACHE.computeIfAbsent(player.getUUID(),uuid -> new PlayerStatCapability());
@@ -42,7 +42,7 @@ public class PlayerStatCapability implements IPlayerStat, INBTSerializable<Compo
 
     @Override
     public void setStat(StatType type, float value) {
-        stats.put(type,value);
+        stats.put(type,Math.max(0.0f,value));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class PlayerStatCapability implements IPlayerStat, INBTSerializable<Compo
         for(StatType type:StatType.values()) {
             setStat(type,other.getStat(type));
         }
-        setConsumed(other.getConsumed());
+        setFoodUses(other.MAP());
     }
 
     @Override
@@ -64,24 +64,30 @@ public class PlayerStatCapability implements IPlayerStat, INBTSerializable<Compo
     }
 
     @Override
-    public boolean hasConsumed(ResourceLocation resourceLocation) {
-        return foods.contains(resourceLocation);
+    public int getFoodUse(ResourceLocation resourceLocation) {
+        return foods.getOrDefault(resourceLocation,0);
     }
 
     @Override
-    public void markConsumed(ResourceLocation resourceLocation) {
-        foods.add(resourceLocation);
+    public void setFoodUse(ResourceLocation resourceLocation,int value) {
+        if(value <= 0) {
+            foods.remove(resourceLocation);
+        } else {
+            foods.put(resourceLocation,value);
+        }
     }
 
     @Override
-    public Set<ResourceLocation> getConsumed() {
-        return new HashSet<>(foods);
+    public Map<ResourceLocation,Integer> MAP() {
+        return new HashMap<>(foods);
     }
 
     @Override
-    public void setConsumed(Set<ResourceLocation> resourceLocations) {
+    public void setFoodUses(Map<ResourceLocation,Integer> resourceLocationIntegerMap) {
         foods.clear();
-        foods.addAll(resourceLocations);
+        resourceLocationIntegerMap.forEach((resourceLocation,value) -> {
+            if(resourceLocation != null && value != null && value > 0) foods.put(resourceLocation,value);
+        });
     }
 
     public CompoundTag saveNBT() {
@@ -95,7 +101,7 @@ public class PlayerStatCapability implements IPlayerStat, INBTSerializable<Compo
     public void sync(Player player) {
         if(player instanceof ServerPlayer serverPlayer) {
             if(!serverPlayer.connection.isAcceptingMessages()) return;
-            ModNetwork.sendToClient(serverPlayer,new StatSyncPacket(getAll(),getConsumed()));
+            ModNetwork.sendToClient(serverPlayer,new StatSyncPacket(getAll(),MAP()));
         }
     }
 

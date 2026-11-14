@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -19,10 +20,31 @@ public interface IPlayerStat {
     void addStat(StatType type, float amount);
     void copyFrom(IPlayerStat other);
     Map<StatType,Float> getAll();
-    boolean hasConsumed(ResourceLocation resourceLocation);
-    void markConsumed(ResourceLocation resourceLocation);
-    Set<ResourceLocation> getConsumed();
-    void setConsumed(Set<ResourceLocation> foods);
+    int getFoodUse(ResourceLocation resourceLocation);
+    void setFoodUse(ResourceLocation resourceLocation,int value);
+    Map<ResourceLocation,Integer> MAP();
+    void setFoodUses(Map<ResourceLocation,Integer> resourceLocationIntegerMap);
+
+
+    default boolean hasConsumed(ResourceLocation resourceLocation) {
+        return getFoodUse(resourceLocation) > 0;
+    }
+
+    default void markConsumed(ResourceLocation resourceLocation) {
+        setFoodUse(resourceLocation,Math.max(1,getFoodUse(resourceLocation)));
+    }
+
+    default Set<ResourceLocation> getConsumed() {
+        return new HashSet<>(MAP().keySet());
+    }
+
+    default void setConsumed(Set<ResourceLocation> foods) {
+        Map<ResourceLocation,Integer> resourceLocationIntegerMap=new HashMap<>();
+        for (ResourceLocation resourceLocation : foods) {
+            resourceLocationIntegerMap.put(resourceLocation,1);
+        }
+        setFoodUses(resourceLocationIntegerMap);
+    }
 
     default CompoundTag saveToNBT() {
         CompoundTag tag=new CompoundTag();
@@ -30,32 +52,37 @@ public interface IPlayerStat {
             tag.putFloat(type.name(),getStat(type));
         }
         ListTag consumedList=new ListTag();
-        for(ResourceLocation resourceLocation : getConsumed()) {
-            consumedList.add(StringTag.valueOf(resourceLocation.toString()));
+        for(Map.Entry<ResourceLocation,Integer> entry : MAP().entrySet()) {
+            if(entry.getValue() <= 0) continue;
+            CompoundTag compoundTag=new CompoundTag();
+            compoundTag.putString("Item",entry.getKey().toString());
+            compoundTag.putInt("Use",entry.getValue());
+            consumedList.add(compoundTag);
         }
-        tag.put("ConsumedList",consumedList);
+        tag.put("FoodUse",consumedList);
         return tag;
     }
 
     default void loadFromNBT(CompoundTag tag) {
-        for(StatType type:StatType.values()) {
-            if(tag.contains(type.name(), Tag.TAG_FLOAT)) {
-                setStat(type,tag.getFloat(type.name()));
+        for(StatType statType : StatType.values()) {
+            setStat(statType,tag.contains(statType.name(),Tag.TAG_ANY_NUMERIC) ? tag.getFloat(statType.name()) : 0.0f);
+        }
+        Map<ResourceLocation,Integer> resourceLocationIntegerMap=new HashMap<>();
+        if(tag.contains("FoodUse",Tag.TAG_LIST)) {
+            ListTag listTag=tag.getList("FoodUse",Tag.TAG_COMPOUND);
+            for (int index=0;index < listTag.size();index++) {
+                CompoundTag compoundTag=listTag.getCompound(index);
+                ResourceLocation resourceLocation=ResourceLocation.tryParse(compoundTag.getString("Item"));
+                int value=compoundTag.getInt("Use");
+                if(resourceLocation != null && value > 0) resourceLocationIntegerMap.put(resourceLocation,value);
+            }
+        } else if(tag.contains("ConsumedList",Tag.TAG_LIST)) {
+            ListTag listTag=tag.getList("ConsumedList",Tag.TAG_STRING);
+            for(int index=0;index < listTag.size();index++) {
+                ResourceLocation resourceLocation=ResourceLocation.tryParse(listTag.getString(index));
+                if(resourceLocation != null) resourceLocationIntegerMap.put(resourceLocation,1);
             }
         }
-        if(tag.contains("ConsumedList",Tag.TAG_LIST)) {
-            Set<ResourceLocation> foods=new HashSet<>();
-            ListTag consumedList=tag.getList("ConsumedList",Tag.TAG_STRING);
-            for(int i=0;i<consumedList.size();i++) {
-                foods.add(ResourceLocation.parse(consumedList.getString(i)));
-            }
-            setConsumed(foods);
-        }
-    }
-
-    default void sync(Player player) {
-        if(player instanceof ServerPlayer serverPlayer) {
-            ModNetwork.sendToClient(serverPlayer, new StatSyncPacket(getAll(),getConsumed()));
-        }
+        setFoodUses(resourceLocationIntegerMap);
     }
 }

@@ -3,10 +3,15 @@ package net.chaolux.lendersdelight.coomon.stat;
 import com.mojang.logging.LogUtils;
 import net.chaolux.lendersdelight.Config;
 import net.chaolux.lendersdelight.LendersDelight;
+import net.chaolux.lendersdelight.ServerConfig;
+import net.chaolux.lendersdelight.client.ClientStat;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +25,7 @@ import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.slf4j.Logger;
 
@@ -39,10 +45,11 @@ public class PlayerStatEvents {
 
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
+        if(ServerConfig.RESET_ON_DEATH.get()) return;
         if (!(event.getEntity() instanceof Player player)) return;
-        PlayerStatProvider.get(player).ifPresent(cap -> {
-                CompoundTag saved = cap.saveToNBT();
-                SAVED_STAT.put(player.getUUID(), saved);
+        PlayerStatProvider.get(player).ifPresent(stat -> {
+            CompoundTag saved=stat.saveToNBT();
+            SAVED_STAT.put(player.getUUID(),saved);
         });
     }
 
@@ -50,7 +57,7 @@ public class PlayerStatEvents {
     public static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
         Player player=event.getEntity();
         player.getPersistentData().putBoolean("lendersdelight_need_sync",true);
-        CompoundTag saved=PlayerStatStorage.get((ServerLevel) player.level()).getStatData(player.getUUID());
+        CompoundTag saved=PlayerStatStorage.get(player.getServer().overworld()).getStatData(player.getUUID());
         PlayerStatProvider.get(player).ifPresent(stat -> {
             stat.loadFromNBT(saved);
         });
@@ -60,12 +67,17 @@ public class PlayerStatEvents {
     public static void onRespawn(PlayerEvent.PlayerRespawnEvent event) {
         Player player = event.getEntity();
         CompoundTag saved = SAVED_STAT.remove(player.getUUID());
-        if(saved !=null) {
-            PlayerStatProvider.get(player).ifPresent(cap -> {
-                cap.loadFromNBT(saved);
-                PlayerStatProvider.sync(player);
-            });
-        }
+        PlayerStatProvider.get(player).ifPresent(stat -> {
+            if(ServerConfig.RESET_ON_DEATH.get() && !event.isEndConquered()) {
+                for(StatType statType : StatType.values()) {
+                    stat.setStat(statType,0.0f);
+                }
+                stat.setFoodUses(Map.of());
+            } else if(saved != null) {
+                stat.loadFromNBT(saved);
+            }
+            PlayerStatProvider.sync(player);
+        });
     }
 
     @SubscribeEvent
@@ -73,7 +85,7 @@ public class PlayerStatEvents {
         Player player=event.getEntity();
         var cap=PlayerStatProvider.get(player);
         cap.ifPresent(stat -> {
-            PlayerStatStorage.get((ServerLevel) player.level()).savePlayer(player,stat);
+            PlayerStatStorage.get(player.getServer().overworld()).savePlayer(player,stat);
         });
         if(!event.getEntity().level().isClientSide) {
             PlayerStatCapability.clear(event.getEntity());
@@ -81,10 +93,11 @@ public class PlayerStatEvents {
     }
 
     @SubscribeEvent
-    public static void onWorldLeave(LevelEvent.Unload event) {
-        if(!event.getLevel().isClientSide() && event.getLevel() instanceof ServerLevel) {
-            PlayerStatCapability.clearAll();
-        }
+    public static void onSaveToFile(PlayerEvent.SaveToFile saveToFile) {
+        if(!(saveToFile.getEntity() instanceof ServerPlayer serverPlayer)) return;
+        PlayerStatProvider.get(serverPlayer).ifPresent(stat -> {
+            PlayerStatStorage.get(serverPlayer.getServer().overworld()).savePlayer(serverPlayer,stat);
+        });
     }
 
     @SubscribeEvent
@@ -94,7 +107,7 @@ public class PlayerStatEvents {
         if(player.getPersistentData().getBoolean("lendersdelight_need_sync")) {
             player.getPersistentData().remove("lendersdelight_need_sync");
             PlayerStatProvider.get(player).ifPresent(stat -> {
-                stat.sync(player);
+                PlayerStatProvider.sync(player);
             });
         }
         PlayerStatProvider.get(player).ifPresent(stats -> {
@@ -106,96 +119,13 @@ public class PlayerStatEvents {
             var swimAttr=player.getAttribute(NeoForgeMod.SWIM_SPEED);
             float regen=stats.getStat(StatType.PASSIVE_REGEN);
 
-            if(speedAttr !=null) {
-                AttributeModifier modifier=null;
-                for(AttributeModifier mod:speedAttr.getModifiers()) {
-                    if(mod.is(SPEED_MODIFIER_ID)) {
-                        modifier=mod;
-                        break;
-                    }
-                }
-                if(modifier !=null) speedAttr.removeModifier(modifier);
-                float speed=stats.getStat(StatType.SPEED_BOOST);
-                if(speed > 0f) {
-                    speedAttr.addTransientModifier(new AttributeModifier(SPEED_MODIFIER_ID, speed / 100f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-                }
-            }
-
-            if(atkSpeedAttr !=null) {
-                AttributeModifier modifier=null;
-                for(AttributeModifier mod:atkSpeedAttr.getModifiers()) {
-                    if(mod.is(ATTACK_SPEED_MODIFIER_ID)) {
-                        modifier=mod;
-                        break;
-                    }
-                }
-                if(modifier !=null) atkSpeedAttr.removeModifier(modifier);
-                float atkSpeed=stats.getStat(StatType.ATTACK_SPEED);
-                if(atkSpeed > 0f) {
-                    atkSpeedAttr.addTransientModifier(new AttributeModifier(ATTACK_SPEED_MODIFIER_ID, atkSpeed / 100f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-                }
-            }
-
-            if(knockAttr !=null) {
-                AttributeModifier modifier=null;
-                for(AttributeModifier mod:knockAttr.getModifiers()) {
-                    if(mod.is(KNOCKBACK_RESISTANCE_MODIFIER_ID)) {
-                        modifier=mod;
-                        break;
-                    }
-                }
-                if(modifier !=null) knockAttr.removeModifier(modifier);
-                float knock=stats.getStat(StatType.KNOCKBACK_RESISTANCE);
-                if(knock > 0f) {
-                    knockAttr.addTransientModifier(new AttributeModifier(KNOCKBACK_RESISTANCE_MODIFIER_ID, knock / 100f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-                }
-            }
-
-            if(attackAttr !=null) {
-                AttributeModifier modifier=null;
-                for(AttributeModifier mod:attackAttr.getModifiers()) {
-                    if(mod.is(ATTACK_DAMAGE_MODIFIER_ID)) {
-                        modifier=mod;
-                        break;
-                    }
-                }
-                if(modifier !=null) attackAttr.removeModifier(modifier);
-                float attack=stats.getStat(StatType.ATTACK_BOOTS);
-                if(attack > 0f) {
-                    attackAttr.addTransientModifier(new AttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, attack / 100f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-                }
-            }
-
-            if(armorAttr !=null) {
-                AttributeModifier modifier=null;
-                for(AttributeModifier mod:armorAttr.getModifiers()) {
-                    if(mod.is(ARMOR_MODIFIER_ID)) {
-                        modifier=mod;
-                        break;
-                    }
-                }
-                if(modifier !=null) armorAttr.removeModifier(modifier);
-                float armor=stats.getStat(StatType.ARMOR_BOOST);
-                if(armor > 0f) {
-                    armorAttr.addTransientModifier(new AttributeModifier(ARMOR_MODIFIER_ID, armor / 100f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-                }
-            }
-
-            if(swimAttr !=null) {
-                AttributeModifier modifier=null;
-                for(AttributeModifier mod:swimAttr.getModifiers()) {
-                    if(mod.is(SWIM_SPEED_MODIFIER_ID)) {
-                        modifier=mod;
-                        break;
-                    }
-                }
-                if(modifier !=null) swimAttr.removeModifier(modifier);
-                float swim=stats.getStat(StatType.SWIM_SPEED);
-                if(swim > 0f) {
-                    swimAttr.addTransientModifier(new AttributeModifier(SWIM_SPEED_MODIFIER_ID, swim / 100f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
-                }
-            }
-
+            update(speedAttr,SPEED_MODIFIER_ID,stats.getStat(StatType.SPEED_BOOST) / 100f);
+            update(atkSpeedAttr,ATTACK_SPEED_MODIFIER_ID,stats.getStat(StatType.ATTACK_SPEED) / 100f);
+            update(knockAttr,KNOCKBACK_RESISTANCE_MODIFIER_ID,stats.getStat(StatType.KNOCKBACK_RESISTANCE) / 100f);
+            update(attackAttr,ATTACK_DAMAGE_MODIFIER_ID,stats.getStat(StatType.ATTACK_BOOTS) / 100f);
+            update(armorAttr,ARMOR_MODIFIER_ID,stats.getStat(StatType.ARMOR_BOOST) / 100f);
+            update(swimAttr,SWIM_SPEED_MODIFIER_ID,stats.getStat(StatType.SWIM_SPEED) / 100f);
+            if(player.tickCount % 1200 == 0 && player.getServer() != null) PlayerStatStorage.get(player.getServer().overworld()).savePlayer(player,stats);
             if(regen > 0f && player.tickCount % 100 == 0) {
                 player.heal(regen / 100f);
             }
@@ -205,12 +135,13 @@ public class PlayerStatEvents {
     @SubscribeEvent
     public static void onJump(LivingEvent.LivingJumpEvent event) {
         if(!(event.getEntity() instanceof Player player)) return;
-        PlayerStatProvider.get(player).ifPresent(stats -> {
-            float jump=stats.getStat(StatType.JUMP_BOOST);
-            if(jump > 0f) {
-                player.setDeltaMovement(player.getDeltaMovement().x,player.getDeltaMovement().y+(jump / 500f),player.getDeltaMovement().z);
-            }
-        });
+        if(ServerConfig.JUMP_BOOST_EFFECT.get() && !player.hasEffect(MobEffects.JUMP)) return;
+        IPlayerStat iPlayerStat=player.level().isClientSide ? ClientStat.get(player) : PlayerStatProvider.get(player).orElse(null);
+        if(iPlayerStat == null) return;
+        float jump=iPlayerStat.getStat(StatType.JUMP_BOOST);
+        if(jump > 0f) {
+            player.setDeltaMovement(player.getDeltaMovement().x,player.getDeltaMovement().y+(jump / 500f),player.getDeltaMovement().z);
+        }
     }
 
     @SubscribeEvent
@@ -223,5 +154,22 @@ public class PlayerStatEvents {
                 event.setDamageMultiplier(1.5f);
             }
         });
+    }
+
+    @SubscribeEvent
+    public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent playerChangedDimensionEvent) {
+        PlayerStatProvider.sync(playerChangedDimensionEvent.getEntity());
+    }
+
+    private static void update(AttributeInstance attributeInstance, ResourceLocation resourceLocation, double value) {
+        if(attributeInstance == null) return;
+        AttributeModifier attributeModifier=attributeInstance.getModifier(resourceLocation);
+        if(!Double.isFinite(value) || value <= 0.0) {
+            if(attributeModifier != null) attributeInstance.removeModifier(resourceLocation);
+            return;
+        }
+        if(attributeModifier != null && Double.compare(attributeModifier.amount(),value) == 0 && attributeModifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_BASE) return;
+        if(attributeModifier != null) attributeInstance.removeModifier(resourceLocation);
+        attributeInstance.addTransientModifier(new AttributeModifier(resourceLocation,value,AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     }
 }

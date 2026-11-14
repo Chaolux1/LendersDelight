@@ -1,5 +1,6 @@
 package net.chaolux.lendersdelight;
 
+import net.chaolux.lendersdelight.compatibility.CompatDatapacks;
 import net.chaolux.lendersdelight.coomon.stat.PlayerStatCapability;
 import net.chaolux.lendersdelight.registry.block.ModBlocks;
 import net.chaolux.lendersdelight.registry.item.ModItems;
@@ -54,7 +55,10 @@ public class LendersDelight
 
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
+        modEventBus.addListener(CompatDatapacks::onAddPackFinders);
+
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

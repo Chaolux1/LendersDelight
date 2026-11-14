@@ -3,6 +3,7 @@ package net.chaolux.lendersdelight.client;
 import net.chaolux.lendersdelight.Config;
 import net.chaolux.lendersdelight.coomon.stat.IPlayerStat;
 import net.chaolux.lendersdelight.coomon.stat.PlayerStatProvider;
+import net.chaolux.lendersdelight.coomon.stat.StatReloadListener;
 import net.chaolux.lendersdelight.coomon.stat.StatType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
@@ -37,7 +38,7 @@ public class ClientStatTooltipHelper {
     }
 
     private static boolean isLimitReach(Player player, IPlayerStat stats, StatType type) {
-        double limit= Config.getStatLimit(type);
+        double limit= StatReloadListener.getLimit(type);
         if(type == StatType.ARMOR_BOOST) return getAttributeValue(player, Attributes.ARMOR) >= limit;
         if(type == StatType.ATTACK_BOOTS) return getAttributeValue(player, Attributes.ATTACK_DAMAGE) >= limit;
         if(type == StatType.SPEED_BOOST) return getAttributeValue(player, Attributes.MOVEMENT_SPEED) >= limit;
@@ -52,4 +53,28 @@ public class ClientStatTooltipHelper {
         return attributeInstance == null ? 0.0 : attributeInstance.getValue();
     }
 
+    public static boolean hasAttributeLimit(StatType statType) {
+        return switch (statType) {
+            case ARMOR_BOOST,ATTACK_BOOTS,SPEED_BOOST,ATTACK_SPEED,KNOCKBACK_RESISTANCE,SWIM_SPEED -> true;
+            default -> false;
+        };
+    }
+
+    public static double getLimitValue(Player player,IPlayerStat iPlayerStat,StatType statType) {
+        return switch (statType) {
+            case ARMOR_BOOST -> getAttributeValue(player,Attributes.ARMOR);
+            case ATTACK_BOOTS -> getAttributeValue(player,Attributes.ATTACK_DAMAGE);
+            case SPEED_BOOST -> getAttributeValue(player,Attributes.MOVEMENT_SPEED);
+            case ATTACK_SPEED -> getAttributeValue(player,Attributes.ATTACK_SPEED);
+            case KNOCKBACK_RESISTANCE -> getAttributeValue(player,Attributes.KNOCKBACK_RESISTANCE);
+            case SWIM_SPEED -> getAttributeValue(player,NeoForgeMod.SWIM_SPEED);
+            default -> iPlayerStat.getStat(statType);
+        };
+    }
+
+    public static int getFoodUse(ResourceLocation resourceLocation) {
+        Player player=Minecraft.getInstance().player;
+        if(player == null) return 0;
+        return ClientStat.get(player).getFoodUse(resourceLocation);
+    }
 }
