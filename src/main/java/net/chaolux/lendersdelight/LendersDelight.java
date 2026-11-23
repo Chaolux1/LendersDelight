@@ -50,7 +50,6 @@ public class LendersDelight
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
         if (event.getTabKey() == CreativeModeTabs.FOOD_AND_DRINKS) {
-            CompatCreativeTabs compatCreativeTabs=new CompatCreativeTabs(event,"");
             event.accept(ModItems.LEVIATHAN);
             event.accept(ModItems.COOKED_LEVIATHAN);
             event.accept(ModItems.ENDER_GOLEM_MEAT);
@@ -115,12 +114,13 @@ public class LendersDelight
             event.accept(ModItems.IMPROVED_DOG_FOOD);
         }
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
+            CompatCreativeTabs compatCreativeTabs=new CompatCreativeTabs(event,"cataclysm_delicacies");
             event.accept(ModItems.ABYSSAL_KNIFE);
             event.accept(ModItems.ANCIENT_KNIFE);
             event.accept(ModItems.BLACK_STEEL_KNIFE);
-            event.accept(ModItems.IGNITIUM_KNIFE);
-            event.accept(ModItems.WITHERITE_KNIFE);
-            event.accept(ModItems.CURSIUM_KNIFE);
+            compatCreativeTabs.accept(ModItems.IGNITIUM_KNIFE);
+            compatCreativeTabs.accept(ModItems.WITHERITE_KNIFE);
+            compatCreativeTabs.accept(ModItems.CURSIUM_KNIFE);
             event.accept(ModItems.LACRIMA_ANCHOR_KNIFE);
         }
     }

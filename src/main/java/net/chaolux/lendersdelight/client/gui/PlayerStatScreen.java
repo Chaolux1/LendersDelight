@@ -3,6 +3,7 @@ package net.chaolux.lendersdelight.client.gui;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.chaolux.lendersdelight.LendersDelight;
+import net.chaolux.lendersdelight.ServerConfig;
 import net.chaolux.lendersdelight.client.ClientKeyBind;
 import net.chaolux.lendersdelight.client.ClientStatTooltipHelper;
 import net.chaolux.lendersdelight.coomon.stat.*;
@@ -43,12 +44,17 @@ public class PlayerStatScreen extends Screen {
     private static final DecimalFormat DECIMAL_FORMAT=new DecimalFormat("0.####", DecimalFormatSymbols.getInstance(Locale.ROOT));
     private int visible;
     private boolean scrollbar;
+
     public PlayerStatScreen() {
         super(Component.translatable("screen.lendersdelight.stat.title"));
     }
 
     @Override
     public void render(GuiGraphics guiGraphics,int x,int y,float tick) {
+        if(!ServerConfig.SPEC.isLoaded() || !ServerConfig.SHOW_STAT_SCREEN.get()) {
+            onClose();
+            return;
+        }
         float value=getValue();
         int left=Math.round((width - SCREEN * value) / 2.0f);
         int top=Math.round((height - SCREEN * value) / 2.0f);
@@ -67,7 +73,7 @@ public class PlayerStatScreen extends Screen {
         IPlayerStat iPlayerStat=player == null ? null : player.getCapability(PlayerStatProvider.PLAYER_STAT).orElse(null);
         int indexValue= -1;
         if(iPlayerStat == null) {
-            guiGraphics.drawCenteredString(font,Component.translatable("screen.lendersdelight.stat.text"),SCREEN / 2,ROW_TOP + 75,TOOLTIP_TEXT);
+            guiGraphics.drawCenteredString(font,Component.translatable("screen.lendersdelight.stat.text"),SCREEN / 2,ROW_TOP + 75, TOOLTIP_TEXT);
         } else {
             visible=Math.max(0,Math.min(visible,getMaxScroll()));
             for (int index=0;index < ROW;index++) {
@@ -76,12 +82,12 @@ public class PlayerStatScreen extends Screen {
                 int row=ROW_TOP + index * ROW_SIZE;
                 boolean hover=drawInside(mouseX,mouseY,ROW_LEFT,row,ROW_WIDTH,ROW_HEIGHT);
                 renderStat(guiGraphics,row,STAT_TYPES[slot],player,iPlayerStat,statMode,hover);
-                if(hover && statMode == StatMode.LIMITED && ClientStatTooltipHelper.hasAttributeLimit(STAT_TYPES[slot])) indexValue=slot;
+                if(hover && ServerConfig.isEnableStat(STAT_TYPES[slot]) && statMode == StatMode.LIMITED && ClientStatTooltipHelper.hasAttributeLimit(STAT_TYPES[slot])) indexValue=slot;
             }
             renderScrollbar(guiGraphics);
         }
         String stringDown=mode(Component.translatable("screen.lendersdelight.stat.down").getString(),226);
-        guiGraphics.drawCenteredString(font,stringDown,SCREEN / 2,233,TOOLTIP_TEXT);
+        guiGraphics.drawCenteredString(font,stringDown,SCREEN / 2,233, TOOLTIP_TEXT);
         guiGraphics.pose().popPose();
         if(indexValue >= 0) guiGraphics.renderTooltip(font,Component.translatable("screen.lendersdelight.stat.tooltip"),x,y);
     }
@@ -156,12 +162,17 @@ public class PlayerStatScreen extends Screen {
         guiGraphics.blit(STAT_SPRITE, ROW_LEFT, y, 0, hover ? 32 : 0, ROW_WIDTH, ROW_HEIGHT, 256, 256);
         int value = statType.ordinal();
         guiGraphics.blit(STAT_ICON, ROW_LEFT + 5, y + 5, value * 16, 0, 16, 16, 144, 16);
-        String string = "+" + format(iPlayerStat.getStat(statType)) + "%";
+        String string = "+" + StatType.string(iPlayerStat.getStat(statType)) + "%";
         int x = ROW_LEFT + ROW_WIDTH - 7 - font.width(string);
         int width=Math.max(14,x-TEXT_WIDTH - 6);
         String name = mode(Component.translatable(statType.getLangKey()).getString(), Math.max(14, x - TEXT_WIDTH - 5));
+        boolean enable=ServerConfig.isEnableStat(statType);
         guiGraphics.drawString(font, name, TEXT_WIDTH, y + 3, TEXT, false);
-        guiGraphics.drawString(font, string, x, y + 5, STAT_TEXT, false);
+        guiGraphics.drawString(font, string, x, y + 5,enable ? STAT_TEXT : TOOLTIP_TEXT, false);
+        if(!enable) {
+            guiGraphics.drawString(font,Component.translatable("screen.lendersdelight.stat.disable"),TEXT_WIDTH,y + 12, TOOLTIP_TEXT,false);
+            return;
+        }
         if (statMode != StatMode.LIMITED) return;
         double limitValue = ClientStatTooltipHelper.getLimitValue(player, iPlayerStat, statType);
         double limit = StatReloadListener.getLimit(statType);

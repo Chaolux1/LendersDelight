@@ -7,7 +7,7 @@ import net.minecraftforge.fml.ModList;
 import java.util.Map;
 
 public class CompatManager {
-    private static final Map<String,String> DATAPACKS=Map.of();
+    private static final Map<String,String> DATAPACKS=Map.of("cataclysm_delicacies","cataclysm_delicacies_compat");
     public static Map<String,String> getDatapacks() {
         return DATAPACKS;
     }

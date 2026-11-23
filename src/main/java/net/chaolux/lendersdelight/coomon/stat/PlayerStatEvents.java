@@ -3,6 +3,7 @@ package net.chaolux.lendersdelight.coomon.stat;
 import net.chaolux.lendersdelight.ServerConfig;
 import net.chaolux.lendersdelight.LendersDelight;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -36,7 +37,7 @@ public class PlayerStatEvents {
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
         if(ServerConfig.RESET_ON_DEATH.get()) return;
-        if (!(event.getEntity() instanceof Player player)) return;
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
         LazyOptional<IPlayerStat> capOptional = player.getCapability(PlayerStatProvider.PLAYER_STAT);
         if (capOptional.isPresent()) {
             IPlayerStat cap = capOptional.orElse(null);
@@ -60,12 +61,10 @@ public class PlayerStatEvents {
             LazyOptional<IPlayerStat> capOptional = player.getCapability(PlayerStatProvider.PLAYER_STAT);
             if (capOptional.isPresent()) {
                 IPlayerStat cap = capOptional.orElse(null);
-                if (cap != null) {
-                    cap.loadFromNBT(saved);
-                }
+                if (cap != null) cap.loadFromNBT(saved);
             }
-            PlayerStatProvider.sync(event.getEntity());
         }
+        PlayerStatProvider.sync(event.getEntity());
     }
 
     @SubscribeEvent
@@ -79,30 +78,25 @@ public class PlayerStatEvents {
             var attackAttr=player.getAttribute(Attributes.ATTACK_DAMAGE);
             var armorAttr=player.getAttribute(Attributes.ARMOR);
             var swimAttr=player.getAttribute(ForgeMod.SWIM_SPEED.get());
-            float regen=stats.getStat(StatType.PASSIVE_REGEN);
-
-            update(speedAttr,SPEED_MODIFIER_ID,"Speed Boost",stats.getStat(StatType.SPEED_BOOST) / 100f);
-            update(atkSpeedAttr,ATTACK_SPEED_MODIFIER_ID,"Attack Speed Boost",stats.getStat(StatType.ATTACK_SPEED) / 100f);
-            update(knockAttr,KNOCKBACK_RESISTANCE_MODIFIER_ID,"Knockback Resistance",stats.getStat(StatType.KNOCKBACK_RESISTANCE) / 100f);
-            update(attackAttr,ATTACK_DAMAGE_MODIFIER_ID,"Attack Boost",stats.getStat(StatType.ATTACK_BOOTS) / 100f);
-            update(armorAttr,ARMOR_MODIFIER_ID,"Armor",stats.getStat(StatType.ARMOR_BOOST) / 100f);
-            update(swimAttr,SWIM_SPEED_MODIFIER_ID,"Swim Speed Boost",stats.getStat(StatType.SWIM_SPEED) / 100f);
-
-            if(!player.level().isClientSide && regen > 0f && player.tickCount % 100 == 0) {
-                player.heal(regen / 100f);
-            }
+            float regen=getStat(stats,StatType.PASSIVE_REGEN);
+            update(speedAttr,SPEED_MODIFIER_ID,"Speed Boost",getStat(stats,StatType.SPEED_BOOST) / 100f);
+            update(atkSpeedAttr,ATTACK_SPEED_MODIFIER_ID,"Attack Speed Boost",getStat(stats,StatType.ATTACK_SPEED) / 100f);
+            update(knockAttr,KNOCKBACK_RESISTANCE_MODIFIER_ID,"Knockback Resistance",getStat(stats,StatType.KNOCKBACK_RESISTANCE) / 100f);
+            update(attackAttr,ATTACK_DAMAGE_MODIFIER_ID,"Attack Boost",getStat(stats,StatType.ATTACK_BOOTS) / 100f);
+            update(armorAttr,ARMOR_MODIFIER_ID,"Armor",getStat(stats,StatType.ARMOR_BOOST) / 100f);
+            update(swimAttr,SWIM_SPEED_MODIFIER_ID,"Swim Speed Boost",getStat(stats,StatType.SWIM_SPEED) / 100f);
+            if(!player.level().isClientSide && regen > 0f && player.tickCount % 100 == 0) player.heal(regen / 100f);
         });
     }
 
     @SubscribeEvent
     public static void onJump(LivingEvent.LivingJumpEvent event) {
         if(!(event.getEntity() instanceof Player player)) return;
+        if(!ServerConfig.SPEC.isLoaded()) return;
         if(ServerConfig.JUMP_BOOST_EFFECT.get() && !player.hasEffect(MobEffects.JUMP)) return;
         player.getCapability(PlayerStatProvider.PLAYER_STAT).ifPresent(stats -> {
-            float jump=stats.getStat(StatType.JUMP_BOOST);
-            if(jump > 0f) {
-                player.setDeltaMovement(player.getDeltaMovement().x,player.getDeltaMovement().y+(jump / 500f),player.getDeltaMovement().z);
-            }
+            float jump=getStat(stats,StatType.JUMP_BOOST);
+            if(jump > 0f) player.setDeltaMovement(player.getDeltaMovement().x,player.getDeltaMovement().y+(jump / 500f),player.getDeltaMovement().z);
         });
     }
 
@@ -110,7 +104,7 @@ public class PlayerStatEvents {
     public static void onCrit(CriticalHitEvent event) {
         Player player=event.getEntity();
         player.getCapability(PlayerStatProvider.PLAYER_STAT).ifPresent(stats -> {
-            float chance=stats.getStat(StatType.CRIT_CHANCE);
+            float chance=getStat(stats,StatType.CRIT_CHANCE);
             if(chance > 0f && player.level().random.nextFloat() < (chance / 100f)) {
                 event.setResult(Event.Result.ALLOW);
                 event.setDamageModifier(1.5f);
@@ -133,5 +127,9 @@ public class PlayerStatEvents {
         if(attributeModifier != null && Double.compare(attributeModifier.getAmount(),value) == 0 && attributeModifier.getOperation() == AttributeModifier.Operation.MULTIPLY_BASE) return;
         if(attributeModifier != null) attributeInstance.removeModifier(uuid);
         attributeInstance.addTransientModifier(new AttributeModifier(uuid,string,value,AttributeModifier.Operation.MULTIPLY_BASE));
+    }
+
+    private static float getStat(IPlayerStat iPlayerStat,StatType statType) {
+        return ServerConfig.isEnableStat(statType) ? iPlayerStat.getStat(statType) : 0.0f;
     }
 }

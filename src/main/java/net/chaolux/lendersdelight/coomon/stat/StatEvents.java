@@ -2,6 +2,9 @@ package net.chaolux.lendersdelight.coomon.stat;
 
 import net.chaolux.lendersdelight.ServerConfig;
 import net.chaolux.lendersdelight.registry.stat.ModNetwork;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -17,6 +20,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.stringtemplate.v4.ST;
 
 import java.util.Map;
 
@@ -42,7 +46,7 @@ public class StatEvents {
     @SubscribeEvent
     public static void onFinish(LivingEntityUseItemEvent.Finish finish) {
         if(!(finish.getEntity() instanceof ServerPlayer serverPlayer)) return;
-        if(!ServerConfig.ENABLE_STAT.get()) return;
+        if(!ServerConfig.ENABLE_STAT.get() || ServerConfig.STAT_MULTIPLIER.get() <= 0.0) return;
         ItemStack itemStack=finish.getItem();
         if(itemStack.isEmpty() || !itemStack.isEdible()) return;
         ResourceLocation resourceLocation= ForgeRegistries.ITEMS.getKey(itemStack.getItem());
@@ -54,15 +58,30 @@ public class StatEvents {
             if(statMode == StatMode.ONCE && stat.hasConsumed(resourceLocation)) return;
             if(statMode == StatMode.CAPPED && stat.getFoodUse(resourceLocation) >= StatReloadListener.getServerCapped(resourceLocation)) return;
             boolean once=false;
+            MutableComponent mutableComponent= Component.empty();
             for(Map.Entry<StatType,Float> statTypeFloatEntry : statTypeFloatMap.entrySet()) {
-                if(statMode == StatMode.LIMITED && isLimit(serverPlayer,stat,statTypeFloatEntry.getKey())) continue;
-                stat.addStat(statTypeFloatEntry.getKey(),statTypeFloatEntry.getValue());
+                StatType statType=statTypeFloatEntry.getKey();
+                if(!ServerConfig.isEnableStat(statType)) continue;
+                if(statMode == StatMode.LIMITED && isLimit(serverPlayer,stat,statType)) continue;
+                float multiplier=ServerConfig.multiplierValue(statTypeFloatEntry.getValue());
+                float value=stat.getStat(statType);
+                if(multiplier <= 0 || !Float.isFinite(value)) continue;
+                float data=(float)Math.min((double)value + multiplier,Float.MAX_VALUE);
+                if(data <= value) continue;
+                stat.setStat(statType,data);
+                float gain=stat.getStat(statType) - value;
+                if(gain <= 0) continue;
+                if(ServerConfig.SHOW_STAT_GAIN.get()) {
+                    if(once) mutableComponent.append(Component.literal(" / ").withStyle(ChatFormatting.GRAY));
+                    mutableComponent.append(Component.translatable("tooltip.lendersdelight.gain",Component.translatable(statType.getLangKey()),StatType.string(gain)).withStyle(ChatFormatting.GREEN));
+                }
                 once=true;
             }
             if(once) {
                 if(statMode == StatMode.ONCE) stat.markConsumed(resourceLocation);
                 if(statMode == StatMode.CAPPED) stat.setFoodUse(resourceLocation,stat.getFoodUse(resourceLocation) + 1);
                 PlayerStatProvider.sync(serverPlayer);
+                if(ServerConfig.SHOW_STAT_GAIN.get()) serverPlayer.displayClientMessage(mutableComponent,true);
             }
         });
     }

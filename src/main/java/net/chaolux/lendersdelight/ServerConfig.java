@@ -1,12 +1,23 @@
 package net.chaolux.lendersdelight;
 
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import com.electronwill.nightconfig.toml.TomlWriter;
+import com.mojang.logging.LogUtils;
+import net.chaolux.lendersdelight.coomon.stat.StatDefinitionPacket;
 import net.chaolux.lendersdelight.coomon.stat.StatMode;
 import net.chaolux.lendersdelight.coomon.stat.StatType;
+import net.chaolux.lendersdelight.registry.stat.ModNetwork;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -20,9 +31,12 @@ public class ServerConfig
     public static final ForgeConfigSpec.EnumValue<StatMode> STAT_MODE;
     public static final ForgeConfigSpec.IntValue CAPPED_DEFAULT;
     public static final Map<StatType,ForgeConfigSpec.DoubleValue> STAT_LIMITS=new EnumMap<>(StatType.class);
-    public static boolean showTooltipStat=true;
     public static final ForgeConfigSpec.BooleanValue SHOW_STAT_SCREEN;
     public static final ForgeConfigSpec.BooleanValue JUMP_BOOST_EFFECT;
+    public static final ForgeConfigSpec.DoubleValue STAT_MULTIPLIER;
+    public static ForgeConfigSpec.BooleanValue SHOW_STAT_GAIN;
+    public static ForgeConfigSpec.BooleanValue SHOW_STAT_USE;
+    public static final Map<StatType,ForgeConfigSpec.BooleanValue> STAT_TYPE=new EnumMap<>(StatType.class);
 
     static {
         BUILDER.push("Stat");
@@ -33,6 +47,20 @@ public class ServerConfig
         CAPPED_DEFAULT=BUILDER.comment("Default number of stat grant uses per food in CAPPED mode when JSON has no capped field").defineInRange("cappedDefault",3,0,1000000);
         SHOW_STAT_SCREEN=BUILDER.comment("Allow opening a player stats screen.").define("showStatScreen",false);
         JUMP_BOOST_EFFECT=BUILDER.comment("Apply accumulate Jump Boost stat only while a player has the Jump Boost effect").define("jumpBootsEffect",false);
+        STAT_MULTIPLIER=BUILDER.comment("Multiplier for new stat from food. Does not affect stored stats. Zero disable new food").defineInRange("statMultiplier",1.0,0.0,100.0);
+        SHOW_STAT_GAIN=BUILDER.comment("Show actual stat gain in a action bar after eating").define("showStatGain",false);
+        SHOW_STAT_USE=BUILDER.comment("Show remaining CAPPED use in food tooltips while hold Ctrl").define("showStatUse",false);
+        BUILDER.pop();
+        BUILDER.comment("Disable stat are neither granted by food nor applied. Stored value are preserved").push("Stat Type");
+        STAT_TYPE.put(StatType.ARMOR_BOOST,BUILDER.define("armorBoost",true));
+        STAT_TYPE.put(StatType.ATTACK_BOOTS,BUILDER.define("attackDamage",true));
+        STAT_TYPE.put(StatType.SPEED_BOOST,BUILDER.define("speedBoost",true));
+        STAT_TYPE.put(StatType.JUMP_BOOST,BUILDER.define("jumpBoost",true));
+        STAT_TYPE.put(StatType.ATTACK_SPEED,BUILDER.define("attackSpeed",true));
+        STAT_TYPE.put(StatType.CRIT_CHANCE,BUILDER.define("critChance",true));
+        STAT_TYPE.put(StatType.KNOCKBACK_RESISTANCE,BUILDER.define("knockbackResistance",true));
+        STAT_TYPE.put(StatType.PASSIVE_REGEN,BUILDER.define("passiveRegen",true));
+        STAT_TYPE.put(StatType.SWIM_SPEED,BUILDER.define("swimSpeed",true));
         BUILDER.pop();
         BUILDER.push("Stat Limits");
         STAT_LIMITS.put(StatType.ARMOR_BOOST,BUILDER.comment("Maximum Armor attribute value").defineInRange("maxArmor",20.0,0.0,10000.0));
@@ -56,8 +84,36 @@ public class ServerConfig
     }
 
     @SubscribeEvent
-    static void onLoad(final ModConfigEvent event)
-    {
-        showTooltipStat=SHOW_TOOLTIP_STAT.get();
+    static void onReloading(final ModConfigEvent.Reloading reloading) {
+        ModConfig modConfig = reloading.getConfig();
+        if (modConfig.<ForgeConfigSpec>getSpec() != SPEC || !(modConfig.getConfigData() instanceof CommentedFileConfig))
+            return;
+        MinecraftServer minecraftServer = ServerLifecycleHooks.getCurrentServer();
+        if (minecraftServer == null) return;
+        minecraftServer.execute(() -> {
+            if (ServerLifecycleHooks.getCurrentServer() != minecraftServer || !SPEC.isLoaded() || !(modConfig.getConfigData() instanceof CommentedFileConfig))
+                return;
+            if (minecraftServer.getPlayerList().getPlayers().isEmpty()) return;
+            try {
+                StringWriter stringWriter = new StringWriter();
+                new TomlWriter().write(modConfig.getConfigData(), stringWriter);
+                byte[] data = stringWriter.toString().getBytes(StandardCharsets.UTF_8);
+                for (ServerPlayer serverPlayer : minecraftServer.getPlayerList().getPlayers()) {
+                    ModNetwork.sendToClient(serverPlayer, data);
+                }
+            } catch (RuntimeException runtimeException) {
+                LogUtils.getLogger().error("Fail to sync server config",runtimeException);
+            }
+        });
+    }
+
+    public static boolean isEnableStat(StatType statType) {
+        return SPEC.isLoaded() && ENABLE_STAT.get() && STAT_TYPE.get(statType).get();
+    }
+
+    public static float multiplierValue(float value) {
+        double data=value * STAT_MULTIPLIER.get();
+        if(!Double.isFinite(data) || data <= 0.0) return 0.0f;
+        return (float)Math.min(data,Float.MAX_VALUE);
     }
 }

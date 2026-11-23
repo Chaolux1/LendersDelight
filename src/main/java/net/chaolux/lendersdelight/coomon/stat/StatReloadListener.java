@@ -20,9 +20,6 @@ public class StatReloadListener extends SimpleJsonResourceReloadListener {
     private static volatile Map<ResourceLocation,Map<StatType,Float>> client=Map.of();
     private static volatile Map<ResourceLocation,Integer> serverCapped=Map.of();
     private static volatile Map<ResourceLocation,Integer> clientCapped=Map.of();
-    private static volatile int value=3;
-    private static volatile StatMode statMode=StatMode.ACCUMULATE;
-    private static volatile Map<StatType,Double> statTypeDoubleMap=Map.of();
     public StatReloadListener() {
         super(GSON,"stats");
     }
@@ -81,14 +78,14 @@ public class StatReloadListener extends SimpleJsonResourceReloadListener {
     }
 
     public static StatMode getStatMode() {
-        return statMode;
+        return ServerConfig.STAT_MODE.get();
     }
 
     public static double getLimit(StatType statType) {
-        return statTypeDoubleMap.getOrDefault(statType, ServerConfig.getStatLimit(statType));
+        return ServerConfig.getStatLimit(statType);
     }
 
-    public static void setLimit(Map<ResourceLocation,Map<StatType,Float>> map,StatMode mode,Map<StatType,Double> doubleMap,Map<ResourceLocation,Integer> resourceLocationIntegerMap,int data) {
+    public static void setLimit(Map<ResourceLocation,Map<StatType,Float>> map,Map<ResourceLocation,Integer> resourceLocationIntegerMap) {
         Map<ResourceLocation,Map<StatType,Float>> resourceLocationMapMap=new LinkedHashMap<>();
         for (Map.Entry<ResourceLocation,Map<StatType,Float>> entry : map.entrySet()) {
             EnumMap<StatType,Float> enumMap=new EnumMap<>(StatType.class);
@@ -96,12 +93,7 @@ public class StatReloadListener extends SimpleJsonResourceReloadListener {
             resourceLocationMapMap.put(entry.getKey(),Collections.unmodifiableMap(enumMap));
         }
         client=Collections.unmodifiableMap(resourceLocationMapMap);
-        EnumMap<StatType,Double> enumMap=new EnumMap<>(StatType.class);
-        enumMap.putAll(doubleMap);
-        statTypeDoubleMap=Collections.unmodifiableMap(enumMap);
-        statMode=mode;
         clientCapped=Collections.unmodifiableMap(new LinkedHashMap<>(resourceLocationIntegerMap));
-        value=data;
     }
 
     public static int getServerCapped(ResourceLocation resourceLocation) {
@@ -109,10 +101,15 @@ public class StatReloadListener extends SimpleJsonResourceReloadListener {
     }
 
     public static int getClientCapped(ResourceLocation resourceLocation) {
-        return clientCapped.getOrDefault(resourceLocation,value);
+        return clientCapped.getOrDefault(resourceLocation,ServerConfig.CAPPED_DEFAULT.get());
     }
 
     public static Map<ResourceLocation,Integer> getServerCappedOverride() {
         return serverCapped;
+    }
+
+    public static void clearClient() {
+        client=Map.of();
+        clientCapped=Map.of();
     }
 }
