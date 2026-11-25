@@ -1,6 +1,7 @@
 package net.chaolux.lendersdelight.client.gui;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import net.chaolux.lendersdelight.ServerConfig;
 import net.chaolux.lendersdelight.client.ClientKeyBind;
 import net.chaolux.lendersdelight.client.ClientStat;
 import net.chaolux.lendersdelight.client.ClientStatTooltipHelper;
@@ -48,6 +49,10 @@ public class PlayerStatScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics,int x,int y,float tick) {
+        if(!ServerConfig.SPEC.isLoaded() || !ServerConfig.SHOW_STAT_SCREEN.get()) {
+            onClose();
+            return;
+        }
         float value=getValue();
         int left=Math.round((width - SCREEN * value) / 2.0f);
         int top=Math.round((height - SCREEN * value) / 2.0f);
@@ -75,7 +80,7 @@ public class PlayerStatScreen extends Screen {
                 int row=ROW_TOP + index * ROW_SIZE;
                 boolean hover=drawInside(mouseX,mouseY,ROW_LEFT,row,ROW_WIDTH,ROW_HEIGHT);
                 renderStat(guiGraphics,row,STAT_TYPES[slot],player,iPlayerStat,statMode,hover);
-                if(hover && statMode == StatMode.LIMITED && ClientStatTooltipHelper.hasAttributeLimit(STAT_TYPES[slot])) indexValue=slot;
+                if(hover && ServerConfig.isEnableStat(STAT_TYPES[slot]) && statMode == StatMode.LIMITED && ClientStatTooltipHelper.hasAttributeLimit(STAT_TYPES[slot])) indexValue=slot;
             }
             renderScrollbar(guiGraphics);
         }
@@ -159,8 +164,13 @@ public class PlayerStatScreen extends Screen {
         int x = ROW_LEFT + ROW_WIDTH - 7 - font.width(string);
         int width=Math.max(14,x-TEXT_WIDTH - 6);
         String name = mode(Component.translatable(statType.getLangKey()).getString(), Math.max(14, x - TEXT_WIDTH - 5));
+        boolean enable=ServerConfig.isEnableStat(statType);
         guiGraphics.drawString(font, name, TEXT_WIDTH, y + 3, TEXT, false);
-        guiGraphics.drawString(font, string, x, y + 5, STAT_TEXT, false);
+        guiGraphics.drawString(font, string, x, y + 5,enable ? STAT_TEXT : TOOLTIP_TEXT, false);
+        if(!enable) {
+            guiGraphics.drawString(font,Component.translatable("screen.lendersdelight.stat.disable"),TEXT_WIDTH,y + 12, TOOLTIP_TEXT,false);
+            return;
+        }
         if (statMode != StatMode.LIMITED) return;
         double limitValue = ClientStatTooltipHelper.getLimitValue(player, iPlayerStat, statType);
         double limit = StatReloadListener.getLimit(statType);

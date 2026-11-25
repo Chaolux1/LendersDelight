@@ -1,6 +1,7 @@
 package net.chaolux.lendersdelight.registry.stat;
 
 import net.chaolux.lendersdelight.client.ClientStatSyncHandler;
+import net.chaolux.lendersdelight.coomon.stat.ServerConfigPacket;
 import net.chaolux.lendersdelight.coomon.stat.StatDefinitionPacket;
 import net.chaolux.lendersdelight.coomon.stat.StatSyncPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -22,5 +23,9 @@ public class ModNetwork {
 
     public static void sendToClient(ServerPlayer player, StatDefinitionPacket packet) {
         PacketDistributor.sendToPlayer(player,packet);
+    }
+
+    public static void sendToClient(ServerPlayer serverPlayer, ServerConfigPacket serverConfigPacket) {
+        PacketDistributor.sendToPlayer(serverPlayer,serverConfigPacket);
     }
 }

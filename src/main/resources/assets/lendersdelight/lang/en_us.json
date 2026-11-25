@@ -80,6 +80,9 @@
   "tooltip.lendersdelight.stat_already_obtained": "Stats already obtained",
   "tooltip.lendersdelight.stat_limit_reached": "Stat limit reached",
   "tooltip.lendersdelight.stat_capped_reached": "Food stat cap reached",
+  "tooltip.lendersdelight.gain": "%s +%s%%",
+  "tooltip.lendersdelight.stat_capped_ctrl": "Remaining use: %s / %s",
+  "tooltip.lendersdelight.stat_more": "Hold [Ctrl] for more information",
   "stat.lendersdelight.armor_boost": "Armor Boost",
   "stat.lendersdelight.attack_boots": "Attack Boost",
   "stat.lendersdelight.speed_boost": "Speed Boost",
@@ -99,6 +102,7 @@
   "screen.lendersdelight.stat.down": "Scroll to browse",
   "screen.lendersdelight.stat.tooltip": "Limit is based on your total attribute value include equipment.",
   "screen.lendersdelight.stat.limit": "Stat Limit: %s",
+  "screen.lendersdelight.stat.disable": "Disable",
 
   "command.lendersdelight.stat.invalid": "Unknown stat: %s",
   "command.lendersdelight.stat.set": "Set %s to %s%% for %s player",
@@ -108,6 +112,12 @@
   "command.lendersdelight.stat.reset": "Reset stat and food use for %s player",
   "command.lendersdelight.stat.reset_food": "Reset food use for %s player",
   "command.lendersdelight.stat.get": "%s %s: %s%%",
+  "command.lendersdelight.stat.reset_food_once": "Reset use of %s for %s player",
+  "command.lendersdelight.stat.food_get": "%s - %s: %s / %s",
+  "command.lendersdelight.stat.food_get_value": "%s - %s: %s use",
+  "command.lendersdelight.stat.get_all": "%s - Stats:",
+  "command.lendersdelight.stat.get_key": "%s: %s%%",
+  "command.lendersdelight.stat.disable": "(Disable)",
 
   "key.categories.lendersdelight": "L_Ender 's Delight",
   "key.lendersdelight.open_stat": "Open Stat GUI"

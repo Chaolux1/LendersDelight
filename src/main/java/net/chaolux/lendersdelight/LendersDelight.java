@@ -1,5 +1,6 @@
 package net.chaolux.lendersdelight;
 
+import net.chaolux.lendersdelight.compatibility.CompatCreativeTabs;
 import net.chaolux.lendersdelight.compatibility.CompatDatapacks;
 import net.chaolux.lendersdelight.coomon.stat.PlayerStatCapability;
 import net.chaolux.lendersdelight.registry.block.ModBlocks;
@@ -134,12 +135,13 @@ public class LendersDelight
         }
 
         if (event.getTabKey() == CreativeModeTabs.COMBAT) {
+            CompatCreativeTabs compatCreativeTabs=new CompatCreativeTabs(event,"cataclysm_delicacies");
             event.accept(ModItems.ABYSSAL_KNIFE.get());
             event.accept(ModItems.ANCIENT_KNIFE.get());
             event.accept(ModItems.BLACK_STEEL_KNIFE.get());
-            event.accept(ModItems.IGNITIUM_KNIFE.get());
-            event.accept(ModItems.WITHERITE_KNIFE.get());
-            event.accept(ModItems.CURSIUM_KNIFE.get());
+            compatCreativeTabs.accept(ModItems.IGNITIUM_KNIFE);
+            compatCreativeTabs.accept(ModItems.WITHERITE_KNIFE);
+            compatCreativeTabs.accept(ModItems.CURSIUM_KNIFE);
             event.accept(ModItems.LACRIMA_ANCHOR_KNIFE.get());
         }
     }

@@ -8,11 +8,18 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import net.chaolux.lendersdelight.ServerConfig;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.EventBusSubscriber.Bus;
@@ -30,7 +37,7 @@ public class StatCommands {
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent registerCommandsEvent) {
         CommandDispatcher<CommandSourceStack> commandSourceStackCommandDispatcher=registerCommandsEvent.getDispatcher();
-        commandSourceStackCommandDispatcher.register(Commands.literal("lendersdelight").requires(commandSourceStack -> commandSourceStack.hasPermission(2)).then(Commands.literal("stat").then(Commands.literal("set").then(Commands.argument("player", EntityArgument.players()).then(Commands.argument("stat", StringArgumentType.word()).suggests(StatCommands::suggestStat).then(Commands.argument("value", FloatArgumentType.floatArg(0.0f,1000000.0f)).executes(commandContext -> set(commandContext,Command.SET)))))).then(Commands.literal("add").then(Commands.argument("player",EntityArgument.players()).then(Commands.argument("stat",StringArgumentType.word()).suggests(StatCommands::suggestStat).then(Commands.argument("value",FloatArgumentType.floatArg(0.0f,1000000.0f)).executes(commandContext -> set(commandContext,Command.ADD)))))).then(Commands.literal("remove").then(Commands.argument("player",EntityArgument.players()).then(Commands.argument("stat",StringArgumentType.word()).suggests(StatCommands::suggestStat).then(Commands.argument("value",FloatArgumentType.floatArg(0.0f,1000000.0f)).executes(commandContext -> set(commandContext,Command.REMOVE)))))).then(Commands.literal("reset").then(Commands.argument("player",EntityArgument.players()).executes(StatCommands::reset).then(Commands.argument("stat",StringArgumentType.word()).suggests(StatCommands::suggestStat).executes(StatCommands::resetOnce)))).then(Commands.literal("get").then(Commands.argument("player",EntityArgument.players()).then(Commands.argument("stat",StringArgumentType.word()).suggests(StatCommands::suggestStat).executes(StatCommands::get)))).then(Commands.literal("foodreset").then(Commands.argument("player",EntityArgument.players()).executes(StatCommands::resetFood)))));
+        commandSourceStackCommandDispatcher.register(Commands.literal("lendersdelight").requires(commandSourceStack -> commandSourceStack.hasPermission(2)).then(Commands.literal("stat").then(Commands.literal("set").then(Commands.argument("player", EntityArgument.players()).then(Commands.argument("stat", StringArgumentType.word()).suggests(StatCommands::suggestStat).then(Commands.argument("value", FloatArgumentType.floatArg(0.0f,1000000.0f)).executes(commandContext -> set(commandContext,Command.SET)))))).then(Commands.literal("add").then(Commands.argument("player",EntityArgument.players()).then(Commands.argument("stat",StringArgumentType.word()).suggests(StatCommands::suggestStat).then(Commands.argument("value",FloatArgumentType.floatArg(0.0f,1000000.0f)).executes(commandContext -> set(commandContext,Command.ADD)))))).then(Commands.literal("remove").then(Commands.argument("player",EntityArgument.players()).then(Commands.argument("stat",StringArgumentType.word()).suggests(StatCommands::suggestStat).then(Commands.argument("value",FloatArgumentType.floatArg(0.0f,1000000.0f)).executes(commandContext -> set(commandContext,Command.REMOVE)))))).then(Commands.literal("reset").then(Commands.argument("player",EntityArgument.players()).executes(StatCommands::reset).then(Commands.argument("stat",StringArgumentType.word()).suggests(StatCommands::suggestStat).executes(StatCommands::resetOnce)))).then(Commands.literal("get").then(Commands.argument("player",EntityArgument.players()).executes(StatCommands::getAll).then(Commands.argument("stat",StringArgumentType.word()).suggests(StatCommands::suggestStat).executes(StatCommands::get)))).then(Commands.literal("foodreset").then(Commands.argument("player",EntityArgument.players()).executes(StatCommands::resetFood).then(Commands.argument("food", ResourceLocationArgument.id()).suggests(StatCommands::suggestFood).executes(StatCommands::resetFoodOnce)))).then(Commands.literal("foodget").then(Commands.argument("player",EntityArgument.players()).then(Commands.argument("food",ResourceLocationArgument.id()).suggests(StatCommands::suggestFood).executes(StatCommands::getFood))))));
     }
 
     private static CompletableFuture<Suggestions> suggestStat(CommandContext<CommandSourceStack> commandSourceStackCommandContext, SuggestionsBuilder suggestionsBuilder) {
@@ -138,8 +145,70 @@ public class StatCommands {
         Collection<ServerPlayer> serverPlayerCollection=EntityArgument.getPlayers(commandSourceStackCommandContext,"player");
         for (ServerPlayer serverPlayer : serverPlayerCollection) {
             float value=PlayerStatProvider.get(serverPlayer).map(stat -> stat.getStat(statType)).orElse(0.0f);
-            commandSourceStackCommandContext.getSource().sendSuccess(() -> Component.translatable("command.lendersdelight.stat.get",serverPlayer.getDisplayName(),Component.translatable(statType.getLangKey()),value),true);
+            commandSourceStackCommandContext.getSource().sendSuccess(() -> Component.translatable("command.lendersdelight.stat.get",serverPlayer.getDisplayName(),Component.translatable(statType.getLangKey()),StatType.string(value)),false);
         }
         return serverPlayerCollection.size();
+    }
+
+    private static CompletableFuture<Suggestions> suggestFood(CommandContext<CommandSourceStack> commandSourceStackCommandContext,SuggestionsBuilder suggestionsBuilder) {
+        return SharedSuggestionProvider.suggestResource(StatReloadListener.getServerStat().keySet(),suggestionsBuilder);
+    }
+
+    private static int resetFoodOnce(CommandContext<CommandSourceStack> commandSourceStackCommandContext) throws CommandSyntaxException {
+        ResourceLocation resourceLocation=ResourceLocationArgument.getId(commandSourceStackCommandContext,"food");
+        int value=0;
+        for(ServerPlayer serverPlayer : EntityArgument.getPlayers(commandSourceStackCommandContext,"player")) {
+            if(PlayerStatProvider.get(serverPlayer).map(iPlayerStat -> {
+                iPlayerStat.setFoodUse(resourceLocation,0);
+                return true;
+            }).orElse(false)) {
+                PlayerStatProvider.sync(serverPlayer);
+                value++;
+            }
+        }
+        int data=value;
+        commandSourceStackCommandContext.getSource().sendSuccess(() -> Component.translatable("command.lendersdelight.stat.reset_food_once",name(resourceLocation),data),true);
+        return value;
+    }
+
+    private static Component name(ResourceLocation resourceLocation) {
+        Item item= BuiltInRegistries.ITEM.containsKey(resourceLocation) ? BuiltInRegistries.ITEM.get(resourceLocation) : null;
+        return item == null ? Component.literal(resourceLocation.toString()) : item.getDefaultInstance().getHoverName();
+    }
+
+    private static int getFood(CommandContext<CommandSourceStack> commandSourceStackCommandContext) throws CommandSyntaxException {
+        ResourceLocation resourceLocation=ResourceLocationArgument.getId(commandSourceStackCommandContext,"food");
+        StatMode statMode= ServerConfig.STAT_MODE.get();
+        int value=0;
+        for(ServerPlayer serverPlayer : EntityArgument.getPlayers(commandSourceStackCommandContext,"player")) {
+            IPlayerStat iPlayerStat=PlayerStatProvider.get(serverPlayer).orElse(null);
+            if(iPlayerStat == null) continue;
+            int data=iPlayerStat.getFoodUse(resourceLocation);
+            if(!StatReloadListener.getServer(resourceLocation).isEmpty() && (statMode == StatMode.ONCE || statMode == StatMode.CAPPED)) {
+                int limit=statMode == StatMode.ONCE ? 1 : StatReloadListener.getServerCapped(resourceLocation);
+                commandSourceStackCommandContext.getSource().sendSuccess(() -> Component.translatable("command.lendersdelight.stat.food_get",serverPlayer.getDisplayName(),name(resourceLocation),data,limit),false);
+            } else {
+                commandSourceStackCommandContext.getSource().sendSuccess(() -> Component.translatable("command.lendersdelight.stat.food_get_value",serverPlayer.getDisplayName(),name(resourceLocation),data),false);
+            }
+            value++;
+        }
+        return value;
+    }
+
+    private static int getAll(CommandContext<CommandSourceStack> commandSourceStackCommandContext) throws CommandSyntaxException {
+        int value=0;
+        for (ServerPlayer serverPlayer : EntityArgument.getPlayers(commandSourceStackCommandContext,"player")) {
+            IPlayerStat iPlayerStat=PlayerStatProvider.get(serverPlayer).orElse(null);
+            if(iPlayerStat == null) continue;
+            MutableComponent mutableComponent=Component.translatable("command.lendersdelight.stat.get_all",serverPlayer.getDisplayName());
+            for (StatType statType : StatType.values()) {
+                mutableComponent.append(Component.literal("\n"));
+                mutableComponent.append(Component.translatable("command.lendersdelight.stat.get_key",Component.translatable(statType.getLangKey()),StatType.string(iPlayerStat.getStat(statType))));
+                if(!ServerConfig.isEnableStat(statType)) mutableComponent.append(Component.literal(" ")).append(Component.translatable("command.lendersdelight.stat.disable"));
+            }
+            commandSourceStackCommandContext.getSource().sendSuccess(() -> mutableComponent,false);
+            value++;
+        }
+        return value;
     }
 }
